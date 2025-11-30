@@ -1,0 +1,47 @@
+{
+  "name": "babylon_stars",
+  "version": "1.0.0",
+  "description": "A Babylon.js project setup with Webpack and Babel",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "webpack serve --open",
+    "build": "webpack",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babylonjs": "^7.13.1",
+    "babylonjs-inspector": "^7.13.1",
+    "babylonjs-loaders": "^7.13.1",
+    "babylonjs-materials": "^7.13.1",
+    "mobx": "^6.13.1",
+    "mobx-react": "^9.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-draggable": "^4.4.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.25.9",
+    "@eslint/js": "^9.9.1",
+    "@svgr/webpack": "^8.1.0",
+    "@types/webpack-dev-server": "^4.7.2",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "babel-loader": "^9.2.1",
+    "copy-webpack-plugin": "^13.0.1",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.35.0",
+    "globals": "^15.9.0",
+    "html-webpack-plugin": "^5.6.0",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.3.0",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
