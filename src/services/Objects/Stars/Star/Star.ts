@@ -32,7 +32,9 @@ export class Star extends ObjectController {
       material.bumpTexture = texture;
     }
 
-    setupStarLighting(scene, name);
+    mesh.setEnabled(false)
+
+    //setupStarLighting(scene, name);
 
     super({
       id,

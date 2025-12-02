@@ -8,4 +8,5 @@ export interface StarConfig {
   emissiveColor?: BABYLON.Color3;
   emissiveIntensity?: number;
   position?: BABYLON.Vector3;
+  pointCount?: number;
 }
