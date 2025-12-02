@@ -1,13 +1,15 @@
 import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
-import stars from "@/data/stars.json";
-import { StarConfig } from "../Star/types/StarConfig";
+import type { StarData } from "../types/StarData";
+import type { StarConfig } from "../Star/types/StarConfig";
 import { createStar } from "../Star/actions/createStar";
 
 const objectsController = new ObjectsController();
-
-export function generateStars(scene: BABYLON.Scene){
-    stars.slice(0, 200).map(star => {
+let i = 0;
+export function createStars(scene: BABYLON.Scene, StarData: StarData[]){
+    StarData.map(star => {
+        i++
+        if(i > 200) return
         // Ensure K exists; fallback to white if missing
         const k = star.K ?? { r: 1, g: 1, b: 1 };
 

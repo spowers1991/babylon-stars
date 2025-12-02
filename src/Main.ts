@@ -7,6 +7,7 @@ import { CamerasController } from "./lib/Cameras/CamerasController";
 import MainCamera from "./services/Cameras/MainCamera/MainCamera";
 import { createStarPointMap } from "./services/Objects/Stars/actions/createStarPointCloud";
 import stars from "@/data/stars.json";
+import { createStars } from "./services/Objects/Stars/actions/createStars";
 
 window.addEventListener("DOMContentLoaded", () => {
   const { canvas, engine } = startEngine("renderCanvas");
@@ -28,8 +29,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   createStarPointMap(scene1, stars)
 
-  console.log(stars)
-  //generateStars(scene1);
+  createStars(scene1, stars);
 
   // 🧭 Register scene
   scenesController.addScene(scene1, "Scene1");

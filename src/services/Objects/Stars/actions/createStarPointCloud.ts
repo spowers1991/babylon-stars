@@ -31,6 +31,5 @@ export function createStarPointMap(scene: BABYLON.Scene, stars: StarData[]) {
   mesh.position = BABYLON.Vector3.Zero();
 });
 
-console.log(pcs)
-  return pcs;
+return pcs;
 }
