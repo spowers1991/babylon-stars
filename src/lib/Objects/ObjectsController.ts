@@ -1,11 +1,19 @@
 export class ObjectsController {
   public objects: Object[] = [];
+  public objectsToRender: Object[] = [];
 
   add(gameObject: Object | Object[]) {
+
+    const addOne = (obj: Object) => {
+      if (!this.objects.includes(obj)) {   // optional: enforce unique in base array too
+        this.objects.push(obj);
+      }
+    };
+
     if (Array.isArray(gameObject)) {
-      this.objects.push(...gameObject);
+      gameObject.forEach(addOne);
     } else {
-      this.objects.push(gameObject);
+      addOne(gameObject);
     }
   }
 
