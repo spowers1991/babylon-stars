@@ -2,10 +2,12 @@ export class ObjectsController {
   public objects: Object[] = [];
   public objectsToRender: Object[] = [];
 
-  add(gameObject: Object | Object[]) {
+  // Limit for objectsToRender
+  protected maxRenderObjects = 10;   // <-- change to whatever you want
 
+  add(gameObject: Object | Object[]) {
     const addOne = (obj: Object) => {
-      if (!this.objects.includes(obj)) {   // optional: enforce unique in base array too
+      if (!this.objects.includes(obj)) {
         this.objects.push(obj);
       }
     };
@@ -23,7 +25,30 @@ export class ObjectsController {
     });
   }
 
+  getObjectsToRender() {
+    return this.objectsToRender;
+  }
+
   getAll() {
     return this.objects;
+  }
+
+  /**
+   * Replace or append items to the render list in a safe way.
+   * Applies max size limits and removes oldest items.
+   */
+  protected updateRenderList(newList: Object[]) {
+    this.objectsToRender = [...newList];
+
+    // enforce max size
+    if (this.objectsToRender.length > this.maxRenderObjects) {
+      const overflow = this.objectsToRender.length - this.maxRenderObjects;
+      this.objectsToRender.splice(0, overflow);
+    }
+
+    // ---- LOOP THROUGH THE ARRAY ----
+    for (const obj of this.objectsToRender) {
+      console.log(obj)
+    }
   }
 }

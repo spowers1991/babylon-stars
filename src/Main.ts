@@ -41,15 +41,28 @@ window.addEventListener("DOMContentLoaded", async () => {
   scenesController.setActiveScene("Scene1");
 
   // 🕹️ Start render loop
-  const renderersController = new RenderersController(engine, scenesController, objectsController);
-  renderersController.onBeforeRender(scene => {
-    // Per-frame logic
-    // e.g., check nearest particles:
-    const particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 6);
-    
-    starsController.createStars(scene1, cloudPointsToData(scene1, particlesNearCamera, starsJson));
+  const renderersController = new RenderersController(engine);
+    renderersController.addRenderer(
+      "slowRenderer",
+      scene1,
+      (dt) => {
+          const particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 6);
+          starsController.createStars(scene1, cloudPointsToData(scene1, particlesNearCamera, starsJson));
+      },
+      5
+  );
 
+  let lastTime = performance.now();
+
+  engine.runRenderLoop(() => {
+      const now = performance.now();
+      const dt = now - lastTime;
+      lastTime = now;
+
+      renderersController.update(dt);
+
+      renderersController.render("slowRenderer");
   });
-  renderersController.start();
+
 });
 

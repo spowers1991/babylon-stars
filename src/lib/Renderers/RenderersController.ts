@@ -3,51 +3,71 @@ import * as BABYLON from "babylonjs";
 import { ScenesController } from "@/lib/Scenes/ScenesController";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
 
+// RenderersController.ts
 export class RenderersController {
-  private engine: BABYLON.Engine;
-  private scenes: ScenesController;
-  private objects?: ObjectsController;
-  private beforeRender?: (scene: BABYLON.Scene) => void;
+    private engine: BABYLON.Engine;
+    private scenes: Map<string, BABYLON.Scene> = new Map();
+    private renderers: Map<string, {
+        scene: BABYLON.Scene,
+        tick: (dt: number) => void,
+        fpsCap: number,
+        accumulator: number
+    }> = new Map();
 
-  constructor(engine: BABYLON.Engine, scenes: ScenesController, objects?: ObjectsController) {
-    this.engine = engine;
-    this.scenes = scenes;
-    this.objects = objects;
-  }
+    constructor(engine: BABYLON.Engine) {
+        this.engine = engine;
+    }
 
-  /**
-   * Optional hook to run custom code before render.
-   */
-  public onBeforeRender(callback: (scene: BABYLON.Scene) => void): void {
-    this.beforeRender = callback;
-  }
+    /**
+     * Register a new renderer
+     */
+    addRenderer(
+        name: string,
+        scene: BABYLON.Scene,
+        tick: (dt: number) => void,
+        fpsCap: number = 60
+    ) {
+        this.renderers.set(name, {
+            scene,
+            tick,
+            fpsCap,
+            accumulator: 0
+        });
 
-  /**
-   * Start the render loop.
-   */
-  public start(): void {
-    this.engine.runRenderLoop(() => {
-      const scene = this.scenes.getActiveScene();
-      if (!scene) return;
+        this.scenes.set(name, scene);
+    }
 
-      // Run optional callback before rendering
-      this.beforeRender?.(scene);
+    /**
+     * Remove a renderer
+     */
+    removeRenderer(name: string) {
+        this.renderers.delete(name);
+        this.scenes.delete(name);
+    }
 
-      // Update game objects (animations, rotations, etc.)
-      this.objects?.update(this.engine.getDeltaTime());
+    /**
+     * Main update loop: call once in your engine runRenderLoop()
+     */
+    update(deltaTimeMs: number) {
+        for (const [name, r] of this.renderers) {
+            const frameTime = 1000 / r.fpsCap;
+            r.accumulator += deltaTimeMs;
 
-      // Render the active scene
-      scene.render();
-    });
+            // Throttle based on FPS cap
+            if (r.accumulator >= frameTime) {
+                r.tick(r.accumulator);
+                r.accumulator = 0;
+            }
+        }
+    }
 
-    // Resize handling
-    window.addEventListener("resize", () => this.engine.resize());
-  }
-
-  /**
-   * Stop rendering (pause the loop).
-   */
-  public stop(): void {
-    this.engine.stopRenderLoop();
-  }
+    /**
+     * Ask a renderer to draw its scene
+     */
+    render(name: string) {
+        const r = this.renderers.get(name);
+        if (!r) return;
+        this.engine.scenes = [r.scene]; // temporary scene override
+        r.scene.render();
+    }
 }

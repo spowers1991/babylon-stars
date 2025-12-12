@@ -6,33 +6,33 @@ import { createStar } from "./Star/actions/createStar";
 
 export class StarsController extends ObjectsController {
   public stars: Star[] = [];
-  public starsConfigs: StarConfig[]= [];
+  public starsConfigs: StarConfig[] = [];
 
-  addConfig(data: StarConfig){
-      if (!this.starsConfigs.includes(data)) {   // optional: enforce unique in base array too
-        this.starsConfigs.push(data);
-      }
+  addConfig(data: StarConfig) {
+    if (!this.starsConfigs.includes(data)) {
+      this.starsConfigs.push(data);
+    }
   }
 
   createStars(
-    scene: BABYLON.Scene, 
+    scene: BABYLON.Scene,
     particlesNearCamera: { i: number }[]
   ) {
-    // Clear previous objects
-    this.objectsToRender = particlesNearCamera
+    const newStars = particlesNearCamera
       .map(item => this.starsConfigs.find(cfg => cfg.id === item.i))
-      .filter((cfg): cfg is StarConfig => cfg !== undefined) // remove undefined
-      .map(cfg => createStar(scene, cfg));                  // create new stars
+      .filter((cfg): cfg is StarConfig => cfg !== undefined)
+      .map(cfg => createStar(scene, cfg));
 
+    // Use the safe method from parent class
+    this.updateRenderList(newStars);
   }
 
   add(gameObject: Star | Star[]) {
-
     const addOne = (obj: Star) => {
-      if (!this.stars.includes(obj)) {     // <-- prevents duplicates
+      if (!this.stars.includes(obj)) {
         this.stars.push(obj);
       }
-      if (!this.objects.includes(obj)) {   // optional: enforce unique in base array too
+      if (!this.objects.includes(obj)) {
         this.objects.push(obj);
       }
     };
@@ -48,3 +48,4 @@ export class StarsController extends ObjectsController {
     return this.stars;
   }
 }
+
