@@ -46,8 +46,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       "slowRenderer",
       scene1,
       (dt) => {
-          const particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 6);
-          starsController.createStars(scene1, cloudPointsToData(scene1, particlesNearCamera, starsJson));
+          particlesController.particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 6);
+          starsController.manageStars(scene1, milkyWay.stars, particlesController);
       },
       5
   );

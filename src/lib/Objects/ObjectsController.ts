@@ -1,21 +1,22 @@
 export class ObjectsController {
   public objects: Object[] = [];
   public objectsToRender: Object[] = [];
+  public objectsToUnrender = new Set<any>();
 
   // Limit for objectsToRender
   protected maxRenderObjects = 10;   // <-- change to whatever you want
 
-  add(gameObject: Object | Object[]) {
+  add(object: Object | Object[]) {
     const addOne = (obj: Object) => {
       if (!this.objects.includes(obj)) {
         this.objects.push(obj);
       }
     };
 
-    if (Array.isArray(gameObject)) {
-      gameObject.forEach(addOne);
+    if (Array.isArray(object)) {
+      object.forEach(addOne);
     } else {
-      addOne(gameObject);
+      addOne(object);
     }
   }
 
@@ -37,8 +38,10 @@ export class ObjectsController {
    * Replace or append items to the render list in a safe way.
    * Applies max size limits and removes oldest items.
    */
+
   protected updateRenderList(newList: Object[]) {
     this.objectsToRender = [...newList];
+    const currentObjects = new Set<any>();
 
     // enforce max size
     if (this.objectsToRender.length > this.maxRenderObjects) {
@@ -47,8 +50,18 @@ export class ObjectsController {
     }
 
     // ---- LOOP THROUGH THE ARRAY ----
-    for (const obj of this.objectsToRender) {
-      console.log(obj)
+    for (const obj of this.objectsToRender as any) {
+      currentObjects.add(obj.mesh);
+      obj.mesh.setEnabled(true);
+      console.log(obj.mesh)
     }
+
+    for (const mesh of this.objectsToUnrender) {
+      if (!currentObjects.has(mesh)) {
+        mesh.setEnabled(false);
+      }
+    }
+    console.log(this.objectsToRender)
+    this.objectsToUnrender = currentObjects;
   }
 }

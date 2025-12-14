@@ -8,7 +8,7 @@ interface SceneEntry {
 }
 
 export class ScenesController {
-  private scenes: SceneEntry[] = [];
+  public scenes: SceneEntry[] = [];
   private activeScene?: BABYLON.Scene;
 
   /**

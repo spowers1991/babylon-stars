@@ -28,6 +28,12 @@ export class MeshesController {
     return this.meshes;
   }
 
+
+  public loadByIndex(index: number): BABYLON.Mesh {
+    const mesh = this.meshes[index];
+    return mesh;
+  }
+
   public disposeByIndex(index: number): void {
     const mesh = this.meshes[index];
     if (mesh) {

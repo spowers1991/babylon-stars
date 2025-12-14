@@ -1,7 +1,7 @@
 import ObjectController from "@/lib/Objects/Object/ObjectController";
 import * as BABYLON from "babylonjs";
 
-export function cloudPointsToData(scene: BABYLON.Scene, points: BABYLON.Particle[], objectsData: any): any[] {
+export function cloudPointsToData(points: BABYLON.Particle[], objectsData: any): any[] {
     const matchedObjects: ObjectController[] = [];
 
     points.forEach(point => {
