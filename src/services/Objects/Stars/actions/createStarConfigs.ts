@@ -3,7 +3,7 @@ import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 
-export function addStarConfigs(scene: BABYLON.Scene, data: StarData[], starsController: StarsController): void {
+export function createStarConfigs(scene: BABYLON.Scene, data: StarData[], starsController: StarsController): void {
     data.forEach(i => {
         
          const starConfig: StarConfig = {

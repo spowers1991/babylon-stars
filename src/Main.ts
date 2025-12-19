@@ -9,8 +9,7 @@ import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
-import { addStarConfigs } from "./services/Objects/Stars/actions/addStarConfigs";
-import { cloudPointsToData } from "./lib/Particles/actions/cloudPointsToData";
+import { createStarConfigs } from "./services/Objects/Stars/actions/createStarConfigs";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
@@ -34,7 +33,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     name: "Milky Way",
     stars: starsJson
   });
-  addStarConfigs(scene1, starsJson, starsController);
+  createStarConfigs(scene1, starsJson, starsController);
 
   // 🧭 Register scene
   scenesController.addScene(scene1, "Scene1");
@@ -46,8 +45,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       "slowRenderer",
       scene1,
       (dt) => {
-          particlesController.particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 6);
-          starsController.manageStars(scene1, milkyWay.stars, particlesController);
+          particlesController.particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 8);
+          starsController.manageStars(scene1, milkyWay.stars as any, particlesController);
       },
       5
   );
@@ -65,4 +64,3 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
 });
-

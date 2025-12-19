@@ -51,17 +51,17 @@ export class ObjectsController {
 
     // ---- LOOP THROUGH THE ARRAY ----
     for (const obj of this.objectsToRender as any) {
-      currentObjects.add(obj.mesh);
+      currentObjects.add(obj);
       obj.mesh.setEnabled(true);
-      console.log(obj.mesh)
+      //console.log(this.objectsToRender)
     }
 
-    for (const mesh of this.objectsToUnrender) {
-      if (!currentObjects.has(mesh)) {
-        mesh.setEnabled(false);
+    for (const obj of this.objectsToUnrender) {
+      if (!currentObjects.has(obj.mesh)) {
+        obj.mesh.setEnabled(false);
+        //obj.mesh.dispose();
       }
     }
-    console.log(this.objectsToRender)
     this.objectsToUnrender = currentObjects;
   }
 }

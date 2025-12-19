@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import { getParticlesInRadiusFromPCS } from "./helpers/getParticlesInRadiusFromPCS";
 import { getParticlesInRadius } from "./helpers/getParticlesInRadius";
 import { cloudPointsToData } from "./actions/cloudPointsToData";
+import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 
 export class ParticlesController {
   private static _instance: ParticlesController;
@@ -39,7 +40,7 @@ export class ParticlesController {
     return getParticlesInRadiusFromPCS(this, name, center, radius);
   }
 
-  cloudPointsToData(particles : BABYLON.Particle[], data: any){
-    return cloudPointsToData(particles, data)
+  cloudPointsToData(scene: BABYLON.Scene, points : BABYLON.Particle[], data: StarData[]){
+    return cloudPointsToData(scene, points, data)
   }
 }

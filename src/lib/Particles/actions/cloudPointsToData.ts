@@ -1,20 +1,25 @@
 import ObjectController from "@/lib/Objects/Object/ObjectController";
 import * as BABYLON from "babylonjs";
+import { attachTextLabel } from "@/utils/attachTextLabel";
+import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 
-export function cloudPointsToData(points: BABYLON.Particle[], objectsData: any): any[] {
-    const matchedObjects: ObjectController[] = [];
+export function cloudPointsToData(
+  scene: BABYLON.Scene,
+  points: BABYLON.Particle[],
+  data: any[]
+): StarData[] {
+  const matchedObjects: StarData[] = [];
 
-    points.forEach(point => {
-        const cloudPoint = point as any;  // CloudPoint
-        const idx = cloudPoint.idx;
+  points.forEach(point => {
+    const cloudPoint = point as any;
+    const idx = cloudPoint.idx;
+    
+    const objectData = data.find((object: StarData) => object.i === idx);
+    if (!data) return;
 
-        // Find star data with matching index
-        const data = objectsData.find((object: any) => object.i === idx);
+    const obj = objectData as StarData;
+    matchedObjects.push(obj);
+  });
 
-        // Save matched star
-        matchedObjects.push(data);
-    });
-
-    // ✅ Return the array after processing all points
-    return matchedObjects;
+  return matchedObjects;
 }

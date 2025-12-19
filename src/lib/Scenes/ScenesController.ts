@@ -1,11 +1,7 @@
 // src/lib/Scenes/ScenesController.ts
 import * as BABYLON from "babylonjs";
 import { SceneConfig } from "./types/SceneConfig";
-
-interface SceneEntry {
-  name: string;
-  scene: BABYLON.Scene;
-}
+import { SceneEntry } from "./types/SceneEntry";
 
 export class ScenesController {
   public scenes: SceneEntry[] = [];
