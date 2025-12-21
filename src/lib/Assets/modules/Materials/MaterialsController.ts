@@ -1,8 +1,19 @@
 import * as BABYLON from "babylonjs";
 
 export class MaterialsController {
+  private static _instance: MaterialsController;
+
   private materials: BABYLON.Material[] = [];
-  private meshMaterialMap: Map<BABYLON.AbstractMesh, BABYLON.Material> = new Map();
+  private meshMaterialMap = new Map<BABYLON.AbstractMesh, BABYLON.Material>();
+
+  private constructor() {} // ⛔ prevent new()
+
+  public static get instance(): MaterialsController {
+    if (!MaterialsController._instance) {
+      MaterialsController._instance = new MaterialsController();
+    }
+    return MaterialsController._instance;
+  }
 
   // ✅ StandardMaterial
   public createStandard(scene: BABYLON.Scene, name: string): BABYLON.StandardMaterial {

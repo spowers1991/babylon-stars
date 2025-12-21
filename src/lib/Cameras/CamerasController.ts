@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { CameraConfig } from "./Camera/types/CameraConfig";
 import { createCameraByType } from "./Camera/factories/createCameraByType";
-import { setCameraZoom } from "./actions/setCameraZoom";
+import { setCameraZoom } from "./Camera/actions/setCameraZoom";
 
 export class CamerasController {
   private cameras: BABYLON.Camera[] = [];
@@ -15,7 +15,7 @@ export class CamerasController {
     cameraConfig: CameraConfig
   ): BABYLON.Camera {
     const cam = createCameraByType(cameraConfig, scene, canvas);
-    this.cameras.push(cam);
+    //this.cameras.push(cam);
     return cam;
   }
 

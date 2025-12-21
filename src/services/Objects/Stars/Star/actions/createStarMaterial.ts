@@ -7,18 +7,17 @@ import { MaterialsController } from "@/lib/Assets/modules/Materials/MaterialsCon
 export function createStarMaterial(
   scene: BABYLON.Scene,
   name: string,
-  texture: BABYLON.Texture,
+  mesh: BABYLON.Mesh,
   emissiveColor: BABYLON.Color3,
   emissiveIntensity: number
 ): BABYLON.StandardMaterial {
   
-  const materials = new MaterialsController();
+  const materials = MaterialsController.instance;
 
-  const material = materials.createStandard(scene, `${name}-PBR`);
-
-  materials.setAlbedoTexture({ material, texture });
+  const material = materials.createStandard(scene, `${name}`);
   materials.setEmissiveColor({ material, color: emissiveColor });
   materials.setEmissiveIntensity({ material, value: emissiveIntensity });
+  mesh.material = material;
 
   return material;
 }

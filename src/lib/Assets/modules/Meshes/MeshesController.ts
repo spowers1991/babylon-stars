@@ -6,13 +6,6 @@ import { addToMeshes } from "./Mesh/actions/addToMeshes";
 export class MeshesController {
   public meshes: BABYLON.Mesh[] = [];
 
-  public load(
-    mesh: BABYLON.Mesh
-  ): BABYLON.Mesh {
-    addToMeshes(this.meshes, mesh)
-    return mesh;
-  }
-
   public create(
     scene: BABYLON.Scene,
     meshType: MeshType,
@@ -20,6 +13,12 @@ export class MeshesController {
     options: MeshOptions
   ): BABYLON.Mesh {
     const mesh = createMeshByType(scene, meshType, name, options);
+    return mesh;
+  }
+
+  public addToMeshes(
+    mesh: BABYLON.Mesh
+  ): BABYLON.Mesh {
     addToMeshes(this.meshes, mesh)
     return mesh;
   }

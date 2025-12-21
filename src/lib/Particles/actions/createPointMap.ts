@@ -19,7 +19,7 @@ export async function createPointMap<T>(
   await pcs.buildMeshAsync().then(mesh => {
     const material = new BABYLON.StandardMaterial(`${name}Mat`, scene);
     material.pointsCloud = true;
-    material.pointSize = 10;
+    //material.pointSize = 10;
     material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     mesh.material = material;
   });

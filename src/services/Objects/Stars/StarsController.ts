@@ -28,7 +28,6 @@ export class StarsController extends ObjectsController {
 
     if (stars.length > 0) {
       this.updateRenderList(stars);
-      //console.log(particlesController.particlesNearCamera, stars)
     }
 
   }

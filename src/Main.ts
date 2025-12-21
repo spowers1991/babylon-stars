@@ -6,10 +6,13 @@ import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { RenderersController } from "@/lib/Renderers/RenderersController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
-import starsJson from "@/data/stars.json";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { createStarConfigs } from "./services/Objects/Stars/actions/createStarConfigs";
+import starsJson from "@/data/stars.json";
+import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
+import { focusCamera } from "./lib/Cameras/Camera/actions/focusCamera";
+
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
@@ -25,7 +28,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     clearColor: new BABYLON.Color4(0.05, 0.05, 0.1, 1),
   });
   
-  const camera = camerasController.addCamera(scene1, canvas, MainCamera);
+  const camera = camerasController.addCamera(scene1, canvas, MainCamera) as BABYLON.Camera;
 
   // ✅ await Galaxy creation
   const milkyWay = await Galaxy.create(scene1, {
@@ -50,6 +53,15 @@ window.addEventListener("DOMContentLoaded", async () => {
       },
       5
   );
+
+  const pointPicking = new PointPickingController(scene1, camera);
+  
+  pointPicking.onPointerDown((pickInfo) => {
+    if (pickInfo.hit && pickInfo.pickedMesh) {
+      focusCamera(camera, pickInfo.pickedMesh.position);
+      console.log("Picked mesh:", pickInfo.pickedMesh.name);
+    }
+  });
 
   let lastTime = performance.now();
 

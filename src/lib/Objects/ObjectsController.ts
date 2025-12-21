@@ -1,3 +1,5 @@
+import { attachDebugAxis } from "@/utils/attachDebugAxis";
+
 export class ObjectsController {
   public objects: Object[] = [];
   public objectsToRender: Object[] = [];
@@ -52,14 +54,21 @@ export class ObjectsController {
     // ---- LOOP THROUGH THE ARRAY ----
     for (const obj of this.objectsToRender as any) {
       currentObjects.add(obj);
+      if (!obj.debugAxis) {
+        obj.debugAxis = attachDebugAxis(obj.mesh, 5);
+      }
       obj.mesh.setEnabled(true);
       //console.log(this.objectsToRender)
     }
 
     for (const obj of this.objectsToUnrender) {
       if (!currentObjects.has(obj.mesh)) {
+      if (obj.debugAxis) {
+        obj.debugAxis.dispose();
+        obj.debugAxis = null;
+      }
         obj.mesh.setEnabled(false);
-        //obj.mesh.dispose();
+        obj.mesh.dispose();
       }
     }
     this.objectsToUnrender = currentObjects;
