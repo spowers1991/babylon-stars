@@ -18,11 +18,8 @@ export class StarsController extends ObjectsController {
 
   manageStars(
     scene: BABYLON.Scene,
-    starData: StarData[],
-    particlesController: ParticlesController
+    nearbyStarsData: StarData[],
   ) {
-    
-    const nearbyStarsData = particlesController.cloudPointsToData(scene, particlesController.particlesNearCamera, starData);
     
     const stars = createStarsFromConfigs(scene, nearbyStarsData, this)
 

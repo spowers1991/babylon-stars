@@ -5,13 +5,12 @@ import { ObjectsController } from "@/lib/Objects/ObjectsController";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { RenderersController } from "@/lib/Renderers/RenderersController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
+import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { createStarConfigs } from "./services/Objects/Stars/actions/createStarConfigs";
 import starsJson from "@/data/stars.json";
-import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
-import { focusCamera } from "./lib/Cameras/Camera/actions/focusCamera";
 
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -19,7 +18,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const scenesController = new ScenesController();
   const objectsController = new ObjectsController();
-  const particlesController = ParticlesController.instance; // ✅ singleton
+  const particlesController = ParticlesController.instance; 
   const camerasController = new CamerasController();
   const starsController = new StarsController();
 
@@ -43,36 +42,49 @@ window.addEventListener("DOMContentLoaded", async () => {
   scenesController.setActiveScene("Scene1");
 
   // 🕹️ Start render loop
-  const renderersController = new RenderersController(engine);
-    renderersController.addRenderer(
-      "slowRenderer",
-      scene1,
-      (dt) => {
-          particlesController.particlesNearCamera = particlesController.getParticlesInRadius(camera.position, 8);
-          starsController.manageStars(scene1, milkyWay.stars as any, particlesController);
-      },
-      5
+  const renderersController = RenderersController.instance(engine);
+
+  const pickingController = PointPickingController.getInstance(scene1, camera);
+  
+  const pcsInstance = particlesController.getByName(milkyWay.name);
+  pickingController.setupClickEvents(scene1, camera, pcsInstance);
+
+  // Add a renderer
+  renderersController.addRenderer(
+    "stars",
+    scene1,
+    (dt) => {
+
+     const particlesArray = [
+        ...particlesController.particlesNearCamera,
+        ...pickingController.cloudPointsNearClick
+      ] as BABYLON.CloudPoint[];
+      
+      const nearbyStarsData = particlesController.cloudPointsToData(scene1, particlesController.particlesNearCamera, milkyWay.stars);
+      starsController.manageStars(scene1, nearbyStarsData);
+    },
+    3 // fps cap
   );
 
-  const pointPicking = new PointPickingController(scene1, camera);
-  
-  pointPicking.onPointerDown((pickInfo) => {
-    if (pickInfo.hit && pickInfo.pickedMesh) {
-      focusCamera(camera, pickInfo.pickedMesh.position);
-      console.log("Picked mesh:", pickInfo.pickedMesh.name);
-    }
-  });
+  renderersController.addRenderer(
+    "particles",
+    scene1,
+    (dt) => {
+      particlesController.particlesNearCamera =
+        particlesController.getParticlesInRadius(camera.position, 12);
+    },
+    3 // fps cap
+  );
 
-  let lastTime = performance.now();
+
+  const glow = new BABYLON.GlowLayer("glow", scene1);
+  glow.intensity = 3; // adjust brightness
+
 
   engine.runRenderLoop(() => {
-      const now = performance.now();
-      const dt = now - lastTime;
-      lastTime = now;
-
-      renderersController.update(dt);
-
-      renderersController.render("slowRenderer");
+    const deltaTime = engine.getDeltaTime();
+    renderersController.update(deltaTime);
+    renderersController.renderAll();
   });
 
 });

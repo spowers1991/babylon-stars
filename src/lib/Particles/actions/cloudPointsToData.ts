@@ -5,7 +5,7 @@ import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 
 export function cloudPointsToData(
   scene: BABYLON.Scene,
-  points: BABYLON.Particle[],
+  points: BABYLON.CloudPoint[],
   data: any[]
 ): StarData[] {
   const matchedObjects: StarData[] = [];

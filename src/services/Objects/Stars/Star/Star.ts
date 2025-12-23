@@ -11,7 +11,7 @@ import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToP
 export class Star {
   public id: number;
   public name: string;
-  public mesh: BABYLON.Mesh;
+  public mesh: BABYLON.AbstractMesh;
   public material: BABYLON.Material;
   public texture: BABYLON.Texture;
   constructor(scene: BABYLON.Scene, config: StarConfig) {
@@ -19,11 +19,10 @@ export class Star {
     this.id = config.id!;
     this.name = config.name!;
 
-    this.mesh = createStarMesh(scene, this.name, 0.1) as BABYLON.Mesh;
+    this.mesh = createStarMesh(scene, this.name, ((config.diameter! < 0.1) ? 0.1 : config.diameter! / 5000)) as BABYLON.AbstractMesh;
     
     const textureUrl = config.textureUrl!;
     this.texture = createStarTexture(scene, this.name, textureUrl!) as BABYLON.Texture;
-//    console.log(this.texture)
     this.material = createStarMaterial(
       scene,
       this.name,
@@ -33,6 +32,8 @@ export class Star {
     ) as BABYLON.Material;
 
     const particle = findParticle('Milky Way', this.id);
-    moveToParticle(this.mesh, particle?.position);    
+    moveToParticle(this.mesh, particle?.position); 
+    
+    this.mesh.setEnabled(false);
   }
 }

@@ -9,7 +9,7 @@ export function createStarConfigs(scene: BABYLON.Scene, data: StarData[], starsC
          const starConfig: StarConfig = {
             id: i.i,
             name: i.n,
-            diameter: (i.p! * 10),
+            diameter: (i.p!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),
             emissiveIntensity: 1,

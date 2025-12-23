@@ -7,7 +7,7 @@ import { MaterialsController } from "@/lib/Assets/modules/Materials/MaterialsCon
 export function createStarMaterial(
   scene: BABYLON.Scene,
   name: string,
-  mesh: BABYLON.Mesh,
+  mesh: BABYLON.AbstractMesh,
   emissiveColor: BABYLON.Color3,
   emissiveIntensity: number
 ): BABYLON.StandardMaterial {

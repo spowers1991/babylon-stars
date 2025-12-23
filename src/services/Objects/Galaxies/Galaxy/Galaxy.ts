@@ -1,11 +1,12 @@
 import * as BABYLON from "babylonjs";
 import type { GalaxyConfig } from "./types/GalaxyConfig";
+import type { StarData } from "../../Stars/Star/types/StarData";
 import { createStarPointMap } from "@/services/Objects/Stars/actions/createStarPointMap";
 
 export class Galaxy {
   public readonly id: number;
   public readonly name: string;
-  public readonly stars: GalaxyConfig["stars"];
+  public readonly stars: StarData[];
   private scene: BABYLON.Scene;
 
   private constructor(scene: BABYLON.Scene, config: GalaxyConfig) {

@@ -8,7 +8,7 @@ export class ParticlesController {
   private static _instance: ParticlesController;
   private systems: BABYLON.PointsCloudSystem[] = [];
   private namedSystems: Record<string, BABYLON.PointsCloudSystem> = {};
-  public particlesNearCamera: BABYLON.Particle[] = [];
+  public particlesNearCamera: BABYLON.CloudPoint[] = [];
 
   public static get instance(): ParticlesController {
     if (!this._instance) {
@@ -31,16 +31,15 @@ export class ParticlesController {
   }
 
   getParticlesInRadius(center: BABYLON.Vector3, radius: number) {
-    const particlesNearCamera = getParticlesInRadius(this, center, radius);
-    this.particlesNearCamera = particlesNearCamera;
-    return particlesNearCamera;
+    const particlesNearCenter = getParticlesInRadius(this, center, radius);
+    return particlesNearCenter;
   }
 
   getParticlesInRadiusFromPCS(name: string, center: BABYLON.Vector3, radius: number) {
     return getParticlesInRadiusFromPCS(this, name, center, radius);
   }
 
-  cloudPointsToData(scene: BABYLON.Scene, points : BABYLON.Particle[], data: StarData[]){
+  cloudPointsToData(scene: BABYLON.Scene, points : BABYLON.CloudPoint[], data: StarData[]){
     return cloudPointsToData(scene, points, data)
   }
 }

@@ -2,8 +2,8 @@ import * as BABYLON from "babylonjs";
 import { ParticlesController } from "../ParticlesController";
 
 /** Get all particles in all PCS within a radius */
-export function getParticlesInRadius(controller: ParticlesController, center: BABYLON.Vector3, radius: number): BABYLON.Particle[] {
-  const result: BABYLON.Particle[] = [];
+export function getParticlesInRadius(controller: ParticlesController, center: BABYLON.Vector3, radius: number): BABYLON.CloudPoint[] {
+  const result: BABYLON.CloudPoint[] = [];
   const r2 = radius * radius;
   for (const pcs of controller.getAllPCS()) {
     for (const p of pcs.particles) { // no cast
