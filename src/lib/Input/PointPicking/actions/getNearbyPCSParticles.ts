@@ -1,9 +1,9 @@
 import * as BABYLON from "babylonjs";
 
-export function getNearbyCloudPoints(
+export function getNearbyPCSParticles(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
-  pcsInstance: BABYLON.PointsCloudSystem,
+  particlesInstance: BABYLON.PointsCloudSystem,
   onPicked: (particles: BABYLON.CloudPoint[]) => void
 ) {
   const threshold = 5;
@@ -11,7 +11,7 @@ export function getNearbyCloudPoints(
 
   scene.onPointerObservable.add((pointerInfo) => {
     if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
-    if (!pcsInstance.particles || pcsInstance.particles.length === 0) return;
+    if (!particlesInstance.particles || particlesInstance.particles.length === 0) return;
 
     const ray = scene.createPickingRay(
       pointerInfo.event.clientX,
@@ -25,7 +25,7 @@ export function getNearbyCloudPoints(
 
     const candidates: { particle: BABYLON.CloudPoint; distanceAlongRay: number }[] = [];
 
-    for (const particle of pcsInstance.particles) {
+    for (const particle of particlesInstance.particles) {
       const toParticle = particle.position.subtract(rayOrigin);
       const t = BABYLON.Vector3.Dot(toParticle, rayDir);
       if (t < 0) continue;

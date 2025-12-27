@@ -12,7 +12,6 @@ import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { createStarConfigs } from "./services/Objects/Stars/actions/createStarConfigs";
 import starsJson from "@/data/stars.json";
 
-
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
 
@@ -46,45 +45,37 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const pickingController = PointPickingController.getInstance(scene1, camera);
   
-  const pcsInstance = particlesController.getByName(milkyWay.name);
-  pickingController.setupClickEvents(scene1, camera, pcsInstance);
+  const particlesPCS = particlesController.getPCSByName(milkyWay.name+" PCS");
+  const particlesSPS = particlesController.getPCSByName(milkyWay.name+" SPS");
 
-  // Add a renderer
-  renderersController.addRenderer(
-    "stars",
-    scene1,
-    (dt) => {
+  pickingController.setupClickEvents(scene1, camera, particlesPCS);
 
-     const particlesArray = [
-        ...particlesController.particlesNearCamera,
-        ...pickingController.cloudPointsNearClick
-      ] as BABYLON.CloudPoint[];
-      
-      const nearbyStarsData = particlesController.cloudPointsToData(scene1, particlesController.particlesNearCamera, milkyWay.stars);
-      starsController.manageStars(scene1, nearbyStarsData);
-    },
-    3 // fps cap
-  );
-
-  renderersController.addRenderer(
-    "particles",
-    scene1,
-    (dt) => {
-      particlesController.particlesNearCamera =
-        particlesController.getParticlesInRadius(camera.position, 12);
-    },
-    3 // fps cap
-  );
-
-
+  // Create a glow layer
   const glow = new BABYLON.GlowLayer("glow", scene1);
-  glow.intensity = 3; // adjust brightness
 
-
+  // Optional: customize intensity
+  glow.intensity = 1;
+  
+  // Add a renderer
   engine.runRenderLoop(() => {
     const deltaTime = engine.getDeltaTime();
-    renderersController.update(deltaTime);
-    renderersController.renderAll();
+
+    // 1️⃣ Update nearby particles
+    particlesController.particlesNearCameraPCS =
+      particlesController.getParticlesInRadiusPCS(camera.position, 8);
+    
+    // 2️⃣ Convert particles to star data and manage stars
+    const nearbyStarsData = particlesController.particlesToDataPCS(
+      scene1,
+      particlesController.particlesNearCameraPCS,
+      milkyWay.stars
+    );
+    starsController.manageStars(scene1, nearbyStarsData);
+    particlesController.updatePCS(particlesPCS, starsController.starsConfigs);
+    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1})
+
+    // 3️⃣ Render the scene
+    scene1.render();
   });
 
 });

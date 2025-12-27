@@ -1,12 +1,10 @@
-import { attachDebugAxis } from "@/utils/attachDebugAxis";
-
 export class ObjectsController {
   public objects: Object[] = [];
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
 
   // Limit for objectsToRender
-  protected maxRenderObjects = 10;   // <-- change to whatever you want
+  protected maxRenderObjects = 5;   // <-- change to whatever you want
 
   add(object: Object | Object[]) {
     const addOne = (obj: Object) => {
@@ -42,29 +40,27 @@ export class ObjectsController {
    */
 
   protected updateRenderList(newList: Object[]) {
-    this.objectsToRender = [...newList];
+    const MAX_RENDER_OBJECTS = 5; // change this to whatever limit you want
+
+    // Only keep up to MAX_RENDER_OBJECTS
+    const limitedList = newList.slice(0, MAX_RENDER_OBJECTS);
+
+    this.objectsToRender = [...limitedList];
     const currentObjects = new Set<any>();
 
-    // ---- LOOP THROUGH THE ARRAY ----
     for (const obj of this.objectsToRender as any) {
-      currentObjects.add(obj);
-      /*if (!obj.debugAxis) {
-        obj.debugAxis = attachDebugAxis(obj.mesh, 5);
-      }*/
-      obj.mesh.setEnabled(true);
-      //console.log(this.objectsToRender)
+        currentObjects.add(obj);
+        obj.mesh.setEnabled(true);
     }
 
     for (const obj of this.objectsToUnrender) {
-      if (!currentObjects.has(obj.mesh)) {
-      /*if (obj.debugAxis) {
-        obj.debugAxis.dispose();
-        obj.debugAxis = null;
-      }*/
-        obj.mesh.setEnabled(false);
-        obj.mesh.dispose();
-      }
+        if (!currentObjects.has(obj.mesh)) {
+            obj.mesh.setEnabled(false);
+            obj.mesh.dispose();
+        }
     }
+
     this.objectsToUnrender = currentObjects;
   }
+
 }

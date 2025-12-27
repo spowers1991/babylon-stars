@@ -1,7 +1,9 @@
 import * as BABYLON from "babylonjs";
 import { focusCameraOnPickedMesh } from './actions/focusCameraOnPickedMesh';
-import { focusCameraOnPickedParticle } from "./actions/focusCameraOnPickedParticle";
-import { getNearbyCloudPoints } from "./actions/getNearbyCloudPoints"
+import { focusCameraOnPickedSPSParticle } from "./actions/focusCameraOnPickedSPSParticle";
+import { focusCameraOnPickedPCSParticle } from "./actions/focusCameraOnPickedPCSParticle";
+import { getNearbySPSParticles } from "./actions/getNearbySPSParticles";
+import { getNearbyPCSParticles } from "./actions/getNearbyPCSParticles";
 
 export type PickCallback = (info: BABYLON.PickingInfo, evt: PointerEvent) => void;
 
@@ -10,7 +12,8 @@ export class PointPickingController {
 
   private scene!: BABYLON.Scene;
   private camera!: BABYLON.Camera;
-  public cloudPointsNearClick: BABYLON.CloudPoint[] = [];
+  public SPSParticlesNearClick: BABYLON.SolidParticle[] = [];
+  public PCSParticlesNearClick: BABYLON.CloudPoint[] = [];
 
   private onPickDown?: PickCallback;
   private onPickMove?: PickCallback;
@@ -101,18 +104,24 @@ export class PointPickingController {
   public setupClickEvents(
     scene: BABYLON.Scene,
     camera: BABYLON.Camera,
-    pcsInstance: BABYLON.PointsCloudSystem
+    pcsInstance: BABYLON.PointsCloudSystem,
   ) {
     let isPointerDown = false;
 
     this.onPointerDown((pickInfo, evt) => {
       isPointerDown = true;
+/*
+      getNearbySPSParticles(scene, camera, particles, (nearbyParticles) => {
+        this.SPSParticlesNearClick = nearbyParticles as BABYLON.SolidParticle[];
+      });
+*/
+      //focusCameraOnPickedSPSParticle(scene, camera, particles);
 
-      getNearbyCloudPoints(scene, camera, pcsInstance, (particles) => {
-        this.cloudPointsNearClick = particles as BABYLON.CloudPoint[];
+      getNearbyPCSParticles(scene, camera, pcsInstance, (nearbyParticles) => {
+        this.PCSParticlesNearClick = nearbyParticles as BABYLON.CloudPoint[];
       });
 
-      focusCameraOnPickedParticle(scene, camera, pcsInstance);
+      focusCameraOnPickedPCSParticle(scene, camera, pcsInstance);
     });
 
     this.onPointerMove((pickInfo, evt) => {

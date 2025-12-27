@@ -1,11 +1,11 @@
 import * as BABYLON from "babylonjs";
 
-export function focusCameraOnPickedParticle(
+export function focusCameraOnPickedPCSParticle(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   pcsInstance: BABYLON.PointsCloudSystem
 ) {
-  const threshold = 0.15; // max distance from ray to particle to consider it "picked"
+  const threshold = 0.9; // max distance from ray to particle to consider it "picked"
 
   scene.onPointerObservable.add((pointerInfo) => {
     if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;

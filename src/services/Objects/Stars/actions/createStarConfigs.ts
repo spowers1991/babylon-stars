@@ -5,10 +5,10 @@ import { StarsController } from "@/services/Objects/Stars/StarsController";
 
 export function createStarConfigs(scene: BABYLON.Scene, data: StarData[], starsController: StarsController): void {
     data.forEach(i => {
-        
+        if (!i) return;
          const starConfig: StarConfig = {
-            id: i.i,
-            name: i.n,
+            id: i.i!,
+            name: i.n!,
             diameter: (i.p!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),

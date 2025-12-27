@@ -2,7 +2,6 @@ import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
 import { Star } from "./Star/Star";
 import { StarConfig } from "./Star/types/StarConfig";
-import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { createStarsFromConfigs } from "./actions/createStarsFromConfigs";
 import { StarData } from "./Star/types/StarData";
 

@@ -13,7 +13,7 @@ export function createStarsFromConfigs(scene : BABYLON.Scene, starData: StarData
     for (const { i } of starData) {
     // Skip if already created
     if (starIds.has(i)) continue;
-
+  
     const cfg = starsController.starsConfigs.find(cfg => cfg.id === i) as StarConfig;
     // if (!cfg) continue;
 

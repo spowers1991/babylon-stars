@@ -1,14 +1,22 @@
 import * as BABYLON from "babylonjs";
-import { getParticlesInRadiusFromPCS } from "./helpers/getParticlesInRadiusFromPCS";
-import { getParticlesInRadius } from "./helpers/getParticlesInRadius";
-import { cloudPointsToData } from "./actions/cloudPointsToData";
-import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
+import { getParticlesInRadiusPCS } from "./PCS/helpers/getParticlesInRadiusPCS";
+import { getParticlesInRadiusSPS } from "./SPS/helpers/getParticlesInRadiusSPS";
+import { particlesToDataPCS } from "./PCS/actions/particlesToDataPCS";
+import { updatePCS } from "./PCS/actions/updatePCS";
+import { updateSPS } from "./SPS/actions/updateSPS";
+import { createPCS } from "./PCS/actions/createPCS";
+import { createSPS, CreateSPSOptions } from "./SPS/actions/createSPS"; 
+
+type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSystem;
 
 export class ParticlesController {
+  
   private static _instance: ParticlesController;
-  private systems: BABYLON.PointsCloudSystem[] = [];
-  private namedSystems: Record<string, BABYLON.PointsCloudSystem> = {};
-  public particlesNearCamera: BABYLON.CloudPoint[] = [];
+  private pcsSystems: BABYLON.PointsCloudSystem[] = [];
+  private spsSystems: BABYLON.SolidParticleSystem[] = [];
+  private namedSystems: Record<string, ParticleSystemType> = {};
+  public particlesNearCamera: BABYLON.Particle[] = [];
+  public particlesNearCameraPCS: BABYLON.CloudPoint[] = [];
 
   public static get instance(): ParticlesController {
     if (!this._instance) {
@@ -17,29 +25,73 @@ export class ParticlesController {
     return this._instance;
   }
 
-  add(pcs: BABYLON.PointsCloudSystem, name?: string) {
-    this.systems.push(pcs);
-    if (name) this.namedSystems[name] = pcs;
+  add(system: ParticleSystemType, name?: string) {
+    if (system instanceof BABYLON.PointsCloudSystem) {
+      this.pcsSystems.push(system);
+    } else if (system instanceof BABYLON.SolidParticleSystem) {
+      this.spsSystems.push(system);
+    }
+
+    if (name) {
+      this.namedSystems[name] = system;
+    }
   }
 
-  getByName(name: string) {
+  getByName(name: string): ParticleSystemType | undefined {
     return this.namedSystems[name];
   }
 
-  getAllPCS() {
-    return this.systems;
+  createPCS(
+    scene: BABYLON.Scene,
+    data: any[],
+    name: string){
+    createPCS(scene, data, name)
   }
 
-  getParticlesInRadius(center: BABYLON.Vector3, radius: number) {
-    const particlesNearCenter = getParticlesInRadius(this, center, radius);
+  getPCSByName(name: string): any | undefined {
+  const system = this.namedSystems[name];
+    return system instanceof BABYLON.PointsCloudSystem ? system : undefined;
+  }
+
+  updatePCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}
+  ){
+    updatePCS(pcs, data, options);
+  }
+
+  async createSPS(
+    scene: BABYLON.Scene,
+    data: any[],
+    name: string,
+    options: CreateSPSOptions = {}
+  ): Promise<BABYLON.SolidParticleSystem> {
+    // Call the helper createSPS function
+    const sps = await createSPS(scene, data, name, options);
+
+    // Add it to the controller's collection
+    this.add(sps, name);
+
+    return sps;
+  }
+
+  updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: any = {}) {
+    updateSPS(sps, data, options);
+  }
+
+  getAllSystems(): ParticleSystemType[] {
+    return [...this.pcsSystems, ...this.spsSystems];
+  }
+
+  getParticlesInRadiusPCS(center: BABYLON.Vector3, radius: number) {
+    const particlesNearCenter = getParticlesInRadiusPCS(this, center, radius);
     return particlesNearCenter;
   }
 
-  getParticlesInRadiusFromPCS(name: string, center: BABYLON.Vector3, radius: number) {
-    return getParticlesInRadiusFromPCS(this, name, center, radius);
+  getParticlesInRadiusSPS(center: BABYLON.Vector3, radius: number) {
+    const particlesNearCenter = getParticlesInRadiusSPS(this, center, radius);
+    return particlesNearCenter;
   }
 
-  cloudPointsToData(scene: BABYLON.Scene, points : BABYLON.CloudPoint[], data: StarData[]){
-    return cloudPointsToData(scene, points, data)
+  particlesToDataPCS(scene: BABYLON.Scene, particles : BABYLON.CloudPoint[], data: Object[]){
+    return particlesToDataPCS(scene, particles, data)
   }
 }
