@@ -46,7 +46,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const pickingController = PointPickingController.getInstance(scene1, camera);
 
-  pickingController.setupPointerEvents(particlesPCS)
+  pickingController.setupPickingEvents(particlesPCS)
 
   // Add a renderer
   engine.runRenderLoop(() => {
@@ -54,7 +54,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
     const nearbyStarsData = particlesController.particlesToDataPCS(
       scene1,
-      pickingController.closePickPCS,
+      pickingController.closestPicksPCS,
       milkyWay.stars
     );
 

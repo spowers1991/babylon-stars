@@ -9,7 +9,7 @@ export class PointPickingController {
 
   private scene!: BABYLON.Scene;
   private camera!: BABYLON.Camera;
-  public closePickPCS!: BABYLON.CloudPoint[]
+  public closestPicksPCS!: BABYLON.CloudPoint[]
 
   private constructor() {}
 
@@ -46,7 +46,7 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPointerEvents(pcs: BABYLON.PointsCloudSystem) {
+  public setupPickingEvents(pcs: BABYLON.PointsCloudSystem) {
       this.scene.onPointerObservable.add((pointerInfo) => {
         if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
         
@@ -60,7 +60,7 @@ export class PointPickingController {
           // Assuming particle.position is a BABYLON.Vector3
           if (pcsPick) focusCamera(this.camera, pcsPick.position)
 
-          if (pcsPick) this.closePickPCS = ParticlesController.instance.getParticlesInRadiusPCS(pcsPick.position, 5)
+          if (pcsPick) this.closestPicksPCS = ParticlesController.instance.getParticlesInRadiusPCS(pcsPick.position, 5)
 
           //if (pcsPick) this.closePickPCS = [pcsPick];
 
