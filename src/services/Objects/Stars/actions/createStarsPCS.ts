@@ -3,13 +3,11 @@ import { createPCS } from "@/lib/Particles/PCS/actions/createPCS";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { StarData } from "../Star/types/StarData";
 
-export async function createStarPointMap(
+export async function createStarsPCS(
   scene: BABYLON.Scene,
   starsData: StarData[],
   name: string
 ) {
-  // Filter out invalid stars
-  //const validStars = starsData.filter(s => s.i != null && s.x != null && s.y != null && s.z != null);
 
   // Just call createPointMap directly
   const pcs = await createPCS(scene, starsData, name);

@@ -1,143 +1,78 @@
 import * as BABYLON from "babylonjs";
-import { focusCameraOnPickedMesh } from './actions/focusCameraOnPickedMesh';
-import { focusCameraOnPickedSPSParticle } from "./actions/focusCameraOnPickedSPSParticle";
-import { focusCameraOnPickedPCSParticle } from "./actions/focusCameraOnPickedPCSParticle";
-import { getNearbySPSParticles } from "./actions/getNearbySPSParticles";
-import { getNearbyPCSParticles } from "./actions/getNearbyPCSParticles";
-
-export type PickCallback = (info: BABYLON.PickingInfo, evt: PointerEvent) => void;
+import { pickMesh } from "./actions/pickMesh";
+import { pickParticlePCS } from "./actions/pickParticlePCS";
+import { focusCamera } from "@/lib/Cameras/Camera/actions/focusCamera";
+import { ParticlesController } from "@/lib/Particles/ParticlesController";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
 
   private scene!: BABYLON.Scene;
   private camera!: BABYLON.Camera;
-  public SPSParticlesNearClick: BABYLON.SolidParticle[] = [];
-  public PCSParticlesNearClick: BABYLON.CloudPoint[] = [];
+  public closePickPCS!: BABYLON.CloudPoint[]
 
-  private onPickDown?: PickCallback;
-  private onPickMove?: PickCallback;
-  private onPickUp?: PickCallback;
-
-  // ─────────────────────────────────────────────
-  // Private constructor prevents direct instantiation
-  // ─────────────────────────────────────────────
   private constructor() {}
 
   // ─────────────────────────────────────────────
   // Singleton access
   // ─────────────────────────────────────────────
-  public static getInstance(scene?: BABYLON.Scene, camera?: BABYLON.Camera): PointPickingController {
+  public static getInstance(
+    scene?: BABYLON.Scene,
+    camera?: BABYLON.Camera
+  ): PointPickingController {
     if (!PointPickingController._instance) {
       if (!scene || !camera) {
-        throw new Error("PointPickingController not initialized. Provide scene and camera on first call.");
+        throw new Error(
+          "PointPickingController not initialized. Provide scene and camera on first call."
+        );
       }
+
       const instance = new PointPickingController();
       instance.init(scene, camera);
       PointPickingController._instance = instance;
     }
+
     return PointPickingController._instance;
   }
 
+  // ─────────────────────────────────────────────
+  // Init
+  // ─────────────────────────────────────────────
   private init(scene: BABYLON.Scene, camera: BABYLON.Camera) {
     this.scene = scene;
     this.camera = camera;
+  }
 
-    // Prevent browser right-click menu
-    const canvas = this.scene.getEngine().getRenderingCanvas();
-    if (canvas) {
-      canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+  // ─────────────────────────────────────────────
+  // Setup simple click handler for PCS
+  // ─────────────────────────────────────────────
+  public setupPointerEvents(pcs: BABYLON.PointsCloudSystem) {
+      this.scene.onPointerObservable.add((pointerInfo) => {
+        if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
+        
+       const meshPick = pickMesh(this.scene, this.camera);
+        if (meshPick) {
+          if (meshPick?.pickedMesh) focusCamera(this.camera, meshPick.pickedMesh?.position)
+          //console.log("Picked mesh particle:", meshPick.pickedMesh);
+        } else {
+          const pcsPick = pickParticlePCS(this.scene, this.camera, pcs, 0.2);
+
+          // Assuming particle.position is a BABYLON.Vector3
+          if (pcsPick) focusCamera(this.camera, pcsPick.position)
+
+          if (pcsPick) this.closePickPCS = ParticlesController.instance.getParticlesInRadiusPCS(pcsPick.position, 5)
+
+          //if (pcsPick) this.closePickPCS = [pcsPick];
+
+        }
+
+      });
     }
 
-    this.attach();
-  }
-
   // ─────────────────────────────────────────────
-  // Event handling
+  // Dispose
   // ─────────────────────────────────────────────
-  private attach(): void {
-    this.scene.onPointerObservable.add((pointerInfo) => {
-      const evt = pointerInfo.event as PointerEvent;
-
-      switch (pointerInfo.type) {
-        case BABYLON.PointerEventTypes.POINTERDOWN:
-          this.handlePick(evt, this.onPickDown);
-          break;
-
-        case BABYLON.PointerEventTypes.POINTERMOVE:
-          this.handlePick(evt, this.onPickMove);
-          break;
-
-        case BABYLON.PointerEventTypes.POINTERUP:
-          this.handlePick(evt, this.onPickUp);
-          break;
-      }
-    });
-  }
-
-  private handlePick(evt: PointerEvent, callback?: PickCallback) {
-    if (!callback) return;
-
-    const pickInfo = this.scene.pick(
-      this.scene.pointerX,
-      this.scene.pointerY,
-      undefined,
-      false,
-      this.camera
-    );
-
-    if (pickInfo) {
-      callback(pickInfo, evt);
-    }
-  }
-
-  // ─────────────────────────────────────────────
-  // Public API
-  // ─────────────────────────────────────────────
-  public onPointerDown(cb: PickCallback): void { this.onPickDown = cb; }
-  public onPointerMove(cb: PickCallback): void { this.onPickMove = cb; }
-  public onPointerUp(cb: PickCallback): void { this.onPickUp = cb; }
-
-  // ─────────────────────────────────────────────
-  // Helper: pick & focus camera
-  // ─────────────────────────────────────────────
-  public setupClickEvents(
-    scene: BABYLON.Scene,
-    camera: BABYLON.Camera,
-    pcsInstance: BABYLON.PointsCloudSystem,
-  ) {
-    let isPointerDown = false;
-
-    this.onPointerDown((pickInfo, evt) => {
-      isPointerDown = true;
-/*
-      getNearbySPSParticles(scene, camera, particles, (nearbyParticles) => {
-        this.SPSParticlesNearClick = nearbyParticles as BABYLON.SolidParticle[];
-      });
-*/
-      //focusCameraOnPickedSPSParticle(scene, camera, particles);
-
-      getNearbyPCSParticles(scene, camera, pcsInstance, (nearbyParticles) => {
-        this.PCSParticlesNearClick = nearbyParticles as BABYLON.CloudPoint[];
-      });
-
-      focusCameraOnPickedPCSParticle(scene, camera, pcsInstance);
-    });
-
-    this.onPointerMove((pickInfo, evt) => {
-      if (!isPointerDown) return;
-
-      // Optional: drag logic / hover logic
-      // console.log("Dragging over", pickInfo.pickedMesh);
-    });
-
-    this.onPointerUp((pickInfo, evt) => {
-      isPointerDown = false;
-      // Optional: release logic
-    });
-  }
-
-  public dispose(): void {
+  public dispose() {
     this.scene.onPointerObservable.clear();
     PointPickingController._instance = null;
   }

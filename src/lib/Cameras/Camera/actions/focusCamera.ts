@@ -1,27 +1,34 @@
 import * as BABYLON from "babylonjs";
 
-/**
- * Focuses a camera on a given target position.
- * Works for ArcRotateCamera and TargetCamera subclasses.
- * @param camera - The camera to focus
- * @param target - The world position to focus on
- */
 export function focusCamera(
   camera: BABYLON.Camera,
-  target: BABYLON.Vector3
+  target: BABYLON.Vector3,
+  speed = 0.1 // smaller = slower, smoother
 ) {
-  // ArcRotateCamera supports setTarget
-  if (camera instanceof BABYLON.ArcRotateCamera) {
-    camera.setTarget(target);
-    return;
-  }
+  if (!(camera instanceof BABYLON.ArcRotateCamera)) return;
 
-  // TargetCamera and subclasses (FreeCamera, UniversalCamera)
-  if ("setTarget" in camera && typeof camera.setTarget === "function") {
-    camera.setTarget(target);
-    return;
-  }
+  const scene = camera.getScene();
+  const startTarget = camera.target.clone();
 
-  // Fallback: do nothing if the camera cannot target
-  console.warn("Camera type does not support setTarget", camera);
+  let t = 0;
+
+  const observer = scene.onBeforeRenderObservable.add(() => {
+    t += speed;
+
+    // Clamp
+    const lerpT = Math.min(t, 1);
+
+    BABYLON.Vector3.LerpToRef(
+      startTarget,
+      target,
+      lerpT,
+      camera.target
+    );
+
+    // Stop when done
+    if (lerpT >= 1) {
+      scene.onBeforeRenderObservable.remove(observer);
+      camera.setTarget(target); // final snap for precision
+    }
+  });
 }

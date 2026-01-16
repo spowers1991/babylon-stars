@@ -5,7 +5,8 @@ import { particlesToDataPCS } from "./PCS/actions/particlesToDataPCS";
 import { updatePCS } from "./PCS/actions/updatePCS";
 import { updateSPS } from "./SPS/actions/updateSPS";
 import { createPCS } from "./PCS/actions/createPCS";
-import { createSPS, CreateSPSOptions } from "./SPS/actions/createSPS"; 
+import { createSPS } from "./SPS/actions/createSPS"; 
+import type { ParticleOptionsSPS } from "./SPS/types/ParticleOptionsSPS";
 
 type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSystem;
 
@@ -48,21 +49,20 @@ export class ParticlesController {
     createPCS(scene, data, name)
   }
 
+  updatePCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}){ 
+    updatePCS(pcs, data, options); 
+  }
+
   getPCSByName(name: string): any | undefined {
   const system = this.namedSystems[name];
     return system instanceof BABYLON.PointsCloudSystem ? system : undefined;
-  }
-
-  updatePCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}
-  ){
-    updatePCS(pcs, data, options);
   }
 
   async createSPS(
     scene: BABYLON.Scene,
     data: any[],
     name: string,
-    options: CreateSPSOptions = {}
+    options: ParticleOptionsSPS = {}
   ): Promise<BABYLON.SolidParticleSystem> {
     // Call the helper createSPS function
     const sps = await createSPS(scene, data, name, options);
@@ -75,6 +75,11 @@ export class ParticlesController {
 
   updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: any = {}) {
     updateSPS(sps, data, options);
+  }
+
+  getSPSByName(name: string): any | undefined {
+    const system = this.namedSystems[name];
+    return system instanceof BABYLON.SolidParticleSystem ? system : undefined;
   }
 
   getAllSystems(): ParticleSystemType[] {

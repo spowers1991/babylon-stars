@@ -39,28 +39,34 @@ export class ObjectsController {
    * Applies max size limits and removes oldest items.
    */
 
-  protected updateRenderList(newList: Object[]) {
-    const MAX_RENDER_OBJECTS = 5; // change this to whatever limit you want
+  public updateObjectToRender(newList: Object[]) {
+    const MAX_RENDER_OBJECTS = 20;
 
-    // Only keep up to MAX_RENDER_OBJECTS
-    const limitedList = newList.slice(0, MAX_RENDER_OBJECTS);
+    // Keep only the first N objects
+    this.objectsToRender = newList.slice(0, MAX_RENDER_OBJECTS);
 
-    this.objectsToRender = [...limitedList];
-    const currentObjects = new Set<any>();
+    // Track meshes currently rendered
+    const currentMeshes = new Set<any>();
 
-    for (const obj of this.objectsToRender as any) {
-        currentObjects.add(obj);
-        obj.mesh.setEnabled(true);
+    // Enable current render objects
+    for (const obj of this.objectsToRender as any[]) {
+      if (!obj || !obj.mesh) continue;
+      currentMeshes.add(obj.mesh);
+      obj.mesh.setEnabled(true);
     }
 
+    // Disable + dispose objects no longer rendered
     for (const obj of this.objectsToUnrender) {
-        if (!currentObjects.has(obj.mesh)) {
-            obj.mesh.setEnabled(false);
-            obj.mesh.dispose();
-        }
+      if (!obj || !obj.mesh) continue;
+
+      if (!currentMeshes.has(obj.mesh)) {
+        obj.mesh.setEnabled(false);
+        obj.mesh.dispose();
+      }
     }
 
-    this.objectsToUnrender = currentObjects;
+    // Update unrender set correctly
+    this.objectsToUnrender = new Set(this.objectsToRender);
   }
 
 }

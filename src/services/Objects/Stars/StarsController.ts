@@ -15,21 +15,25 @@ export class StarsController extends ObjectsController {
     }
   }
 
-  manageStars(
+  updateStars(
     scene: BABYLON.Scene,
-    nearbyStarsData: StarData[],
+    starsData: StarData[],
   ) {
     
-    const stars = createStarsFromConfigs(scene, nearbyStarsData, this)
+    const stars = createStarsFromConfigs(scene, starsData, this)
 
     if (stars.length > 0) {
-      this.updateRenderList(stars);
+      this.updateObjectToRender(stars);
     }
 
   }
 
-  getAll() {
+  getAllStars() {
     return this.stars;
+  }
+
+  getAllStarsConfigs() {
+    return this.starsConfigs;
   }
 }
 

@@ -1,9 +1,8 @@
 import * as BABYLON from "babylonjs";
 import type { GalaxyConfig } from "./types/GalaxyConfig";
 import type { StarData } from "../../Stars/Star/types/StarData";
-import { createStarPointMap } from "@/services/Objects/Stars/actions/createStarPointMap";
-//import { createGalaxySPS } from "./actions/createGalaxySPS";
-import { ParticlesController } from "@/lib/Particles/ParticlesController";
+import { createStarsPCS } from "@/services/Objects/Stars/actions/createStarsPCS";
+import { createStarsSPS } from "./actions/createStarsSPS";
 
 export class Galaxy {
   public readonly id: number;
@@ -27,14 +26,10 @@ export class Galaxy {
   private async init() {
   
   const PCSName = this.name+" PCS";
-  const particlesPCS = await createStarPointMap(this.scene, this.stars, PCSName)
+  await createStarsPCS(this.scene, this.stars, PCSName)
 
   const SPSName = this.name+" SPS";
-  //const particlesSBS = await createGalaxySPS(this.scene, this.stars, SPSName);
-
-  //console.log(particlesSBS, particlesPCS)
-  ParticlesController.instance.add(particlesPCS, PCSName);
-  //ParticlesController.instance.add(particlesSBS, SPSName)
+  await createStarsSPS(this.scene, this.stars, SPSName);
 }
 
 }

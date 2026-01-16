@@ -6,7 +6,7 @@ export function particlesToDataPCS(
   data: any[]
 ): any[] {
   const matchedObjects: any[] = [];
-  particles.forEach(particle => {
+  particles?.forEach(particle => {
     const id = particle.idx
     const objectData = data.find((object: any) => object.i === id);
 

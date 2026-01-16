@@ -14,12 +14,17 @@ import starsJson from "@/data/stars.json";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
-
+/*
+  canvas.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+*/
   const scenesController = new ScenesController();
   const objectsController = new ObjectsController();
   const particlesController = ParticlesController.instance; 
   const camerasController = new CamerasController();
   const starsController = new StarsController();
+  const renderersController = RenderersController.instance(engine);
 
   const scene1 = scenesController.createScene(engine, {
     objects: objectsController,
@@ -36,45 +41,28 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
   createStarConfigs(scene1, starsJson, starsController);
 
-  // 🧭 Register scene
-  scenesController.addScene(scene1, "Scene1");
-  scenesController.setActiveScene("Scene1");
-
-  // 🕹️ Start render loop
-  const renderersController = RenderersController.instance(engine);
+  const particlesPCS = particlesController.getPCSByName(milkyWay.name+" PCS");
+  const particlesSPS = particlesController.getSPSByName(milkyWay.name+" SPS");
 
   const pickingController = PointPickingController.getInstance(scene1, camera);
-  
-  const particlesPCS = particlesController.getPCSByName(milkyWay.name+" PCS");
-  const particlesSPS = particlesController.getPCSByName(milkyWay.name+" SPS");
 
-  pickingController.setupClickEvents(scene1, camera, particlesPCS);
+  pickingController.setupPointerEvents(particlesPCS)
 
-  // Create a glow layer
-  const glow = new BABYLON.GlowLayer("glow", scene1);
-
-  // Optional: customize intensity
-  glow.intensity = 1;
-  
   // Add a renderer
   engine.runRenderLoop(() => {
     const deltaTime = engine.getDeltaTime();
 
-    // 1️⃣ Update nearby particles
-    particlesController.particlesNearCameraPCS =
-      particlesController.getParticlesInRadiusPCS(camera.position, 8);
-    
-    // 2️⃣ Convert particles to star data and manage stars
     const nearbyStarsData = particlesController.particlesToDataPCS(
       scene1,
-      particlesController.particlesNearCameraPCS,
+      pickingController.closePickPCS,
       milkyWay.stars
     );
-    starsController.manageStars(scene1, nearbyStarsData);
+
+    starsController.updateStars(scene1, nearbyStarsData);
+   
     particlesController.updatePCS(particlesPCS, starsController.starsConfigs);
     particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1})
-
-    // 3️⃣ Render the scene
+   
     scene1.render();
   });
 
