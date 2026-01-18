@@ -1,14 +1,10 @@
 // src/lib/Scenes/ScenesController.ts
 import * as BABYLON from "babylonjs";
 import { SceneConfig } from "./types/SceneConfig";
-
-interface SceneEntry {
-  name: string;
-  scene: BABYLON.Scene;
-}
+import { SceneEntry } from "./types/SceneEntry";
 
 export class ScenesController {
-  private scenes: SceneEntry[] = [];
+  public scenes: SceneEntry[] = [];
   private activeScene?: BABYLON.Scene;
 
   /**
@@ -65,33 +61,7 @@ export class ScenesController {
   public getActiveScene(): BABYLON.Scene | undefined {
     return this.activeScene;
   }
-
-  /**
-   * Start the Babylon render loop for the active scene.
-   */
-  public run(engine: BABYLON.Engine, beforeRender?: (scene: BABYLON.Scene) => void): void {
-    if (!this.activeScene) {
-      console.error("[ScenesController] No active scene set. Call setActiveScene() first.");
-      return;
-    }
-
-    engine.runRenderLoop(() => {
-      if (this.activeScene) {
-        beforeRender?.(this.activeScene);
-        this.activeScene.render();
-      }
-    });
-
-    window.addEventListener("resize", () => engine.resize());
-  }
-
-  /**
-   * List all scenes.
-   */
-  public getScenes(): BABYLON.Scene[] {
-    return this.scenes.map(s => s.scene);
-  }
-
+  
   /**
    * Dispose a scene by index.
    */

@@ -4,7 +4,9 @@ import type { Camera } from "@/services/Cameras/types/Camera";
 const MainCamera: Camera = {
   type: "arcRotate", 
   name: "Main Camera",
-  position: new BABYLON.Vector3(0, 5, -10),
+  position: new BABYLON.Vector3(0, 0, 0),
+  lowerRadiusLimit : 2,
+  upperRadiusLimit : 5000,
 };
 
 export default MainCamera;

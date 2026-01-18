@@ -28,9 +28,19 @@ export function createCameraByType(
         target,
         scene
       );
+
+      if (cameraConfig.lowerRadiusLimit !== undefined) {
+        arcCamera.lowerRadiusLimit = cameraConfig.lowerRadiusLimit;
+      }
+
+      if (cameraConfig.upperRadiusLimit !== undefined) {
+        arcCamera.upperRadiusLimit = cameraConfig.upperRadiusLimit;
+      }
+
       arcCamera.attachControl(canvas, true);
       return arcCamera;
     }
+
 
     default:
       throw new Error("Unsupported camera type");

@@ -1,53 +1,62 @@
 // src/lib/Render/RenderController.ts
 import * as BABYLON from "babylonjs";
-import { ScenesController } from "@/lib/Scenes/ScenesController";
-import { ObjectsController } from "@/lib/Objects/ObjectsController";
 
 export class RenderersController {
-  private engine: BABYLON.Engine;
-  private scenes: ScenesController;
-  private objects?: ObjectsController;
-  private beforeRender?: (scene: BABYLON.Scene) => void;
+    private static _instance: RenderersController | null = null;
+    private engine: BABYLON.Engine;
+    private scenes: Map<string, BABYLON.Scene> = new Map();
+    private renderers: Map<string, {
+        scene: BABYLON.Scene;
+        tick: (dt: number) => void;
+        fpsCap: number;
+        accumulator: number;
+    }> = new Map();
 
-  constructor(engine: BABYLON.Engine, scenes: ScenesController, objects?: ObjectsController) {
-    this.engine = engine;
-    this.scenes = scenes;
-    this.objects = objects;
-  }
+    private constructor(engine: BABYLON.Engine) {
+        this.engine = engine;
+    }
 
-  /**
-   * Optional hook to run custom code before render.
-   */
-  public onBeforeRender(callback: (scene: BABYLON.Scene) => void): void {
-    this.beforeRender = callback;
-  }
+    static instance(engine?: BABYLON.Engine): RenderersController {
+        if (!RenderersController._instance) {
+            if (!engine) throw new Error("RenderersController not initialized.");
+            RenderersController._instance = new RenderersController(engine);
+        }
+        return RenderersController._instance;
+    }
 
-  /**
-   * Start the render loop.
-   */
-  public start(): void {
-    this.engine.runRenderLoop(() => {
-      const scene = this.scenes.getActiveScene();
-      if (!scene) return;
+    addRenderer(name: string, scene: BABYLON.Scene, tick: (dt: number) => void, fpsCap: number = 60) {
+        this.renderers.set(name, { scene, tick, fpsCap, accumulator: 0 });
+        this.scenes.set(name, scene);
+    }
 
-      // Run optional callback before rendering
-      this.beforeRender?.(scene);
+    removeRenderer(name: string) {
+        this.renderers.delete(name);
+        this.scenes.delete(name);
+    }
 
-      // Update game objects (animations, rotations, etc.)
-      this.objects?.update(this.engine.getDeltaTime());
+    update(deltaTimeMs: number) {
+        for (const r of this.renderers.values()) {
+            const frameTime = 1000 / r.fpsCap;
+            r.accumulator += deltaTimeMs;
 
-      // Render the active scene
-      scene.render();
-    });
+            // Improved FPS cap: handle multiple missed frames
+            while (r.accumulator >= frameTime) {
+                r.tick(frameTime);
+                r.accumulator -= frameTime;
+            }
+        }
+    }
 
-    // Resize handling
-    window.addEventListener("resize", () => this.engine.resize());
-  }
+    render(name: string) {
+        const r = this.renderers.get(name);
+        if (!r) return;
+        r.scene.render();
+    }
 
-  /**
-   * Stop rendering (pause the loop).
-   */
-  public stop(): void {
-    this.engine.stopRenderLoop();
-  }
+    // ✅ Add this method
+    renderAll() {
+        for (const r of this.renderers.values()) {
+            r.scene.render();
+        }
+    }
 }

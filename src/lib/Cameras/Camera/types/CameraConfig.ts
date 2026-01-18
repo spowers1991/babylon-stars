@@ -5,6 +5,8 @@ export interface CameraConfig {
   type: CameraType;
   name: string;
   position?: BABYLON.Vector3; 
+  lowerRadiusLimit: number; 
+  upperRadiusLimit: number;
   alpha?: number;
   beta?: number;
   radius?: number;

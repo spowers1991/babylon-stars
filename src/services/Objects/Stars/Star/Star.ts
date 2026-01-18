@@ -1,48 +1,39 @@
 import * as BABYLON from "babylonjs";
-import ObjectController from "@/lib/Objects/Object/ObjectController";
 import { StarConfig } from "./types/StarConfig";
 
 import { createStarMesh } from "./actions/createStarMesh";
 import { createStarMaterial } from "./actions/createStarMaterial";
 import { createStarTexture } from "./actions/createStarTexture";
 
-import { setupStarLighting } from "./helpers/setupStarLighting";
+import { getParticlePCS } from "@/lib/Particles/PCS/helpers/getParticlePCS";
+import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
 
-export class Star extends ObjectController {
+export class Star {
+  public id: number;
+  public name: string;
+  public mesh: BABYLON.AbstractMesh;
+  public material: BABYLON.Material;
+  public texture: BABYLON.Texture;
   constructor(scene: BABYLON.Scene, config: StarConfig) {
-    const {
-      id = 0,
-      name = "star",
-      position = new BABYLON.Vector3(0, 0, 0),
-      diameter = 3,
-      textureUrl = "/textures/stars/classes/g/texture1.jpg",
-      emissiveColor = new BABYLON.Color3(0.8, 0.8, 1.0),
-      emissiveIntensity = 1,
-    } = config;
+    
+    this.id = config.id!;
+    this.name = config.name!;
 
-    const mesh = createStarMesh(scene, name, diameter) as BABYLON.Mesh;
-    const texture = createStarTexture(scene, textureUrl) as BABYLON.Texture;
-    const material = createStarMaterial(scene, name, texture, emissiveColor, emissiveIntensity) as BABYLON.StandardMaterial;
+    this.mesh = createStarMesh(scene, this.name, ((config.diameter! < 0.1) ? 0.1 : config.diameter! / 5000)) as BABYLON.AbstractMesh;
+    
+    const textureUrl = config.textureUrl!;
+    this.texture = createStarTexture(scene, this.name, textureUrl!) as BABYLON.Texture;
+    this.material = createStarMaterial(
+      scene,
+      this.name,
+      this.mesh,
+      config.emissiveColor!,
+      config.emissiveIntensity!
+    ) as BABYLON.Material;
 
-    if (mesh && material) {
-      mesh.material = material;
-    }
-
-   if (material && texture) {
-      material.bumpTexture = texture;
-    }
-
-    mesh.setEnabled(false)
-
-    //setupStarLighting(scene, name);
-
-    super({
-      id,
-      name,
-      position,
-      mesh,
-      material,
-      texture,
-    });
+    const particle = getParticlePCS('Milky Way PCS', this.id);
+    moveToParticle(this.mesh, particle?.position); 
+    
+    this.mesh.setEnabled(false);
   }
 }
