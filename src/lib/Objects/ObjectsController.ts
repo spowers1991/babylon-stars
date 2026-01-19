@@ -20,12 +20,6 @@ export class ObjectsController {
     }
   }
 
-  update(deltaTime: number) {
-    this.objects.forEach(obj => {
-      // obj.mesh.rotation.y += 0.0005 * deltaTime;
-    });
-  }
-
   getObjectsToRender() {
     return this.objectsToRender;
   }

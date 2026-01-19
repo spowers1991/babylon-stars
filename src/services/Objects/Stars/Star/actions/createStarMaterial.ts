@@ -1,5 +1,6 @@
 import * as BABYLON from "babylonjs";
 import { MaterialsController } from "@/lib/Assets/modules/Materials/MaterialsController";
+import { AssetsController } from "@/lib/Assets/AssetsController";
 
 /**
  * Creates and configures a PBR material for a star.
@@ -9,11 +10,11 @@ export function createStarMaterial(
   name: string,
   mesh: BABYLON.AbstractMesh,
   emissiveColor: BABYLON.Color3,
-  emissiveIntensity: number
+  emissiveIntensity: number,
+  assetsController: AssetsController
 ): BABYLON.StandardMaterial {
   
-  const materials = MaterialsController.instance;
-
+  const materials = assetsController.materials;
   const material = materials.createStandard(scene, `${name}`);
   materials.setEmissiveColor({ material, color: emissiveColor });
   materials.setEmissiveIntensity({ material, value: emissiveIntensity });

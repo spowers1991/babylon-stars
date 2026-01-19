@@ -8,66 +8,71 @@ export class PointPickingController {
   private static _instance: PointPickingController | null = null;
 
   private scene!: BABYLON.Scene;
-  private camera!: BABYLON.Camera;
-  public closestPicksPCS!: BABYLON.CloudPoint[]
+  private camera?: BABYLON.Camera;
 
-  private constructor() {}
+  public closestPicksPCS: BABYLON.CloudPoint[] = [];
+
+  private constructor(scene: BABYLON.Scene) {
+    this.scene = scene;
+  }
 
   // ─────────────────────────────────────────────
-  // Singleton access
+  // Singleton access (scene only)
   // ─────────────────────────────────────────────
-  public static getInstance(
-    scene?: BABYLON.Scene,
-    camera?: BABYLON.Camera
-  ): PointPickingController {
+  public static instance(scene?: BABYLON.Scene): PointPickingController {
     if (!PointPickingController._instance) {
-      if (!scene || !camera) {
+      if (!scene) {
         throw new Error(
-          "PointPickingController not initialized. Provide scene and camera on first call."
+          "PointPickingController.instance(scene) must be called once with a BABYLON.Scene"
         );
       }
-
-      const instance = new PointPickingController();
-      instance.init(scene, camera);
-      PointPickingController._instance = instance;
+      PointPickingController._instance = new PointPickingController(scene);
     }
 
     return PointPickingController._instance;
   }
 
   // ─────────────────────────────────────────────
-  // Init
+  // Camera lifecycle
   // ─────────────────────────────────────────────
-  private init(scene: BABYLON.Scene, camera: BABYLON.Camera) {
-    this.scene = scene;
+  public setCamera(camera: BABYLON.Camera) {
     this.camera = camera;
+  }
+
+  private getCamera(): BABYLON.Camera {
+    if (!this.camera) {
+      throw new Error("PointPickingController camera not set");
+    }
+    return this.camera;
   }
 
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
   public setupPickingEvents(pcs: BABYLON.PointsCloudSystem) {
-      this.scene.onPointerObservable.add((pointerInfo) => {
-        if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
-        
-       const meshPick = pickMesh(this.scene, this.camera);
-        if (meshPick) {
-          if (meshPick?.pickedMesh) focusCamera(this.camera, meshPick.pickedMesh?.position)
-          //console.log("Picked mesh particle:", meshPick.pickedMesh);
-        } else {
-          const pcsPick = pickParticlePCS(this.scene, this.camera, pcs, 0.2);
+    this.scene.onPointerObservable.add((pointerInfo) => {
+      if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
 
-          // Assuming particle.position is a BABYLON.Vector3
-          if (pcsPick) focusCamera(this.camera, pcsPick.position)
+      const camera = this.getCamera();
 
-          if (pcsPick) this.closestPicksPCS = ParticlesController.instance.getParticlesInRadiusPCS(pcsPick.position, 5)
+      const meshPick = pickMesh(this.scene, camera);
+      if (meshPick?.pickedMesh) {
+        focusCamera(camera, meshPick.pickedMesh.position);
+        return;
+      }
 
-          //if (pcsPick) this.closePickPCS = [pcsPick];
+      const pcsPick = pickParticlePCS(this.scene, camera, pcs, 0.2);
+      if (!pcsPick) return;
 
-        }
+      focusCamera(camera, pcsPick.position);
 
-      });
-    }
+      this.closestPicksPCS =
+        ParticlesController.instance().getParticlesInRadiusPCS(
+          pcsPick.position,
+          5
+        );
+    });
+  }
 
   // ─────────────────────────────────────────────
   // Dispose

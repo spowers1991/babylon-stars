@@ -5,7 +5,7 @@ import type { ParticleOptionsSPS } from "@/lib//Particles/SPS/types/ParticleOpti
 import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 
 export async function createStarsSPS(
-  scene: BABYLON.Scene,
+    scene: BABYLON.Scene,
     starsData: StarData[],
     name: string,
     options: ParticleOptionsSPS = {}
@@ -15,7 +15,7 @@ export async function createStarsSPS(
   const sps = await createSPS(scene, starsData, name);
 
   // Add to particle controller
-  ParticlesController.instance.add(sps, name);
+  ParticlesController.instance(scene).add(sps, name);
 
   return sps;
 }

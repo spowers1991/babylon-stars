@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { createPCS } from "@/lib/Particles/PCS/actions/createPCS";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
-import { StarData } from "../Star/types/StarData";
+import { StarData } from "../../../Stars/Star/types/StarData";
 
 export async function createStarsPCS(
   scene: BABYLON.Scene,
@@ -13,7 +13,7 @@ export async function createStarsPCS(
   const pcs = await createPCS(scene, starsData, name);
 
   // Add to particle controller
-  ParticlesController.instance.add(pcs, name);
+  ParticlesController.instance(scene).add(pcs, name);
 
   return pcs;
 }
