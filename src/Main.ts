@@ -8,17 +8,13 @@ import { CamerasController } from "@/lib/Cameras/CamerasController";
 import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
-import { GalaxiesController } from "./services/Objects/Galaxies/GalaxiesController";
+import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import starsJson from "@/data/stars.json";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
-/*
-  canvas.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
-*/
+
   const scenesController = new ScenesController();
 
   const scene1 = scenesController.createScene(engine, {
@@ -31,7 +27,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const galaxiesController = GalaxiesController.instance(scene1);
 
-  // ✅ await Galaxy creation
   const milkyWay = await Galaxy.create(scene1, {
     id: 1,
     name: "Milky Way",
@@ -55,7 +50,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   pickingController.setupPickingEvents(particlesPCS);
 
-  // Add a renderer
   engine.runRenderLoop(() => {
     const deltaTime = engine.getDeltaTime();
 
@@ -67,7 +61,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     starsController.updateStars(nearbyStarsData);
    
     particlesController.updatePCS(particlesPCS, starsController.starsConfigs);
-    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1})
+    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1});
 
     scene1.render();
   });

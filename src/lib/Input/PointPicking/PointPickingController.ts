@@ -64,13 +64,14 @@ export class PointPickingController {
       const pcsPick = pickParticlePCS(this.scene, camera, pcs, 0.2);
       if (!pcsPick) return;
 
-      focusCamera(camera, pcsPick.position);
-
       this.closestPicksPCS =
-        ParticlesController.instance().getParticlesInRadiusPCS(
+        ParticlesController.instance(this.scene).getParticlesInRadiusPCS(
           pcsPick.position,
           5
         );
+
+      focusCamera(camera, pcsPick.position);
+
     });
   }
 

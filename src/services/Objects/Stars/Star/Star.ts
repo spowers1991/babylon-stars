@@ -7,7 +7,6 @@ import { createStarTexture } from "./actions/createStarTexture";
 
 import { getParticlePCS } from "@/lib/Particles/PCS/helpers/getParticlePCS";
 import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
-import { AssetsController } from "@/lib/Assets/AssetsController";
 
 export class Star {
   public id: number;
@@ -15,20 +14,16 @@ export class Star {
   public mesh: BABYLON.AbstractMesh;
   public material: BABYLON.Material;
   public texture: BABYLON.Texture;
-  public assetsController: AssetsController;
 
   constructor(scene: BABYLON.Scene, config: StarConfig) {
     
     this.id = config.id!;
     this.name = config.name!;
 
-    this.assetsController = AssetsController.instance;
-
     this.mesh = createStarMesh(
       scene, 
       this.name, 
       ((config.diameter! < 0.1) ? 0.1 : config.diameter! / 5000), 
-      this.assetsController
     ) as BABYLON.AbstractMesh;
     
     const textureUrl = config.textureUrl!;
@@ -37,7 +32,6 @@ export class Star {
       scene, 
       this.name, 
       textureUrl!, 
-      this.assetsController
     ) as BABYLON.Texture;
 
     this.material = createStarMaterial(
@@ -46,7 +40,6 @@ export class Star {
       this.mesh,
       config.emissiveColor!,
       config.emissiveIntensity!,
-      this.assetsController,
     ) as BABYLON.Material;
 
     const particle = getParticlePCS(

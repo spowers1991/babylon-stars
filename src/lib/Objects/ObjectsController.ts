@@ -3,9 +3,6 @@ export class ObjectsController {
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
 
-  // Limit for objectsToRender
-  protected maxRenderObjects = 5;   // <-- change to whatever you want
-
   add(object: Object | Object[]) {
     const addOne = (obj: Object) => {
       if (!this.objects.includes(obj)) {

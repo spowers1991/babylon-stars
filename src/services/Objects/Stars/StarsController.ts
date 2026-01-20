@@ -44,7 +44,7 @@ export class StarsController extends ObjectsController {
   updateStars(
     starsData: StarData[],
   ) {
-    const starsToRender = createStarsFromConfigs(this.scene, starsData, this)
+    const starsToRender = createStarsFromConfigs(this.scene, starsData, this);
 
     if (starsToRender.length > 0) {
       this.updateObjectToRender(starsToRender);
@@ -59,4 +59,3 @@ export class StarsController extends ObjectsController {
     return this.starsConfigs;
   }
 }
-
