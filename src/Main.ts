@@ -8,61 +8,61 @@ import { CamerasController } from "@/lib/Cameras/CamerasController";
 import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
+import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
-import { createStarConfigs } from "./services/Objects/Stars/actions/createStarConfigs";
 import starsJson from "@/data/stars.json";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
-/*
-  canvas.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
-*/
+
   const scenesController = new ScenesController();
-  const objectsController = new ObjectsController();
-  const particlesController = ParticlesController.instance; 
-  const camerasController = new CamerasController();
-  const starsController = new StarsController();
-  const renderersController = RenderersController.instance(engine);
 
   const scene1 = scenesController.createScene(engine, {
-    objects: objectsController,
     clearColor: new BABYLON.Color4(0.05, 0.05, 0.1, 1),
   });
-  
-  const camera = camerasController.addCamera(scene1, canvas, MainCamera) as BABYLON.Camera;
 
-  // ✅ await Galaxy creation
+  const camerasController = CamerasController.instance(scene1);
+  
+  camerasController.addCamera(canvas, MainCamera);
+
+  const galaxiesController = GalaxiesController.instance(scene1);
+
   const milkyWay = await Galaxy.create(scene1, {
     id: 1,
     name: "Milky Way",
-    stars: starsJson
+    starsData: starsJson,
   });
-  createStarConfigs(scene1, starsJson, starsController);
+
+  galaxiesController.add(milkyWay);
+
+  const starsController = StarsController.instance(scene1);
+
+  starsController.createConfigs(milkyWay.starsData);
+
+  const particlesController = ParticlesController.instance(scene1); 
 
   const particlesPCS = particlesController.getPCSByName(milkyWay.name+" PCS");
   const particlesSPS = particlesController.getSPSByName(milkyWay.name+" SPS");
 
-  const pickingController = PointPickingController.getInstance(scene1, camera);
+  const pickingController = PointPickingController.instance(scene1);
 
-  pickingController.setupPickingEvents(particlesPCS)
+  pickingController.setCamera(camerasController.getActiveCamera() as BABYLON.Camera);
 
-  // Add a renderer
+  pickingController.setupPickingEvents(particlesPCS);
+
   engine.runRenderLoop(() => {
     const deltaTime = engine.getDeltaTime();
 
     const nearbyStarsData = particlesController.particlesToDataPCS(
-      scene1,
       pickingController.closestPicksPCS,
-      milkyWay.stars
+      milkyWay.starsData
     );
 
-    starsController.updateStars(scene1, nearbyStarsData);
+    starsController.updateStars(nearbyStarsData);
    
     particlesController.updatePCS(particlesPCS, starsController.starsConfigs);
-    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1})
-   
+    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1});
+
     scene1.render();
   });
 

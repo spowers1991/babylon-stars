@@ -1,25 +1,34 @@
-import * as BABYLON from "babylonjs";
+export class CanvasesController {
+  private static _instance: CanvasesController | null = null;
 
-export class CanvasesController{
-  private canvases: HTMLCanvasElement[] = [];
-  private engines: BABYLON.Engine[] = [];
+  private canvases: Map<string, HTMLCanvasElement> = new Map();
 
-  public addCanvas(canvasId: string): { canvas: HTMLCanvasElement; engine: BABYLON.Engine } {
+  private constructor() {}
+
+  public static instance(): CanvasesController {
+    if (!CanvasesController._instance) {
+      CanvasesController._instance = new CanvasesController();
+    }
+    return CanvasesController._instance;
+  }
+
+  public getCanvas(canvasId: string): HTMLCanvasElement {
+    if (this.canvases.has(canvasId)) {
+      return this.canvases.get(canvasId)!;
+    }
+
     const elem = document.getElementById(canvasId);
     if (!(elem instanceof HTMLCanvasElement)) {
-      throw new Error(`Element with id '${canvasId}' is not a HTMLCanvasElement.`);
+      throw new Error(
+        `Element with id '${canvasId}' is not a HTMLCanvasElement.`
+      );
     }
-    const engine = new BABYLON.Engine(elem, true);
-    this.canvases.push(elem);
-    this.engines.push(engine);
-    return { canvas: elem, engine: engine };
+
+    this.canvases.set(canvasId, elem);
+    return elem;
   }
 
-  public getCanvases(): HTMLCanvasElement[] {
-    return this.canvases;
-  }
-
-  public getEngines(): BABYLON.Engine[] {
-    return this.engines;
+  public getAllCanvases(): HTMLCanvasElement[] {
+    return Array.from(this.canvases.values());
   }
 }

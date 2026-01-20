@@ -12,6 +12,8 @@ type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSyste
 
 export class ParticlesController {
   
+  private readonly scene: BABYLON.Scene;
+
   private static _instance: ParticlesController;
   private pcsSystems: BABYLON.PointsCloudSystem[] = [];
   private spsSystems: BABYLON.SolidParticleSystem[] = [];
@@ -19,9 +21,18 @@ export class ParticlesController {
   public particlesNearCamera: BABYLON.Particle[] = [];
   public particlesNearCameraPCS: BABYLON.CloudPoint[] = [];
 
-  public static get instance(): ParticlesController {
+  private constructor(scene: BABYLON.Scene) {
+    this.scene = scene;
+  }
+
+  public static instance(scene?: BABYLON.Scene): ParticlesController {
     if (!this._instance) {
-      this._instance = new ParticlesController();
+      if (!scene) {
+        throw new Error(
+          "ParticlesController.instance(scene) must be called once with a BABYLON.Scene"
+        );
+      }
+      this._instance = new ParticlesController(scene);
     }
     return this._instance;
   }
@@ -96,7 +107,7 @@ export class ParticlesController {
     return particlesNearCenter;
   }
 
-  particlesToDataPCS(scene: BABYLON.Scene, particles : BABYLON.CloudPoint[], data: Object[]){
-    return particlesToDataPCS(scene, particles, data)
+  particlesToDataPCS(particles : BABYLON.CloudPoint[], data: Object[]){
+    return particlesToDataPCS(this.scene, particles, data)
   }
 }

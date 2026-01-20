@@ -7,10 +7,8 @@ import { AssetsController } from "@/lib/Assets/AssetsController";
 export function createStarMesh(
   scene: BABYLON.Scene,
   name: string,
-  diameter: number
+  diameter: number,
 ): BABYLON.Mesh {
-
-  const assets = AssetsController.instance;
-
-  return assets.meshes.create(scene, "sphere", name, { diameter, segments: 10 });
+  const assetsController = AssetsController.instance;
+  return assetsController.meshes.create(scene, "sphere", name, { diameter, segments: 10 });
 }

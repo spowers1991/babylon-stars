@@ -1,8 +1,8 @@
 import * as BABYLON from "babylonjs";
 import { ParticlesController } from "../../ParticlesController";
 
-export function getParticlePCS(instanceName: string, id: any): BABYLON.CloudPoint | undefined {
-    const PCSInstance = ParticlesController.instance.getPCSByName(instanceName);
+export function getParticlePCS(scene: BABYLON.Scene, instanceName: string, id: any): BABYLON.CloudPoint | undefined {
+    const PCSInstance = ParticlesController.instance(scene).getPCSByName(instanceName);
     if (!PCSInstance) {
         console.warn(`Particle system "${instanceName}" not found.`);
         return undefined;

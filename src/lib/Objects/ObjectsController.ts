@@ -3,9 +3,6 @@ export class ObjectsController {
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
 
-  // Limit for objectsToRender
-  protected maxRenderObjects = 5;   // <-- change to whatever you want
-
   add(object: Object | Object[]) {
     const addOne = (obj: Object) => {
       if (!this.objects.includes(obj)) {
@@ -18,12 +15,6 @@ export class ObjectsController {
     } else {
       addOne(object);
     }
-  }
-
-  update(deltaTime: number) {
-    this.objects.forEach(obj => {
-      // obj.mesh.rotation.y += 0.0005 * deltaTime;
-    });
   }
 
   getObjectsToRender() {

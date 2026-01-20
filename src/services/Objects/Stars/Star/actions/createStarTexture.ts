@@ -6,7 +6,6 @@ export function createStarTexture(
   name: string,
   textureUrl: string,
 ): BABYLON.Texture {
-
-  const assets = AssetsController.instance;
-  return assets.textures.save(scene, name, textureUrl);
+  const assetsController = AssetsController.instance;
+  return assetsController.textures.save(scene, name, textureUrl);
 }
