@@ -41,27 +41,24 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const particlesController = ParticlesController.instance(scene1); 
 
-  const particlesPCS = particlesController.getPCSByName(milkyWay.name+" PCS");
-  const particlesSPS = particlesController.getSPSByName(milkyWay.name+" SPS");
-
   const pickingController = PointPickingController.instance(scene1);
 
   pickingController.setCamera(camerasController.getActiveCamera() as BABYLON.Camera);
 
-  pickingController.setupPickingEvents(particlesPCS);
+  pickingController.setupPickingEvents(milkyWay);
 
   engine.runRenderLoop(() => {
-    const deltaTime = engine.getDeltaTime();
 
-    const nearbyStarsData = particlesController.particlesToDataPCS(
+    starsController.stars = particlesController.particlesToDataPCS(
       pickingController.closestPicksPCS,
       milkyWay.starsData
     );
 
-    starsController.updateStars(nearbyStarsData);
+    starsController.updateStars(starsController.stars);
    
-    particlesController.updatePCS(particlesPCS, starsController.starsConfigs);
-    particlesController.updateSPS(particlesSPS, nearbyStarsData, { visibleScale : 1});
+    particlesController.updatePCS(milkyWay.pcs as BABYLON.PointsCloudSystem, starsController.starsConfigs);
+    
+    //particlesController.updateSPS(particlesSPS, starsController.stars, { visibleScale : 1});
 
     scene1.render();
   });

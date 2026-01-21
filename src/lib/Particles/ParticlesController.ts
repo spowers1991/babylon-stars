@@ -108,6 +108,6 @@ export class ParticlesController {
   }
 
   particlesToDataPCS(particles : BABYLON.CloudPoint[], data: Object[]){
-    return particlesToDataPCS(this.scene, particles, data)
+    return particlesToDataPCS(particles, data)
   }
 }

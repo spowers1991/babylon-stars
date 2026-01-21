@@ -4,7 +4,7 @@ export function pickParticlePCS(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   pcs: BABYLON.PointsCloudSystem,
-  threshold = 0.2
+  threshold = 15
 ): BABYLON.CloudPoint | null {
   const ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera);
 

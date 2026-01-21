@@ -3,6 +3,8 @@ import { pickMesh } from "./actions/pickMesh";
 import { pickParticlePCS } from "./actions/pickParticlePCS";
 import { focusCamera } from "@/lib/Cameras/Camera/actions/focusCamera";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
+import { setNearbyStarsData } from "@/services/Objects/Stars/actions/setNearbyStarsData";
+import { setPickingActions } from "./actions/setPickingActions";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
@@ -49,19 +51,25 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPickingEvents(pcs: BABYLON.PointsCloudSystem) {
+  public setupPickingEvents(object : any) {
     this.scene.onPointerObservable.add((pointerInfo) => {
       if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
 
+      console.log(object)
       const camera = this.getCamera();
 
+     /* setPickingActions([
+        () => setNearbyStarsData(this.scene, object),
+      ]);*/
+
+      
       const meshPick = pickMesh(this.scene, camera);
       if (meshPick?.pickedMesh) {
         focusCamera(camera, meshPick.pickedMesh.position);
         return;
       }
 
-      const pcsPick = pickParticlePCS(this.scene, camera, pcs, 0.2);
+      const pcsPick = pickParticlePCS(this.scene, camera, object.pcs, 0.2);
       if (!pcsPick) return;
 
       this.closestPicksPCS =
