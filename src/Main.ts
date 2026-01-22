@@ -45,14 +45,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   pickingController.setCamera(camerasController.getActiveCamera() as BABYLON.Camera);
 
-  pickingController.setupPickingEvents(milkyWay);
+  pickingController.setupPickingEvents(milkyWay, (data) => starsController.stars = data);
 
   engine.runRenderLoop(() => {
-
-    starsController.stars = particlesController.particlesToDataPCS(
-      pickingController.closestPicksPCS,
-      milkyWay.starsData
-    );
 
     starsController.updateStars(starsController.stars);
    

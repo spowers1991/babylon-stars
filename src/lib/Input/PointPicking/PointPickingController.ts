@@ -1,10 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { pickMesh } from "./actions/pickMesh";
-import { pickParticlePCS } from "./actions/pickParticlePCS";
-import { focusCamera } from "@/lib/Cameras/Camera/actions/focusCamera";
-import { ParticlesController } from "@/lib/Particles/ParticlesController";
-import { setNearbyStarsData } from "@/services/Objects/Stars/actions/setNearbyStarsData";
-import { setPickingActions } from "./actions/setPickingActions";
+import { handlePointerEvent } from "./actions/handlePointerEvent";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
@@ -18,9 +13,6 @@ export class PointPickingController {
     this.scene = scene;
   }
 
-  // ─────────────────────────────────────────────
-  // Singleton access (scene only)
-  // ─────────────────────────────────────────────
   public static instance(scene?: BABYLON.Scene): PointPickingController {
     if (!PointPickingController._instance) {
       if (!scene) {
@@ -51,36 +43,8 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPickingEvents(object : any) {
-    this.scene.onPointerObservable.add((pointerInfo) => {
-      if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
-
-      console.log(object)
-      const camera = this.getCamera();
-
-     /* setPickingActions([
-        () => setNearbyStarsData(this.scene, object),
-      ]);*/
-
-      
-      const meshPick = pickMesh(this.scene, camera);
-      if (meshPick?.pickedMesh) {
-        focusCamera(camera, meshPick.pickedMesh.position);
-        return;
-      }
-
-      const pcsPick = pickParticlePCS(this.scene, camera, object.pcs, 0.2);
-      if (!pcsPick) return;
-
-      this.closestPicksPCS =
-        ParticlesController.instance(this.scene).getParticlesInRadiusPCS(
-          pcsPick.position,
-          5
-        );
-
-      focusCamera(camera, pcsPick.position);
-
-    });
+  public setupPickingEvents(object: any, setter: (data: any[]) => void) {
+    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, object, setter, pointerInfo));
   }
 
   // ─────────────────────────────────────────────
