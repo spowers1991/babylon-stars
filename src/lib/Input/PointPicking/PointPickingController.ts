@@ -8,6 +8,7 @@ export class PointPickingController {
   private camera?: BABYLON.Camera;
 
   public closestPicksPCS: BABYLON.CloudPoint[] = [];
+  public closestPicksSPS: BABYLON.SolidParticle[] = [];
 
   private constructor(scene: BABYLON.Scene) {
     this.scene = scene;

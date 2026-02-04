@@ -2,7 +2,7 @@ import * as BABYLON from "babylonjs";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { PointPickingController } from "../PointPickingController";
 
-export function setNearbyData(
+export function setNearbyDataSPS(
   scene: BABYLON.Scene,
   data: any[],
   setter: (data: any[]) => void
@@ -10,10 +10,10 @@ export function setNearbyData(
   const particlesController = ParticlesController.instance(scene);
   const pickingController = PointPickingController.instance(scene);
 
-  const nearbyData = particlesController.particlesToDataPCS(
-    pickingController.closestPicksPCS,
+  const nearbyDataSPS = particlesController.particlesToDataSPS(
+    pickingController.closestPicksSPS,
     data
   );
 
-  setter(nearbyData);
+  setter(nearbyDataSPS);
 }

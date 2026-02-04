@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import { getParticlesInRadiusPCS } from "./PCS/helpers/getParticlesInRadiusPCS";
 import { getParticlesInRadiusSPS } from "./SPS/helpers/getParticlesInRadiusSPS";
 import { particlesToDataPCS } from "./PCS/actions/particlesToDataPCS";
+import { particlesToDataSPS } from "./SPS/actions/particlesToDataSPS";
 import { updatePCS } from "./PCS/actions/updatePCS";
 import { updateSPS } from "./SPS/actions/updateSPS";
 import { createPCS } from "./PCS/actions/createPCS";
@@ -20,6 +21,7 @@ export class ParticlesController {
   private namedSystems: Record<string, ParticleSystemType> = {};
   public particlesNearCamera: BABYLON.Particle[] = [];
   public particlesNearCameraPCS: BABYLON.CloudPoint[] = [];
+  public particlesNearCameraSPS: BABYLON.SolidParticle[] = [];
 
   private constructor(scene: BABYLON.Scene) {
     this.scene = scene;
@@ -69,6 +71,10 @@ export class ParticlesController {
     return system instanceof BABYLON.PointsCloudSystem ? system : undefined;
   }
 
+  getAllPCS(): BABYLON.PointsCloudSystem[] {
+    return this.pcsSystems;
+  }
+
   async createSPS(
     scene: BABYLON.Scene,
     data: any[],
@@ -93,6 +99,10 @@ export class ParticlesController {
     return system instanceof BABYLON.SolidParticleSystem ? system : undefined;
   }
 
+  getAllSPS(): BABYLON.SolidParticleSystem[] {
+    return this.spsSystems;
+  }
+
   getAllSystems(): ParticleSystemType[] {
     return [...this.pcsSystems, ...this.spsSystems];
   }
@@ -109,5 +119,9 @@ export class ParticlesController {
 
   particlesToDataPCS(particles : BABYLON.CloudPoint[], data: Object[]){
     return particlesToDataPCS(particles, data)
+  }
+
+  particlesToDataSPS(particles : BABYLON.SolidParticle[], data: Object[]){
+    return particlesToDataSPS(particles, data)
   }
 }
