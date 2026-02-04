@@ -9,6 +9,8 @@ export class Galaxy {
   public readonly name: string;
   public readonly starsData: StarData[];
   private scene: BABYLON.Scene;
+  public pcs : BABYLON.PointsCloudSystem | null = null;
+  public sps : BABYLON.SolidParticleSystem | null = null;
 
   private constructor(scene: BABYLON.Scene, config: GalaxyConfig) {
     this.scene = scene;
@@ -26,10 +28,12 @@ export class Galaxy {
   private async init() {
 
     const PCSName = this.name+" PCS";
-    await createStarsPCS(this.scene, this.starsData, PCSName)
+    const pcs = await createStarsPCS(this.scene, this.starsData, PCSName)
+    this.pcs = pcs;
 
     const SPSName = this.name+" SPS";
-    await createStarsSPS(this.scene, this.starsData, SPSName);
+    //await createStarsSPS(this.scene, this.starsData, SPSName);
+    //this.sps = this.sps;
     
   }
 

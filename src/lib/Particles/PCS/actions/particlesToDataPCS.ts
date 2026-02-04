@@ -1,7 +1,6 @@
 import * as BABYLON from "babylonjs";
 
 export function particlesToDataPCS(
-  scene: BABYLON.Scene,
   particles: BABYLON.CloudPoint[],
   data: any[]
 ): any[] {

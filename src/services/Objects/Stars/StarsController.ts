@@ -11,7 +11,7 @@ export class StarsController extends ObjectsController {
 
   private scene!: BABYLON.Scene;
 
-  public stars: Star[] = [];
+  public stars: StarData[] = [];
   public starsConfigs: StarConfig[] = [];
 
   private constructor(scene: BABYLON.Scene) {

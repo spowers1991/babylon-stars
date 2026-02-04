@@ -3,22 +3,22 @@ import * as BABYLON from "babylonjs";
 export function focusCamera(
   camera: BABYLON.Camera,
   targetPosition: BABYLON.Vector3,
-  speed = 0.1 
+  speed = 2 // units per second
 ) {
   if (!(camera instanceof BABYLON.ArcRotateCamera)) return;
 
   const scene = camera.getScene();
-  const startTargetPosition = camera.position;
-
+  const startTarget = camera.target.clone();
   let t = 0;
 
   const observer = scene.onBeforeRenderObservable.add(() => {
-    t += speed;
+    const dt = scene.getEngine().getDeltaTime() / 1000;
+    t += dt * speed;
 
     const lerpT = Math.min(t, 1);
 
     BABYLON.Vector3.LerpToRef(
-      startTargetPosition,
+      startTarget,
       targetPosition,
       lerpT,
       camera.target
@@ -26,7 +26,6 @@ export function focusCamera(
 
     if (lerpT >= 1) {
       scene.onBeforeRenderObservable.remove(observer);
-      //camera.setTarget(targetPosition);
     }
   });
 }

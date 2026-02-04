@@ -4,24 +4,38 @@ export function pickParticlePCS(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   pcs: BABYLON.PointsCloudSystem,
-  threshold = 0.2
+  pickRadius = 0.2,           // world units
 ): BABYLON.CloudPoint | null {
-  const ray = scene.createPickingRay(scene.pointerX, scene.pointerY, BABYLON.Matrix.Identity(), camera);
+
+  const ray = scene.createPickingRay(
+    scene.pointerX,
+    scene.pointerY,
+    BABYLON.Matrix.Identity(),
+    camera
+  );
 
   let closest: BABYLON.CloudPoint | null = null;
-  let minDist = Infinity;
+  let minDistSq = pickRadius * pickRadius;
 
-  pcs.particles.forEach((p) => {
+  for (const p of pcs.particles) {
+
     const toParticle = p.position.subtract(ray.origin);
-    const proj = BABYLON.Vector3.Dot(toParticle, ray.direction);
-    const closestPointOnRay = ray.origin.add(ray.direction.scale(proj));
-    const distanceToRay = BABYLON.Vector3.Distance(closestPointOnRay, p.position);
 
-    if (distanceToRay < threshold && distanceToRay < minDist) {
+    // ---- Optimization: ignore particles behind camera ----
+    const proj = BABYLON.Vector3.Dot(toParticle, ray.direction);
+    if (proj < 0) continue;
+
+    const closestPointOnRay =
+      ray.origin.add(ray.direction.scale(proj));
+
+    const distSq =
+      BABYLON.Vector3.DistanceSquared(closestPointOnRay, p.position);
+
+    if (distSq < minDistSq) {
       closest = p;
-      minDist = distanceToRay;
+      minDistSq = distSq;
     }
-  });
+  }
 
   return closest;
 }
