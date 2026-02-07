@@ -2,11 +2,14 @@ import * as BABYLON from "babylonjs";
 import type { Camera } from "@/services/Cameras/types/Camera";
 
 const MainCamera: Camera = {
-  type: "arcRotate", 
+  type: "arcRotate",
   name: "Main Camera",
   position: new BABYLON.Vector3(0, 0, 0),
-  lowerRadiusLimit : 2,
-  upperRadiusLimit : 5000,
+  lowerRadiusLimit: 2,
+  upperRadiusLimit: 5000,
+
+  minZ: 0.01,
+  maxZ: 1_000_000,
 };
 
 export default MainCamera;

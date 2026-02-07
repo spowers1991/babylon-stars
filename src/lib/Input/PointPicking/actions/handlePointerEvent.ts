@@ -1,11 +1,14 @@
 import * as BABYLON from "babylonjs";
-import { setNearbyData } from "./setNearbyData";
+import { setNearbyDataPCS } from "./setNearbyDataPCS";
+import { setNearbyDataSPS } from "./setNearbyDataSPS";
 import { setPickingActions } from "./setPickingActions";
 import { setClosestPicksPCS } from "./setClosestPicksPCS";
 import { handlePickFocus } from "./handlePickFocus";
 import { determinePickToFocus } from "./determinePickToFocus";
 import { handleMeshPicking } from "./handleMeshPicking";
 import { handlePCSPicking } from "./handlePCSPicking";
+import { handleSPSPicking } from "./handleSPSPicking";
+import { setClosestPicksSPS } from "./setClosetsPickSPS";
 
 export function handlePointerEvent(
   controller: any,
@@ -17,8 +20,8 @@ export function handlePointerEvent(
 
   const meshPick = handleMeshPicking(controller);
   const pcsPick = handlePCSPicking(controller, object);
-
-  const pickToFocus = determinePickToFocus(meshPick, pcsPick);
+  const spsPick = handleSPSPicking(controller, object);
+  const pickToFocus = determinePickToFocus(meshPick, pcsPick, spsPick);
   if (!pickToFocus) return;
 
   handlePickFocus(controller.getCamera(), pickToFocus);
@@ -26,7 +29,13 @@ export function handlePointerEvent(
   if (pcsPick) {
     setPickingActions([
       () => setClosestPicksPCS(controller.scene, pcsPick, controller),
-      () => setNearbyData(controller.scene, object.starsData, setter),
+      () => setNearbyDataPCS(controller.scene, object.starsData, setter),
+    ]);
+  }
+  if (spsPick) {
+    setPickingActions([
+      () => setClosestPicksSPS(controller.scene, spsPick, controller),
+      () => setNearbyDataSPS(controller.scene, object.starsData, setter),
     ]);
   }
 }

@@ -12,10 +12,10 @@ export async function createSPS(
 
   const { diameter = 1, onInitParticle } = options; // smaller size to start
   const pointData: PointData[] = convertToPointData(data);
-  const count = Math.min(500, pointData.length);
+  const count = Math.min(10000, pointData.length);
 
   // Template mesh
-  const template = BABYLON.MeshBuilder.CreateSphere(`${name}_template`, { diameter, segments: 4 }, scene);
+  const template = BABYLON.MeshBuilder.CreateSphere(`${name}_template`, { diameter, segments: 1 }, scene);
   template.isVisible = false; // hide template
 
   // Create SPS
@@ -27,7 +27,7 @@ export async function createSPS(
     const particle = sps.particles[i];
     const p = pointData[i];
     if (!p) continue; // safety
-
+    //console.log(data[i])
     particle.position.set(p.x, p.y, p.z);
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)
@@ -45,6 +45,7 @@ export async function createSPS(
   mat.disableLighting = true;        // optional
   mat.emissiveColor = BABYLON.Color3.White();
   sps.mesh!.material = mat;
+  sps.mesh!.alwaysSelectAsActiveMesh = true;
 
   template.dispose();
 

@@ -27,14 +27,14 @@ export class Galaxy {
 
   private async init() {
 
-    const PCSName = this.name+" PCS";
-    const pcs = await createStarsPCS(this.scene, this.starsData, PCSName)
-    this.pcs = pcs;
+    //const PCSName = this.name+" PCS";
+    //const pcs = await createStarsPCS(this.scene, this.starsData, PCSName)
+    //this.pcs = pcs;
 
-    const SPSName = this.name+" SPS";
-    //await createStarsSPS(this.scene, this.starsData, SPSName);
-    //this.sps = this.sps;
-    
+    const SPSName = this.name + " SPS";
+    const sps = await createStarsSPS(this.scene, this.starsData, SPSName);
+    this.sps = sps;
+  
   }
 
 }

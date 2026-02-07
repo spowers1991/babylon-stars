@@ -13,15 +13,14 @@ export function updateSPS(
   options: SPSUpdateOptions = {}
 ) {
   const {
-    visibleScale = 1,
-    hiddenScale = 0.001,
+    visibleScale = 0.25,
+    hiddenScale = 0.05,
     activeAlpha = 1,
-    inactiveAlpha = 0.15
+    inactiveAlpha = 0
   } = options;
 
-  if (!sps || !sps.particles || sps.nbParticles === 0) return;
+  if (!sps || sps.nbParticles === 0) return;
 
-  // Map: particle index → color
   const colorById = new Map<number, { r: number; g: number; b: number }>();
   for (const d of data) {
     if (d.K) colorById.set(d.i, d.K);
@@ -30,25 +29,22 @@ export function updateSPS(
   for (let i = 0; i < sps.nbParticles; i++) {
     const p = sps.particles[i];
 
-    if (!p.color) p.color = new BABYLON.Color4(1, 1, 1, inactiveAlpha);
-
+    if (!p.color) {
+      p.color = new BABYLON.Color4(1, 1, 1, inactiveAlpha);
+    }
+    //console.log(data[i].p)
     const colorData = colorById.get(i);
 
     if (colorData) {
-      // Active particle
-      p.color.r = colorData.r;
-      p.color.g = colorData.g;
-      p.color.b = colorData.b;
-      p.color.a = activeAlpha;
-      p.isVisible = true;
-      p.scaling.setAll(visibleScale);
+      p.color.set(
+        colorData.r,
+        colorData.g,
+        colorData.b,
+        activeAlpha
+      );
+      p.scaling.setAll(data[i]?.p);
     } else {
-      // Hidden/inactive particle
-      p.color.r = 1;
-      p.color.g = 1;
-      p.color.b = 1;
       p.color.a = inactiveAlpha;
-      p.isVisible = false;
       p.scaling.setAll(hiddenScale);
     }
   }

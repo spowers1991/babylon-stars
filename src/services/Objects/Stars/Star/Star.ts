@@ -5,6 +5,7 @@ import { createStarMesh } from "./actions/createStarMesh";
 import { createStarMaterial } from "./actions/createStarMaterial";
 import { createStarTexture } from "./actions/createStarTexture";
 
+import { getParticleSPS } from "@/lib/Particles/SPS/helpers/getParticleSPS";
 import { getParticlePCS } from "@/lib/Particles/PCS/helpers/getParticlePCS";
 import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
 
@@ -42,11 +43,19 @@ export class Star {
       config.emissiveIntensity!,
     ) as BABYLON.Material;
 
-    const particle = getParticlePCS(
+    const particlePCS = getParticlePCS(
       scene,
       'Milky Way PCS',
       this.id
     );
+
+    const particleSPS = getParticleSPS(
+      scene,
+      'Milky Way SPS',
+      this.id
+    );
+
+    const particle = particleSPS ? particleSPS : particlePCS
 
     moveToParticle(
       this.mesh, 
