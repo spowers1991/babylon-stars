@@ -53,7 +53,7 @@ window.addEventListener("DOMContentLoaded", async () => {
    
     /*particlesController.updatePCS(milkyWay.pcs as BABYLON.PointsCloudSystem, starsController.starsConfigs);*/
     
-    particlesController.updateSPS(milkyWay.sps as BABYLON.SolidParticleSystem, starsController.stars, { visibleScale : 1});
+    particlesController.updateSPS(milkyWay.sps as BABYLON.SolidParticleSystem, milkyWay.starsData, { visibleScale : 1});
 
     scene1.render();
   });

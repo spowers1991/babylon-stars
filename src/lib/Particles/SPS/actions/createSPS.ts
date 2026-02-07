@@ -26,8 +26,8 @@ export async function createSPS(
   for (let i = 0; i < count; i++) {
     const particle = sps.particles[i];
     const p = pointData[i];
-    if (!p) continue; // safety
-    //console.log(data[i])
+    if (!p) continue;
+    particle.scaling.setAll(data[i]?.p / 5000);
     particle.position.set(p.x, p.y, p.z);
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)

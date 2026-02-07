@@ -32,7 +32,7 @@ export function updateSPS(
     if (!p.color) {
       p.color = new BABYLON.Color4(1, 1, 1, inactiveAlpha);
     }
-    //console.log(data[i].p)
+    //console.log(data[i].p / 5000)
     const colorData = colorById.get(i);
 
     if (colorData) {
@@ -42,10 +42,10 @@ export function updateSPS(
         colorData.b,
         activeAlpha
       );
-      p.scaling.setAll(data[i]?.p);
+      //p.scaling.setAll(data[i]?.p / 5000 || visibleScale);
     } else {
       p.color.a = inactiveAlpha;
-      p.scaling.setAll(hiddenScale);
+      //p.scaling.setAll(hiddenScale);
     }
   }
 
