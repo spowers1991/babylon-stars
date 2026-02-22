@@ -1,7 +1,6 @@
 import * as BABYLON from "babylonjs";
 import { startEngine } from "@/engine/actions/startEngine";
 import { ScenesController } from "@/lib/Scenes/ScenesController";
-import { ObjectsController } from "@/lib/Objects/ObjectsController";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { RenderersController } from "@/lib/Renderers/RenderersController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
@@ -10,8 +9,8 @@ import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
+import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import starsJson from "@/data/stars.json";
-import { StarData } from "./services/Objects/Stars/Star/types/StarData";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
@@ -48,18 +47,29 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   pickingController.setupPickingEvents(milkyWay, (data) => starsController.stars = data);
 
-  engine.runRenderLoop(() => {
-
-    starsController.updateStars(starsController.stars);
-   
-    /*particlesController.updatePCS(milkyWay.pcs as BABYLON.PointsCloudSystem, starsController.starsConfigs);*/
-    
-    particlesController.updateSPS(
-      milkyWay.sps as BABYLON.SolidParticleSystem,
-      milkyWay.starsData as StarData[],
-    );
-
-    scene1.render();
-  });
-
+  RenderersController.runLoop(engine, [
+    () => console.log("Running render loop..."),
+    () => scene1.render(),
+    () => RenderersController.stepUpdate({
+      id: "starUpdate",
+      name: "Star Update",
+      interval: 500,
+      step: () => {
+        console.log("Updating stars...");
+        starsController.updateStars(starsController.stars);
+      },
+    }),
+    () => RenderersController.stepUpdate({
+      id: "spsUpdate",
+      name: "SPS Update",
+      interval: 1000,
+      step: () => {
+        console.log("Updating SPS with new star data...");
+        particlesController.updateSPS(
+          milkyWay.sps as BABYLON.SolidParticleSystem,
+          milkyWay.starsData as StarData[]
+        );
+      },
+    }),
+  ]);
 });
