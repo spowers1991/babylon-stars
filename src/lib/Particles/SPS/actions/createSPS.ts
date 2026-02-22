@@ -1,13 +1,13 @@
 import * as BABYLON from "babylonjs";
 import type { PointData } from "../../PCS/types/PointData";
 import { convertToPointData } from "../../PCS/actions/convertToPointData";
-import type { ParticleOptionsSPS } from "../types/ParticleOptionsSPS";
+import type { SPSConfig } from "../types/SPSConfig";
 
 export async function createSPS(
   scene: BABYLON.Scene,
   data: any[],
   name: string,
-  options: ParticleOptionsSPS = {}
+  options: SPSConfig = {}
 ): Promise<BABYLON.SolidParticleSystem> {
 
   const { diameter = 1, onInitParticle } = options; // smaller size to start
@@ -38,7 +38,6 @@ export async function createSPS(
 
   // Build mesh
   sps.buildMesh();
-  sps.setParticles();
 
   // Material that shows particle colors
   const mat = new BABYLON.StandardMaterial(`${name}_mat`, scene);
