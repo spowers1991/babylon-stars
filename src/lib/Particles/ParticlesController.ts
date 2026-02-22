@@ -7,7 +7,7 @@ import { updatePCS } from "./PCS/actions/updatePCS";
 import { updateSPS } from "./SPS/actions/updateSPS";
 import { createPCS } from "./PCS/actions/createPCS";
 import { createSPS } from "./SPS/actions/createSPS"; 
-import type { ParticleOptionsSPS } from "./SPS/types/ParticleOptionsSPS";
+import type { SPSConfig } from "./SPS/types/SPSConfig";
 
 type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSystem;
 
@@ -79,7 +79,7 @@ export class ParticlesController {
     scene: BABYLON.Scene,
     data: any[],
     name: string,
-    options: ParticleOptionsSPS = {}
+    options: SPSConfig = {}
   ): Promise<BABYLON.SolidParticleSystem> {
     // Call the helper createSPS function
     const sps = await createSPS(scene, data, name, options);
@@ -90,7 +90,7 @@ export class ParticlesController {
     return sps;
   }
 
-  updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: any = {}) {
+  updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: SPSConfig = {}) {
     updateSPS(sps, data, options);
   }
 

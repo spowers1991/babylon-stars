@@ -11,6 +11,7 @@ import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import starsJson from "@/data/stars.json";
+import { StarData } from "./services/Objects/Stars/Star/types/StarData";
 
 window.addEventListener("DOMContentLoaded", async () => {
   const { canvas, engine } = startEngine("renderCanvas");
@@ -53,7 +54,10 @@ window.addEventListener("DOMContentLoaded", async () => {
    
     /*particlesController.updatePCS(milkyWay.pcs as BABYLON.PointsCloudSystem, starsController.starsConfigs);*/
     
-    particlesController.updateSPS(milkyWay.sps as BABYLON.SolidParticleSystem, starsController.stars, { visibleScale : 1});
+    particlesController.updateSPS(
+      milkyWay.sps as BABYLON.SolidParticleSystem,
+      milkyWay.starsData as StarData[],
+    );
 
     scene1.render();
   });

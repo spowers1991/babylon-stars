@@ -1,14 +1,14 @@
 import * as BABYLON from "babylonjs";
 import { createSPS } from "@/lib/Particles/SPS/actions/createSPS";
 import { ParticlesController } from "@/lib/Particles/ParticlesController";
-import type { ParticleOptionsSPS } from "@/lib//Particles/SPS/types/ParticleOptionsSPS"
+import type { SPSConfig } from "@/lib/Particles/SPS/types/SPSConfig"
 import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 
 export async function createStarsSPS(
     scene: BABYLON.Scene,
     starsData: StarData[],
     name: string,
-    options: ParticleOptionsSPS = {}
+    options: SPSConfig = {}
 ) {
 
   // Just call createPointMap directly

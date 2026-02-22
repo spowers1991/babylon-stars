@@ -1,24 +1,11 @@
 import * as BABYLON from "babylonjs";
-
-export interface SPSUpdateOptions {
-  visibleScale?: number;
-  hiddenScale?: number;
-  activeAlpha?: number;
-  inactiveAlpha?: number;
-}
+import { SPSConfig } from "../types/SPSConfig";
 
 export function updateSPS(
   sps: BABYLON.SolidParticleSystem,
   data: any[],
-  options: SPSUpdateOptions = {}
+  options: SPSConfig = {}
 ) {
-  const {
-    visibleScale = 0.25,
-    hiddenScale = 0.05,
-    activeAlpha = 1,
-    inactiveAlpha = 0
-  } = options;
-
   if (!sps || sps.nbParticles === 0) return;
 
   const colorById = new Map<number, { r: number; g: number; b: number }>();
@@ -30,9 +17,9 @@ export function updateSPS(
     const p = sps.particles[i];
 
     if (!p.color) {
-      p.color = new BABYLON.Color4(1, 1, 1, inactiveAlpha);
+      p.color = new BABYLON.Color4(1, 1, 1, 0);
     }
-    //console.log(data[i].p)
+    //console.log(data[i].p / 5000)
     const colorData = colorById.get(i);
 
     if (colorData) {
@@ -40,12 +27,12 @@ export function updateSPS(
         colorData.r,
         colorData.g,
         colorData.b,
-        activeAlpha
+        1
       );
-      p.scaling.setAll(data[i]?.p);
+      //p.scaling.setAll(data[i]?.p / 5000 || visibleScale);
     } else {
-      p.color.a = inactiveAlpha;
-      p.scaling.setAll(hiddenScale);
+      p.color.a = 0;
+      //p.scaling.setAll(hiddenScale);
     }
   }
 
