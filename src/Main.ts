@@ -10,6 +10,7 @@ import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
+import Render from "@/services/Renderers/Render";
 import starsJson from "@/data/stars.json";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -47,29 +48,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   pickingController.setupPickingEvents(milkyWay, (data) => starsController.stars = data);
 
-  RenderersController.runLoop(engine, [
-    () => console.log("Running render loop..."),
-    () => scene1.render(),
-    () => RenderersController.stepUpdate({
-      id: "starUpdate",
-      name: "Star Update",
-      interval: 500,
-      step: () => {
-        console.log("Updating stars...");
-        starsController.updateStars(starsController.stars);
-      },
-    }),
-    () => RenderersController.stepUpdate({
-      id: "spsUpdate",
-      name: "SPS Update",
-      interval: 1000,
-      step: () => {
-        console.log("Updating SPS with new star data...");
-        particlesController.updateSPS(
-          milkyWay.sps as BABYLON.SolidParticleSystem,
-          milkyWay.starsData as StarData[]
-        );
-      },
-    }),
-  ]);
+  RenderersController.runLoop(
+    engine,
+    [
+      Render.scene(scene1),
+      Render.stars(starsController),
+      Render.SPS(particlesController, milkyWay),
+    ]
+  );
 });
