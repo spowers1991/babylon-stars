@@ -1,10 +1,14 @@
 import { RenderersController } from "@/lib/Renderers/RenderersController";
-import type { ParticlesController } from "@/lib/Particles/ParticlesController";
-import type { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
+import { ParticlesController } from "@/lib/Particles/ParticlesController";
+import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import * as BABYLON from "babylonjs";
 
-export function renderSPS(particlesController: ParticlesController, milkyWay: Galaxy) {
+export function renderSPS(scene: BABYLON.Scene, galaxy: Galaxy) {
+  console.log(scene, galaxy);
+
+  const particlesController = ParticlesController.instance(galaxy.scene);
+
   return () => RenderersController.stepUpdate({
     id: "spsUpdate",
     name: "SPS Update",
@@ -12,8 +16,8 @@ export function renderSPS(particlesController: ParticlesController, milkyWay: Ga
     step: () => {
       console.log("Updating SPS with new star data...");
       particlesController.updateSPS(
-        milkyWay.sps as BABYLON.SolidParticleSystem,
-        milkyWay.starsData as StarData[]
+        galaxy.sps as BABYLON.SolidParticleSystem,
+        galaxy.starsData as StarData[]
       );
     },
   });

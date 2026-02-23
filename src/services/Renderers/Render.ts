@@ -1,11 +1,9 @@
-import { renderScene as scene } from "./actions/renderScene";
+import { renderScene as scenes } from "./actions/renderScene";
 import { renderStars as stars} from "./actions/renderStars";
-import { renderSPS as SPS } from "./actions/renderSPS";
+import { renderSPS as particles } from "./actions/renderSPS";
 
 export const Render = {
-	scene,
+	scenes,
 	stars,
-	SPS,
+	particles,
 };
-
-export default Render;

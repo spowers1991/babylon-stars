@@ -8,7 +8,7 @@ export class Galaxy {
   public readonly id: number;
   public readonly name: string;
   public readonly starsData: StarData[];
-  private scene: BABYLON.Scene;
+  public scene: BABYLON.Scene;
   public pcs : BABYLON.PointsCloudSystem | null = null;
   public sps : BABYLON.SolidParticleSystem | null = null;
 

@@ -4,6 +4,7 @@ import type { Galaxy } from "./Galaxy/types/Galaxy";
 
 export class GalaxiesController extends ObjectsController{
   public galaxies: Galaxy[] = [];
+  public galaxiesConfigs: any[] = [];
 
   private static _instance: GalaxiesController | null = null;
   

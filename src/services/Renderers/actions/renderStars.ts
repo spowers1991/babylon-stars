@@ -1,7 +1,10 @@
+import * as BABYLON from "babylonjs";
 import { RenderersController } from "@/lib/Renderers/RenderersController";
-import type { StarsController } from "@/services/Objects/Stars/StarsController";
+import { StarsController } from "@/services/Objects/Stars/StarsController";
 
-export function renderStars(starsController: StarsController) {
+export function renderStars(scene: BABYLON.Scene) {
+  const starsController = StarsController.instance(scene);
+  
   return () => RenderersController.stepUpdate({
     id: "starUpdate",
     name: "Star Update",
