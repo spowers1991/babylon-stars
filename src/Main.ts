@@ -1,11 +1,11 @@
 import { startEngine } from "@/engine/actions/startEngine";
-import { RenderersController } from "@/lib/Renderers/RenderersController";
-import { setupScenes } from "@/services/Scenes/actions/setupScenes";
-import { setupCameras } from "@/services/Cameras/actions/setupCameras";
-import { createGalaxies } from "@/services/Objects/Galaxies/actions/createGalaxies";
-import { setupStars } from "@/services/Objects/Stars/actions/setupStars";
-import { setupPicking } from "@/services/Input/PointPicking/actions/setupPicking";
-import { Render } from "@/services/Renderers/Render";
+import { setScenes } from "@/services/Scenes/actions/set/setScenes";
+import { setCameras } from "@/services/Cameras/actions/set/setCameras";
+import { createGalaxies } from "@/services/Objects/Galaxies/actions/create/createGalaxies";
+import { setStarsData } from "@/services/Objects/Stars/actions/set/setStarsData";
+import { setPointPicking } from "@/services/Input/PointPicking/actions/set/setPointPicking";
+import { setRenderers } from "@/services/Renderers/actions/set/setRenderers";
+import { runRenders } from "@/services/Renderers/actions/run/runRenders";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 
@@ -13,11 +13,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const { canvas, engine } = startEngine("renderCanvas");
 
-  const { scenes } = setupScenes(engine);
+  const { scenes } = setScenes(engine);
 
   const scene1 = scenes[0];
 
-  setupCameras(scene1, MainCamera, canvas);
+  setCameras(scene1, canvas, MainCamera);
 
   const galaxiesConfigs = [
     {
@@ -31,17 +31,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const milkyWay = galaxies.find(galaxy => galaxy.name === "Milky Way")!;
 
-  setupStars(milkyWay);
+  setStarsData(scene1, milkyWay);
 
-  setupPicking(milkyWay);
-  
-  RenderersController.runLoop(
-    engine,
-    [
-      Render.scenes(scene1), 
-      Render.stars(scene1),
-      Render.particles(scene1, milkyWay),
-    ]
-  );
+  setPointPicking(scene1, milkyWay);
+
+  setRenderers(engine, scene1);
+
+  runRenders(scene1);
   
 });

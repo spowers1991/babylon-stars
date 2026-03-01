@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { handlePointerEvent } from "./actions/handlePointerEvent";
+import { handlePointerEvent } from "./_PickedObject/helpers/handlePointerEvent";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;

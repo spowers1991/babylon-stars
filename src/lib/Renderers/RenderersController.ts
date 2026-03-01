@@ -1,13 +1,13 @@
-import { runLoop as _runLoop } from "./actions/runLoop";
-import { addRenderer as addRendererAction } from "./actions/addRenderer";
-import { getRenderers as getRenderersAction } from "./actions/getRenderers";
-import { stepUpdate as stepUpdateAction } from "./actions/stepUpdate";
-import { stepUpdateAll as stepUpdateAllAction } from "./actions/stepUpdateAll";
+import { runRenders as _runRenders } from "./actions/run/runRenders";
+import { addRenderer as addRendererAction } from "./actions/set/addRenderer";
+import { getRenderers as getRenderersAction } from "./actions/get/getRenderers";
+import { stepUpdate as stepUpdateAction } from "./actions/create/stepUpdate";
+import { stepUpdateAll as stepUpdateAllAction } from "./actions/create/stepUpdateAll";
 import { logRenderers as logRenderersAction } from "./actions/logRenderers";
 import type { RendererConfig } from "./types/RendererConfig";
 
 export class RenderersController {
-	static runLoop = _runLoop;
+	static runRenders = _runRenders;
 	static renderers: RendererConfig[] = [];
 	static lastUpdates: Record<string, number> = {};
 

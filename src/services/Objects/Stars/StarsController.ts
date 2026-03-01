@@ -1,10 +1,9 @@
 import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
-import { Star } from "./Star/Star";
-import { StarConfig } from "./Star/types/StarConfig";
-import { createStarsFromConfigs } from "./actions/createStarsFromConfigs";
-import { StarData } from "./Star/types/StarData";
-import { createStarConfigs } from "./actions/createStarConfigs";
+import type { StarConfig } from "./Star/types/StarConfig";
+import { createStarConfigs } from "./actions/create/createStarConfigs";
+import type { StarData } from "./Star/types/StarData";
+import { createStars } from "./actions/create/createStars";
 
 export class StarsController extends ObjectsController {
   private static _instance: StarsController | null = null;
@@ -44,7 +43,7 @@ export class StarsController extends ObjectsController {
   updateStars(
     starsData: StarData[],
   ) {
-    const starsToRender = createStarsFromConfigs(this.scene, starsData, this);
+    const starsToRender = createStars(this.scene, starsData);
 
     if (starsToRender.length > 0) {
       this.updateObjectToRender(starsToRender);

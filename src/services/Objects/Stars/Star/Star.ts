@@ -5,8 +5,8 @@ import { createStarMesh } from "./actions/createStarMesh";
 import { createStarMaterial } from "./actions/createStarMaterial";
 import { createStarTexture } from "./actions/createStarTexture";
 
-import { getParticleSPS } from "@/lib/Particles/SPS/helpers/getParticleSPS";
-import { getParticlePCS } from "@/lib/Particles/PCS/helpers/getParticlePCS";
+import { getParticleSPS } from "@/lib/Particles/SPS/actions/get/getParticleSPS";
+import { getParticlePCS } from "@/lib/Particles/PCS/actions/get/getParticlePCS";
 import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
 
 export class Star {

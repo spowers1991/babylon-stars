@@ -1,13 +1,13 @@
 import * as BABYLON from "babylonjs";
 import type { GalaxyConfig } from "./types/GalaxyConfig";
 import type { StarData } from "../../Stars/Star/types/StarData";
-import { createStarsPCS } from "./actions/createStarsPCS";
-import { createStarsSPS } from "./actions/createStarsSPS";
+import { createGalaxyPCS } from "./actions/createGalaxyPCS";
+import { createGalaxySPS } from "./actions/createGalaxySPS";
 
 export class Galaxy {
   public readonly id: number;
   public readonly name: string;
-  public readonly starsData: StarData[];
+  public starsData: StarData[];
   public scene: BABYLON.Scene;
   public pcs : BABYLON.PointsCloudSystem | null = null;
   public sps : BABYLON.SolidParticleSystem | null = null;
@@ -28,11 +28,11 @@ export class Galaxy {
   private async init() {
 
     //const PCSName = this.name+" PCS";
-    //const pcs = await createStarsPCS(this.scene, this.starsData, PCSName)
+    //const pcs = await createGalaxyPCS(this.scene, this.starsData, PCSName)
     //this.pcs = pcs;
 
     const SPSName = this.name + " SPS";
-    const sps = await createStarsSPS(this.scene, this.starsData, SPSName);
+    const sps = await createGalaxySPS(this.scene, this.starsData, SPSName);
     this.sps = sps;
   
   }

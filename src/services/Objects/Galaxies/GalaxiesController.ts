@@ -1,10 +1,24 @@
 import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
-import type { Galaxy } from "./Galaxy/types/Galaxy";
+import { Galaxy } from "./Galaxy/Galaxy";
 
 export class GalaxiesController extends ObjectsController{
   public galaxies: Galaxy[] = [];
   public galaxiesConfigs: any[] = [];
+
+  add(galaxy: Galaxy | Galaxy[]) {
+    const addOne = (g: Galaxy) => {
+      if (!this.galaxies.includes(g)) {
+        this.galaxies.push(g);
+      }
+      super.add(g);
+    };
+    if (Array.isArray(galaxy)) {
+      galaxy.forEach(addOne);
+    } else {
+      addOne(galaxy);
+    }
+  }
 
   private static _instance: GalaxiesController | null = null;
   
@@ -19,21 +33,12 @@ export class GalaxiesController extends ObjectsController{
     if (!GalaxiesController._instance) {
       if (!scene) {
         throw new Error(
-          "StarsController.instance(scene) must be called once with a BABYLON.Scene"
+          "GalaxiesController.instance(scene) must be called once with a BABYLON.Scene"
         );
       }
       GalaxiesController._instance = new GalaxiesController(scene);
     }
     return GalaxiesController._instance;
-  }
-
-  add(gameObject: Object | Object[]) {
-    if (Array.isArray(gameObject)) {
-      this.objects.push(...gameObject);
-      this.galaxies.push(...gameObject);
-    } else {
-      this.objects.push(gameObject);
-    }
   }
 
   getByName(name: string) {
