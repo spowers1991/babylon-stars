@@ -14,7 +14,7 @@ export function renderSPS(scene: BABYLON.Scene) {
     name: "SPS Update",
     interval: 1000,
     step: () => {
-      console.log("Updating SPS with new star data...");
+      //console.log("Updating SPS with new star data...");
       particlesController.updateSPS(
         galaxy.sps as BABYLON.SolidParticleSystem,
         galaxy.starsData as StarData[]

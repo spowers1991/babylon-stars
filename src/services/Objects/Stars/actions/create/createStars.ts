@@ -5,27 +5,26 @@ import { StarsController } from "../../StarsController";
 import type { StarData } from "../../Star/types/StarData";
 import type { StarConfig } from "../../Star/types/StarConfig";
 
-export function createStars(scene : BABYLON.Scene, starData: StarData[]){
+export function createStars(scene : BABYLON.Scene, activeStarsData: StarData[]){
     const starsController = StarsController.instance(scene);
     
     const  starIds = new Set<number>();
 
     const newStars: Star[] = [];
 
-    for (const { i } of starData) {
-    // Skip if already created
-    if (starIds.has(i)) continue;
-  
-    const cfg = starsController.starsConfigs.find(cfg => cfg.id === i) as StarConfig;
-    // if (!cfg) continue;
+    for (let i = 0; i < activeStarsData.length; i++) {
 
-    const star = createStar(scene, cfg!) as Star;
+        if (starIds.has(i)) continue;
+    
+        const starConfig = starsController.starsConfigs.find(starConfig => starConfig.id === i) as StarConfig;
+        
+        if (!starConfig) continue;
 
-    //starsController.stars.push(star);
-    starIds.add(i);
-    newStars.push(star);
+        const star = createStar(scene, starConfig!) as Star;
+
+        starIds.add(i);
+        newStars.push(star);
     }
 
-    // Only update renderer if we actually added something
     return newStars;
 }

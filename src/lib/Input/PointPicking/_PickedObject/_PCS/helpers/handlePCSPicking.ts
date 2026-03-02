@@ -1,7 +1,7 @@
 import { getPickedParticlePCS } from "../actions/get/getPickedParticlePCS";
 
-export function handlePCSPicking(controller: any, object: any) {
-  if(!object.pcs) return;
+export function handlePCSPicking(controller: any, element: any) {
+  if(!element.pcs) return;
   const camera = controller.getCamera();
-  return getPickedParticlePCS(controller.scene, camera, object.pcs);
+  return getPickedParticlePCS(controller.scene, camera, element.pcs);
 }

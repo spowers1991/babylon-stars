@@ -4,16 +4,17 @@ import { PointPickingController } from "../../../../PointPickingController";
 
 export function setNearbyDataSPS(
   scene: BABYLON.Scene,
-  data: any[],
-  setter: (data: any[]) => void
+  configs: any[],
+  setData: (data: any[]) => void
 ) {
+
   const particlesController = ParticlesController.instance(scene);
   const pickingController = PointPickingController.instance(scene);
 
-  const nearbyDataSPS = particlesController.createObjectArrayFromSPS(
+  const nearbyData = particlesController.createObjectsArrayFromSPS(
     pickingController.closestPicksSPS,
-    data
-  );
+    configs,
+  );  
 
-  setter(nearbyDataSPS);
+  setData(nearbyData);
 }

@@ -9,14 +9,15 @@ import { handleSPSPicking } from "./handleSPSPicking";
 
 export function handlePointerEventSPS(
   controller: any,
-  object: any,
-  setter: (data: any[]) => void,
+  element: any,
+  configs: any,
+  setData: (data: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
 
   const meshPick = handleMeshPicking(controller);
-  const spsPick = handleSPSPicking(controller, object);
+  const spsPick = handleSPSPicking(controller, element);
   const pickToFocus = determinePickToFocus(meshPick, null, spsPick);
   if (!pickToFocus) return;
 
@@ -25,7 +26,7 @@ export function handlePointerEventSPS(
   if (spsPick) {
     setPickingActions([
       () => setClosestPicksSPS(controller.scene, spsPick, controller),
-      () => setNearbyDataSPS(controller.scene, object.starsData, setter),
+      () => setNearbyDataSPS(controller.scene, configs, setData),
     ]);
   }
 }

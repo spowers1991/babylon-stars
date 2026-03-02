@@ -30,7 +30,7 @@ export class ObjectsController {
    * Applies max size limits and removes oldest items.
    */
 
-  public updateObjectToRender(newList: Object[]) {
+  public updateObjectsToRender(newList: Object[]) {
     const MAX_RENDER_OBJECTS = 20;
 
     // Keep only the first N objects
@@ -44,6 +44,7 @@ export class ObjectsController {
       if (!obj || !obj.mesh) continue;
       currentMeshes.add(obj.mesh);
       obj.mesh.setEnabled(true);
+          console.log("objects to render", this.objectsToRender);
     }
 
     // Disable + dispose objects no longer rendered

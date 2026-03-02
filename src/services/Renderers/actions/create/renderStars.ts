@@ -3,16 +3,15 @@ import { RenderersController } from "@/lib/Renderers/RenderersController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 
 export function renderStars(scene: BABYLON.Scene) {
-
   const starsController = StarsController.instance(scene);
-  
+
   return () => RenderersController.stepUpdate({
     id: "starUpdate",
     name: "Star Update",
     interval: 500,
     step: () => {
-      console.log("Updating stars...");
-      starsController.updateStars(starsController.stars);
+      //console.log("Updating stars...");
+      starsController.updateStars(starsController.activeStarsData);
     },
   });
 }

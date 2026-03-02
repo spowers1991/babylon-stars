@@ -1,8 +1,8 @@
 import * as BABYLON from "babylonjs";
 import { getParticlesInRadiusPCS as getParticlesinRadiusPCSAction } from "./PCS/actions/get/getParticlesInRadiusPCS";
 import { getParticlesInRadiusSPS as getParticlesInRadiusSPSAction} from "./SPS/actions/get/getParticlesInRadiusSPS";
-import { createObjectArrayFromPCS as createObjectArrayFromPCSAction } from "./PCS/actions/create/createObjectArrayFromPCS";
-import { createObjectArrayFromSPS as createObjectArrayFromSPSAction } from "./SPS/actions/create/createObjectArrayFromSPS";
+import { createObjectsArrayFromPCS as createObjectsArrayFromPCSAction } from "./PCS/actions/create/createObjectsArrayFromPCS";
+import { createObjectsArrayFromSPS as createObjectsArrayFromSPSAction } from "./SPS/actions/create/createObjectsArrayFromSPS";
 import { createPCS as createPCSAction } from "./PCS/actions/create/createPCS";
 import { createSPS as createSPSAction } from "./SPS/actions/create/createSPS"; 
 import { updatePCS as updatePCSAction } from "./PCS/actions/set/updatePCS";
@@ -117,11 +117,11 @@ export class ParticlesController {
     return particlesNearCenter;
   }
 
-  createObjectArrayFromPCS(particles : BABYLON.CloudPoint[], data: Object[]){
-    return createObjectArrayFromPCSAction(particles, data)
+  createObjectsArrayFromPCS(particles : BABYLON.CloudPoint[], configs: Object[]){
+    return createObjectsArrayFromPCSAction(particles, configs)
   }
 
-  createObjectArrayFromSPS(particles : BABYLON.SolidParticle[], data: Object[]){
-    return createObjectArrayFromSPSAction(particles, data)
+  createObjectsArrayFromSPS(particles : BABYLON.SolidParticle[], configs: Object[]){
+    return createObjectsArrayFromSPSAction(particles, configs)
   }
 }

@@ -9,14 +9,15 @@ import { handleMeshPicking } from "../../_Mesh/actions/helpers/handleMeshPicking
 
 export function handlePointerEventPCS(
   controller: any,
-  object: any,
-  setter: (data: any[]) => void,
+  element: any,
+  configs: any[],
+  setData: (data: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
 
   const meshPick = handleMeshPicking(controller);
-  const pcsPick = handlePCSPicking(controller, object);
+  const pcsPick = handlePCSPicking(controller, element);
   const pickToFocus = determinePickToFocus(meshPick, pcsPick, null);
   if (!pickToFocus) return;
 
@@ -25,7 +26,7 @@ export function handlePointerEventPCS(
   if (pcsPick) {
     setPickingActions([
       () => setClosestPicksPCS(controller.scene, pcsPick, controller),
-      () => setNearbyDataPCS(controller.scene, object.starsData, setter),
+      () => setNearbyDataPCS(controller.scene, configs, setData),
     ]);
   }
 }

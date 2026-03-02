@@ -9,7 +9,9 @@ export function setStarsData(scene: BABYLON.Scene, galaxy?: Galaxy) {
 
     const starsData = getStarsData() as StarData[];
 
-    galaxy && (galaxy.starsData = starsData);
+    //galaxy && (galaxy.starsData = starsData);
+
+    //starsController.stars = starsData;
 
     starsController.createConfigs(starsData);
 

@@ -5,13 +5,12 @@ import { StarsController } from "@/services/Objects/Stars/StarsController";
 
 export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const pickingController = PointPickingController.instance(scene);
-
-  pickingController.setCamera(scene.activeCamera!);
-
   const starsController = StarsController.instance(scene);
 
-  pickingController.setupPickingEvents(galaxy, (data) => {
-    starsController.stars = data;
+  pickingController.setCamera(scene.activeCamera!);
+  
+  pickingController.setupPickingEvents(galaxy, starsController.starsConfigs, (data) => {
+    starsController.activeStarsData = data;
   });
 
 }
