@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { handlePointerEvent } from "./actions/handlePointerEvent";
+import { handlePointerEvent } from "./actions/helpers/handlePointerEvent";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
@@ -34,7 +34,7 @@ export class PointPickingController {
     this.camera = camera;
   }
 
-  private getCamera(): BABYLON.Camera {
+  public getCamera(): BABYLON.Camera {
     if (!this.camera) {
       throw new Error("PointPickingController camera not set");
     }
@@ -44,8 +44,8 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPickingEvents(object: any, setter: (data: any[]) => void) {
-    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, object, setter, pointerInfo));
+  public setupPickingEvents(element: any, configs: any[], setData: (data: any[]) => void) {
+    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, element, configs, setData, pointerInfo));
   }
 
   // ─────────────────────────────────────────────

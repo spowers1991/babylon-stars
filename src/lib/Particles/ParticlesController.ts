@@ -1,12 +1,12 @@
 import * as BABYLON from "babylonjs";
-import { getParticlesInRadiusPCS } from "./PCS/helpers/getParticlesInRadiusPCS";
-import { getParticlesInRadiusSPS } from "./SPS/helpers/getParticlesInRadiusSPS";
-import { particlesToDataPCS } from "./PCS/actions/particlesToDataPCS";
-import { particlesToDataSPS } from "./SPS/actions/particlesToDataSPS";
-import { updatePCS } from "./PCS/actions/updatePCS";
-import { updateSPS } from "./SPS/actions/updateSPS";
-import { createPCS } from "./PCS/actions/createPCS";
-import { createSPS } from "./SPS/actions/createSPS"; 
+import { getParticlesInRadiusPCS as getParticlesinRadiusPCSAction } from "./PCS/actions/get/getParticlesInRadiusPCS";
+import { getParticlesInRadiusSPS as getParticlesInRadiusSPSAction} from "./SPS/actions/get/getParticlesInRadiusSPS";
+import { createObjectsArrayFromPCS as createObjectsArrayFromPCSAction } from "./PCS/actions/create/createObjectsArrayFromPCS";
+import { createObjectsArrayFromSPS as createObjectsArrayFromSPSAction } from "./SPS/actions/create/createObjectsArrayFromSPS";
+import { createPCS as createPCSAction } from "./PCS/actions/create/createPCS";
+import { createSPS as createSPSAction } from "./SPS/actions/create/createSPS"; 
+import { updatePCS as updatePCSAction } from "./PCS/actions/set/updatePCS";
+import { updateSPS as updateSPSAction } from "./SPS/actions/set/updateSPS";
 import type { SPSConfig } from "./SPS/types/SPSConfig";
 
 type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSystem;
@@ -59,11 +59,11 @@ export class ParticlesController {
     scene: BABYLON.Scene,
     data: any[],
     name: string){
-    createPCS(scene, data, name)
+    createPCSAction(scene, data, name)
   }
 
   updatePCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}){ 
-    updatePCS(pcs, data, options); 
+    updatePCSAction(pcs, data, options); 
   }
 
   getPCSByName(name: string): any | undefined {
@@ -82,7 +82,7 @@ export class ParticlesController {
     options: SPSConfig = {}
   ): Promise<BABYLON.SolidParticleSystem> {
     // Call the helper createSPS function
-    const sps = await createSPS(scene, data, name, options);
+    const sps = await createSPSAction(scene, data, name, options);
 
     // Add it to the controller's collection
     this.add(sps, name);
@@ -91,7 +91,7 @@ export class ParticlesController {
   }
 
   updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: SPSConfig = {}) {
-    updateSPS(sps, data, options);
+    updateSPSAction(sps, data, options);
   }
 
   getSPSByName(name: string): any | undefined {
@@ -108,20 +108,20 @@ export class ParticlesController {
   }
 
   getParticlesInRadiusPCS(center: BABYLON.Vector3, radius: number) {
-    const particlesNearCenter = getParticlesInRadiusPCS(this, center, radius);
+    const particlesNearCenter = getParticlesinRadiusPCSAction(this, center, radius);
     return particlesNearCenter;
   }
 
   getParticlesInRadiusSPS(center: BABYLON.Vector3, radius: number) {
-    const particlesNearCenter = getParticlesInRadiusSPS(this, center, radius);
+    const particlesNearCenter = getParticlesInRadiusSPSAction(this, center, radius);
     return particlesNearCenter;
   }
 
-  particlesToDataPCS(particles : BABYLON.CloudPoint[], data: Object[]){
-    return particlesToDataPCS(particles, data)
+  createObjectsArrayFromPCS(particles : BABYLON.CloudPoint[], configs: Object[]){
+    return createObjectsArrayFromPCSAction(particles, configs)
   }
 
-  particlesToDataSPS(particles : BABYLON.SolidParticle[], data: Object[]){
-    return particlesToDataSPS(particles, data)
+  createObjectsArrayFromSPS(particles : BABYLON.SolidParticle[], configs: Object[]){
+    return createObjectsArrayFromSPSAction(particles, configs)
   }
 }
