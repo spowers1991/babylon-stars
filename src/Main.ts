@@ -6,7 +6,6 @@ import { setPointPicking } from "@/services/Input/PointPicking/actions/set/setPo
 import { runRenders } from "@/services/Renderers/actions/run/runRenders";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
-import { setStarsData } from "./services/Objects/Stars/actions/set/setStarsData";
 
 window.addEventListener("DOMContentLoaded", async () => {
 
@@ -26,11 +25,13 @@ window.addEventListener("DOMContentLoaded", async () => {
     },
   ];
 
-  setStarsData(scene1);
+  //setStarsData(scene1);
   
   const galaxies = await createGalaxies(scene1, galaxiesConfigs);
 
   const milkyWay = galaxies.find(galaxy => galaxy.name === "Milky Way")!;
+
+  milkyWay.addStarsConfigs(starsJson);
 
   setPointPicking(scene1, milkyWay);
 

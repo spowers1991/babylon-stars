@@ -11,7 +11,7 @@ export function setNearbyDataSPS(
   const particlesController = ParticlesController.instance(scene);
   const pickingController = PointPickingController.instance(scene);
 
-  const nearbyData = particlesController.createObjectsArrayFromSPS(
+  const nearbyData = particlesController.createConfigsArrayFromSPS(
     pickingController.closestPicksSPS,
     configs,
   );  

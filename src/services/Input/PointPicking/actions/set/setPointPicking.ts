@@ -8,8 +8,8 @@ export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const starsController = StarsController.instance(scene);
 
   pickingController.setCamera(scene.activeCamera!);
-  
-  pickingController.setupPickingEvents(galaxy, starsController.starsConfigs, (data) => {
+
+  pickingController.setupPickingEvents(galaxy, galaxy.starsConfigs, (data) => {
     starsController.activeStarsData = data;
   });
 

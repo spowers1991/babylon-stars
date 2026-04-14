@@ -1,8 +1,8 @@
 import * as BABYLON from "babylonjs";
 
-export function createObjectsArrayFromSPS(
+export function createConfigsArrayFromSPS(
   particles: BABYLON.SolidParticle[],
-  configs: any[]
+  data: any[]
 ): any[] {
 
   const matchedConfigs: any[] = [];
@@ -10,8 +10,8 @@ export function createObjectsArrayFromSPS(
 
     const id = particle.idx
 
-    if(!configs) return;
-    const objectData = configs.find((config: any) => config.id === id);
+    if(!data) return;
+    const objectData = data.find((config: any) => config.id === id);
 
     if (!objectData) return;
 

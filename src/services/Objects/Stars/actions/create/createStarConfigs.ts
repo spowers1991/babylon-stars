@@ -3,10 +3,13 @@ import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 
-export function createStarConfigs(data: StarData[], starsController: StarsController): void {
+export function createStarConfigs(data: StarData[], starsController: StarsController): StarConfig[] {
+
+    const addedConfigs: StarConfig[] = [];
+    
     data.forEach(i => {
         if (!i) return;
-         const starConfig: StarConfig = {
+        const starConfig: StarConfig = {
             id: i.i!,
             name: i.n!,
             diameter: (i.p!),
@@ -16,7 +19,9 @@ export function createStarConfigs(data: StarData[], starsController: StarsContro
             position: new BABYLON.Vector3(i!.x!, i!.y!, i!.z!),
         };
 
-        starsController.addConfig(starConfig)
+        starsController.addConfig(starConfig);
+        addedConfigs.push(starConfig);
 
-    })
+    });
+    return addedConfigs;
 }

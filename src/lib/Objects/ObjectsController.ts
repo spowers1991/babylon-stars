@@ -44,7 +44,6 @@ export class ObjectsController {
       if (!obj || !obj.mesh) continue;
       currentMeshes.add(obj.mesh);
       obj.mesh.setEnabled(true);
-          console.log("objects to render", this.objectsToRender);
     }
 
     // Disable + dispose objects no longer rendered
