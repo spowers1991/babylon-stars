@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const milkyWay = galaxies.find(galaxy => galaxy.name === "Milky Way")!;
 
-  milkyWay.addStarsConfigs(starsJson);
+  console.log(galaxies);
 
   setPointPicking(scene1, milkyWay);
 

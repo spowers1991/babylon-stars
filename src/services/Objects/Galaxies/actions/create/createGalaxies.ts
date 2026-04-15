@@ -14,6 +14,8 @@ export async function createGalaxies(scene: BABYLON.Scene, galaxiesConfigs: Gala
       starsData: config.starsData,
     });
 
+    galaxy.addStarsConfigs(config.starsData as any);
+
     galaxiesController.add(galaxy);
 
     return galaxy;
