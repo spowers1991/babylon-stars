@@ -11,7 +11,7 @@ export function handlePointerEventSPS(
   controller: any,
   element: any,
   configs: any,
-  setData: (data: any[]) => void,
+  setConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
@@ -26,7 +26,7 @@ export function handlePointerEventSPS(
   if (spsPick) {
     setPickingActions([
       () => setClosestPicksSPS(controller.scene, spsPick, controller),
-      () => setNearbyDataSPS(controller.scene, configs, setData),
+      () => setNearbyDataSPS(controller.scene, configs, setConfigs),
     ]);
   }
 }

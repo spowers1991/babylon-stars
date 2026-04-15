@@ -11,7 +11,7 @@ export function handlePointerEventPCS(
   controller: any,
   element: any,
   configs: any[],
-  setData: (data: any[]) => void,
+  setConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
@@ -26,7 +26,7 @@ export function handlePointerEventPCS(
   if (pcsPick) {
     setPickingActions([
       () => setClosestPicksPCS(controller.scene, pcsPick, controller),
-      () => setNearbyDataPCS(controller.scene, configs, setData),
+      () => setNearbyDataPCS(controller.scene, configs, setConfigs),
     ]);
   }
 }

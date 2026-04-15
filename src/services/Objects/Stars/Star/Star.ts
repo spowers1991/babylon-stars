@@ -24,7 +24,7 @@ export class Star {
     this.mesh = createStarMesh(
       scene, 
       this.name, 
-      ((config.diameter! < 0.1) ? 0.1 : config.diameter! / 5000), 
+      (config.diameter! / 50), 
     ) as BABYLON.AbstractMesh;
     
     const textureUrl = config.textureUrl!;

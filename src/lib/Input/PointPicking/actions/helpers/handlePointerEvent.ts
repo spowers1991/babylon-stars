@@ -12,7 +12,7 @@ export function handlePointerEvent(
   pointPickingController: PointPickingController,
   element: any,
   configs: any,
-  setData: (data: any[]) => void,
+  setConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
@@ -40,10 +40,10 @@ export function handlePointerEvent(
       // Add mesh-specific logic here if needed
       break;
     case "PCSParticle":
-      handlePointerEventPCS(pointPickingController, element, configs, setData, pointerInfo);
+      handlePointerEventPCS(pointPickingController, element, configs, setConfigs, pointerInfo);
       break;
     case "SPSParticle":
-      handlePointerEventSPS(pointPickingController, element, configs, setData, pointerInfo);
+      handlePointerEventSPS(pointPickingController, element, configs, setConfigs, pointerInfo);
       break;
     default:
       break;
