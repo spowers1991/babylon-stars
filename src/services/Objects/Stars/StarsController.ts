@@ -37,7 +37,7 @@ export class StarsController extends ObjectsController {
   }
 
   createConfigs(starsData : StarData[]){
-    createStarConfigs(starsData, this);
+    return createStarConfigs(starsData, this);
   }
 
   updateStars(
