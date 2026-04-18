@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import { StarConfig } from "./types/StarConfig";
 
 import { createStarMesh } from "./actions/createStarMesh";
+import { setStarSize } from "./actions/set/setStarSize";
 import { createStarMaterial } from "./actions/createStarMaterial";
 import { createStarTexture } from "./actions/createStarTexture";
 
@@ -22,9 +23,9 @@ export class Star {
     this.name = config.name!;
 
     this.mesh = createStarMesh(
-      scene, 
-      this.name, 
-      (config.diameter! / 50), 
+      scene,
+      this.name,
+      config.diameter! * 2,
     ) as BABYLON.AbstractMesh;
     
     const textureUrl = config.textureUrl!;

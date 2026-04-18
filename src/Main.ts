@@ -31,7 +31,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const milkyWay = galaxies.find(galaxy => galaxy.name === "Milky Way")!;
 
-  console.log(galaxies);
+  console.log(scenes);
+
+  const glow = new BABYLON.GlowLayer("glow", scene1 as any);
+  glow.intensity = 0.5;
 
   setPointPicking(scene1, milkyWay);
 
