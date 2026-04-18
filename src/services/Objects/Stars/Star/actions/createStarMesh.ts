@@ -9,6 +9,7 @@ export function createStarMesh(
   name: string,
   diameter: number,
 ): BABYLON.Mesh {
+  console.log(diameter)
   const assetsController = AssetsController.instance;
   return assetsController.meshes.create(scene, "sphere", name, { diameter, segments: 10 });
 }

@@ -10,7 +10,7 @@ export class StarsController extends ObjectsController {
 
   private scene!: BABYLON.Scene;
 
-  public activeStarsData: StarData[] = [];
+  public activeStarsConfigs: StarConfig[] = [];
   public starsConfigs: StarConfig[] = [];
 
   private constructor(scene: BABYLON.Scene) {
@@ -41,10 +41,10 @@ export class StarsController extends ObjectsController {
   }
 
   updateStars(
-    activeStarsData: StarData[],
+    activeStarsConfigs: StarConfig[],
   ) {
 
-    const starsToRender = createStars(this.scene, activeStarsData);
+    const starsToRender = createStars(this.scene, activeStarsConfigs);
 
     if (starsToRender.length > 0) {
       this.updateObjectsToRender(starsToRender);
@@ -52,7 +52,7 @@ export class StarsController extends ObjectsController {
   }
 
   getAllStars() {
-    return this.activeStarsData;
+    return this.activeStarsConfigs;
   }
 
   getAllStarsConfigs() {

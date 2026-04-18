@@ -1,4 +1,6 @@
+
 import * as BABYLON from "babylonjs";
+import { setStarSize } from "../../Star/actions/set/setStarSize";
 import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
@@ -12,7 +14,7 @@ export function createStarConfigs(data: StarData[], starsController: StarsContro
         const starConfig: StarConfig = {
             id: i.i!,
             name: i.n!,
-            diameter: (i.p!),
+            diameter: setStarSize(i.p!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),
             emissiveIntensity: 1,

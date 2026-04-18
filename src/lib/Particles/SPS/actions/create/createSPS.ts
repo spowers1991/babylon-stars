@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import type { PointData } from "../../../PCS/types/PointData";
 import { setPointData } from "../../../PCS/actions/set/setPointData";
 import type { SPSConfig } from "../../types/SPSConfig";
+import { setStarSize } from "@/services/Objects/Stars/Star/actions/set/setStarSize";
 
 export async function createSPS(
   scene: BABYLON.Scene,
@@ -27,8 +28,11 @@ export async function createSPS(
     const particle = sps.particles[i];
     const p = pointData[i];
     if (!p) continue;
-    particle.scaling.setAll(data[i]?.p / 5000);
-    particle.position.set(p.x, p.y, p.z);
+    // Use the same size logic as Star
+    const d = setStarSize(data[i]?.p);
+    // If you want to use diameter as scale, setAll(d / diameter)
+    particle.scaling.setAll(d / diameter);
+    particle.position.set(p.x * 4, p.y * 4, p.z * 4);
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)
       : new BABYLON.Color4(1, 1, 1, 1);
