@@ -17,7 +17,7 @@ export function createStarConfigs(data: StarData[], starsController: StarsContro
             diameter: setStarSize(i.p!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),
-            emissiveIntensity: 1,
+            emissiveIntensity: setStarSize(i.N!) || 1,
             position: new BABYLON.Vector3(i!.x!, i!.y!, i!.z!),
         };
 

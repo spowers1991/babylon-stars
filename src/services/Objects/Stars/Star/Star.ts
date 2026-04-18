@@ -1,14 +1,14 @@
 import * as BABYLON from "babylonjs";
 import { StarConfig } from "./types/StarConfig";
 
-import { createStarMesh } from "./actions/createStarMesh";
+import { createStarMesh } from "./actions/create/createStarMesh";
 import { setStarSize } from "./actions/set/setStarSize";
-import { createStarMaterial } from "./actions/createStarMaterial";
-import { createStarTexture } from "./actions/createStarTexture";
+import { createStarMaterial } from "./actions/create/createStarMaterial";
+import { createStarTexture } from "./actions/create/createStarTexture";
 
-import { getParticleSPS } from "@/lib/Particles/SPS/actions/get/getParticleSPS";
-import { getParticlePCS } from "@/lib/Particles/PCS/actions/get/getParticlePCS";
-import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
+import { setEmissiveTexture } from "./actions/set/setEmissiveTexture";
+import { setEmissiveColor } from "./actions/set/setEmissiveColor";
+import { setMeshPosToParticlePos } from "./actions/set/setMeshPosToParticlesPos";
 
 export class Star {
   public id?: number;
@@ -25,9 +25,11 @@ export class Star {
     this.mesh = createStarMesh(
       scene,
       this.name,
-      config.diameter! * 1.5,
+      setStarSize(config.diameter!)* 1.5,
     ) as BABYLON.AbstractMesh;
     
+  
+    //const textureUrl = "textures/stars/classes/g/texture1.jpg";
     const textureUrl = config.textureUrl!;
 
     this.texture = createStarTexture(
@@ -44,25 +46,24 @@ export class Star {
       config.emissiveIntensity!,
     ) as BABYLON.Material;
 
-    const particlePCS = getParticlePCS(
-      scene,
-      'Milky Way PCS',
-      this.id
+    setEmissiveTexture(
+      this.mesh!, 
+      this.material!, 
+      this.texture!
     );
 
-    const particleSPS = getParticleSPS(
-      scene,
-      'Milky Way SPS',
-      this.id
+    setEmissiveColor(
+      this.mesh!,
+      this.material!,
+      new BABYLON.Color3(
+        config.emissiveColor!.r * config.emissiveIntensity!, 
+        config.emissiveColor!.g * config.emissiveIntensity!, 
+        config.emissiveColor!.b * config.emissiveIntensity!)
     );
 
-    const particle = particleSPS ? particleSPS : particlePCS
+    setMeshPosToParticlePos(scene, this);
 
-    moveToParticle(
-      this.mesh, 
-      particle?.position
-    ); 
-    
+    // Turn mesh off until activated by default.
     this.mesh.setEnabled(false);
   }
 }

@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { createStar } from "../../Star/actions/createStar";
+import { createStar } from "../../Star/actions/create/createStar";
 import { Star } from "../../Star/Star";
 import type { StarConfig } from "../../Star/types/StarConfig";
 
@@ -13,8 +13,7 @@ export function createStars(scene : BABYLON.Scene, activeStarsConfigs: StarConfi
         const star = createStar(scene, starConfig!) as Star;
 
         newStars.push(star);
-
-        console.log(newStars)
+        
     }
    
     return newStars;

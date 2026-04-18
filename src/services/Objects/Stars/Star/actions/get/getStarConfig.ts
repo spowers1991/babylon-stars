@@ -1,6 +1,6 @@
 import * as BABYLON from "babylonjs";
-import { StarData } from "../types/StarData";
-import { StarConfig } from "../types/StarConfig";
+import { StarData } from "../../types/StarData";
+import { StarConfig } from "../../types/StarConfig";
 
 export function getStarConfig(star: StarData){
 

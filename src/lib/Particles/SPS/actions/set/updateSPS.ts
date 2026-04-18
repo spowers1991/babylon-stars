@@ -13,6 +13,11 @@ export function updateSPS(
     if (d.K) colorById.set(d.i, d.K);
   }
 
+  const luminosityById = new Map<number, { N: number }>();
+  for (const d of data) {
+    if (d.N) luminosityById.set(d.i, d.N);
+  }
+
   for (let i = 0; i < sps.nbParticles; i++) {
     const p = sps.particles[i];
 
@@ -22,12 +27,14 @@ export function updateSPS(
     //console.log(data[i].p / 5000)
     const colorData = colorById.get(i);
 
+    const luminosityData = luminosityById.get(i);
+
     if (colorData) {
       p.color.set(
         colorData.r,
         colorData.g,
         colorData.b,
-        1
+        luminosityData ? luminosityData.N : 1
       );
       //p.scaling.setAll(data[i]?.p / 5000 || visibleScale);
     } else {

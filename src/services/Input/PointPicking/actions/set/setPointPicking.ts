@@ -9,8 +9,8 @@ export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.setCamera(scene.activeCamera!);
 
-  pickingController.setupPickingEvents(galaxy, galaxy.starsConfigs, (configs) => {
-    starsController.activeStarsConfigs = configs;
+  pickingController.setupPickingEvents(galaxy, 25, galaxy.starsConfigs, (configsToMatchWithPicks) => {
+    starsController.activeStarsConfigs = configsToMatchWithPicks;
   });
 
 }

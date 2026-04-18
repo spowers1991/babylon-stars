@@ -10,7 +10,8 @@ import { handleSPSPicking } from "./handleSPSPicking";
 export function handlePointerEventSPS(
   controller: any,
   element: any,
-  configs: any,
+  nearbyPickRadius: number,
+  configsToMatchWithPicks: any,
   setConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
@@ -25,8 +26,8 @@ export function handlePointerEventSPS(
 
   if (spsPick) {
     setPickingActions([
-      () => setClosestPicksSPS(controller.scene, spsPick, controller),
-      () => setNearbyDataSPS(controller.scene, configs, setConfigs),
+      () => setClosestPicksSPS(controller.scene, spsPick, nearbyPickRadius, controller),
+      () => setNearbyDataSPS(controller.scene, configsToMatchWithPicks, setConfigs),
     ]);
   }
 }
