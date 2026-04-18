@@ -37,6 +37,12 @@ export function createCameraByType(
         arcCamera.upperRadiusLimit = cameraConfig.upperRadiusLimit;
       }
 
+      if (cameraConfig.zoomSpeed !== undefined) {
+        arcCamera.wheelPrecision = cameraConfig.zoomSpeed;
+      }
+      if (cameraConfig.panSpeed !== undefined) {
+        arcCamera.panningSensibility = cameraConfig.panSpeed;
+      }
       arcCamera.attachControl(canvas, true);
       return arcCamera;
     }

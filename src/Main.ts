@@ -7,6 +7,7 @@ import { runRenders } from "@/services/Renderers/actions/run/runRenders";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 
+
 window.addEventListener("DOMContentLoaded", async () => {
 
   const { canvas, engine } = startEngine("renderCanvas");
@@ -35,7 +36,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const glow = new BABYLON.GlowLayer("glow", scene1 as any);
   glow.intensity = 0.5;
-
+  scene1.clearColor = new BABYLON.Color4(0, 0, 0, 1);
+  
   setPointPicking(scene1, milkyWay);
 
   runRenders(engine, scene1);

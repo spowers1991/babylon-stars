@@ -5,10 +5,11 @@ import { PointPickingController } from "../../../../PointPickingController";
 export function setClosestPicksSPS(
   scene: BABYLON.Scene,
   spsPick: BABYLON.SolidParticle | null,
+  nearbyPickRadius: number,
   controller: PointPickingController
 ) {
   controller.closestPicksSPS = ParticlesController.instance(scene).getParticlesInRadiusSPS(
     spsPick?.position!,
-    5
+    nearbyPickRadius
   );
 }

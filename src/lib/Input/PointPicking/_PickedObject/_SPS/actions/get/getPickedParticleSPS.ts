@@ -4,7 +4,7 @@ export function getPickedParticleSPS(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   sps: BABYLON.SolidParticleSystem,
-  pickRadius = 10,           // world units
+  pickRadius = 1,           // world units
 ): BABYLON.SolidParticle | null {
 
   const ray = scene.createPickingRay(

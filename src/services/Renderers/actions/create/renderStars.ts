@@ -10,8 +10,8 @@ export function renderStars(scene: BABYLON.Scene) {
     name: "Star Update",
     interval: 500,
     step: () => {
-      //console.log(scene);
       starsController.updateStars(starsController.activeStarsConfigs);
+      console.log(starsController.getObjectsToRender());
     },
   });
 }

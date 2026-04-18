@@ -13,4 +13,6 @@ export interface CameraConfig {
   target?: BABYLON.Vector3;
   minZ?: number;
   maxZ?: number;
+  zoomSpeed?: number; // Matches Babylon's wheelPrecision (lower = faster)
+  panSpeed?: number; // Matches Babylon's panningSensibility (lower = faster)
 }
