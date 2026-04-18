@@ -14,6 +14,12 @@ export function createArcRotateCamera(
     options.target ?? BABYLON.Vector3.Zero(),
     scene
   );
+  if (options.zoomSpeed !== undefined) {
+    cam.wheelPrecision = options.zoomSpeed;
+  }
+  if (options.panSpeed !== undefined) {
+    cam.panningSensibility = options.panSpeed;
+  }
   cam.attachControl(canvas, true);
   return cam;
 }
