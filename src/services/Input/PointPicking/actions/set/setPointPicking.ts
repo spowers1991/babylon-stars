@@ -2,6 +2,7 @@ import * as BABYLON from "babylonjs";
 import { PointPickingController } from "@/lib/Input/PointPicking/PointPickingController";
 import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
+import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 
 export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const pickingController = PointPickingController.instance(scene);
@@ -9,8 +10,12 @@ export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.setCamera(scene.activeCamera!);
 
-  pickingController.setupPickingEvents(galaxy, 25, galaxy.starsConfigs, (configsToMatchWithPicks) => {
-    starsController.activeStarsConfigs = configsToMatchWithPicks;
-  });
-
+  pickingController.setupPickingEvents(
+    /* element: */ galaxy,
+    /* options: */ { pickRadius: 25 },
+    /* matchedConfigsFromPick: */ galaxy.starsConfigs,
+    /* setActiveConfigs: */ (matchedConfigsFromPick) => {
+      starsController.activeStarsConfigs = matchedConfigsFromPick as StarConfig[];
+    }
+  );
 }

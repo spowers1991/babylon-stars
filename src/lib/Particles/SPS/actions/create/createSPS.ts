@@ -32,7 +32,7 @@ export async function createSPS(
     const d = setStarSize(data[i]?.p);
     // If you want to use diameter as scale, setAll(d / diameter)
     particle.scaling.setAll(d / diameter);
-    particle.position.set(p.x * 10, p.y * 10, p.z * 10);
+    particle.position.set(p.x * 15, p.y * 15, p.z * 15);
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)
       : new BABYLON.Color4(1, 1, 1, 1);
@@ -43,11 +43,16 @@ export async function createSPS(
   // Build mesh
   sps.buildMesh();
 
-  // Material that shows particle colors
+
+  // Material that shows particle colors and supports transparency
   const mat = new BABYLON.StandardMaterial(`${name}_mat`, scene);
   mat.disableLighting = true;        // optional
   mat.emissiveColor = BABYLON.Color3.White();
+  mat.alpha = 1;
+  mat.transparencyMode = BABYLON.Material.MATERIAL_ALPHABLEND;
+  mat.needDepthPrePass = true;
   sps.mesh!.material = mat;
+  sps.mesh!.hasVertexAlpha = true;
   sps.mesh!.alwaysSelectAsActiveMesh = true;
 
   template.dispose();

@@ -1,9 +1,9 @@
-import { renderScene as scenes } from "./actions/create/renderScene";
+import { renderCamera as camera } from "./actions/create/renderCamera";
 import { renderStars as stars} from "./actions/create/renderStars";
 import { renderSPS as particles } from "./actions/create/renderSPS";
 
 export const Render = {
-	scenes,
+	camera,
 	stars,
 	particles,
 };

@@ -6,7 +6,8 @@ export function runRenders(engine: BABYLON.Engine, scene: BABYLON.Scene) {
     RenderersController.runRenders(
         engine,
         scene,
-        [
+        [   
+            //Render.camera(scene),
             Render.stars(scene),
             Render.particles(scene),
         ]

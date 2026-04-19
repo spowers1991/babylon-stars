@@ -1,5 +1,6 @@
 export class ObjectsController {
   public objects: Object[] = [];
+  public activeObject: Object | null = null;
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
 
@@ -55,7 +56,7 @@ export class ObjectsController {
         obj.mesh.dispose();
       }
     }
-
+    this.activeObject = this.objectsToRender[0] || null;
     // Update unrender set correctly
     this.objectsToUnrender = new Set(this.objectsToRender);
   }

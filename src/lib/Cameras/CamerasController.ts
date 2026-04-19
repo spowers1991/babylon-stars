@@ -1,6 +1,8 @@
 import * as BABYLON from "babylonjs";
 import { CameraConfig } from "./Camera/types/CameraConfig";
 import { createCameraByType } from "./Camera/factories/createCameraByType";
+import { getCameraZoom } from "./Camera/actions/get/getCameraZoom";
+import { getCameraZoomClamped } from "./Camera/actions/get/getCameraZoomClamped";
 
 export class CamerasController {
 
@@ -49,6 +51,14 @@ export class CamerasController {
 
   public getActiveCamera(): BABYLON.Camera | undefined {
     return this.activeCamera;
+  }
+
+  public getZoomLevel(camera?: BABYLON.Camera): number | null {
+    return getCameraZoom(camera || this.activeCamera!);
+  }
+
+  public getZoomLevelClamped(camera?: BABYLON.Camera): number | null {
+    return getCameraZoomClamped(camera || this.activeCamera!);
   }
 
   /**
