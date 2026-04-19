@@ -1,5 +1,6 @@
 import * as BABYLON from "babylonjs";
 import { StarConfig } from "./types/StarConfig";
+import { createSpectralClass } from "./actions/create/createSpectralClass";
 
 import { createStarMesh } from "./actions/create/createStarMesh";
 import { setStarSize } from "./actions/set/setStarSize";
@@ -19,45 +20,41 @@ export class Star {
   public texture?: BABYLON.Texture;
 
   constructor(scene: BABYLON.Scene, config: StarConfig) {
-    
     this.id = config.id!;
     this.name = config.name!;
 
     this.mesh = createStarMesh(
       scene,
       this.name,
-      setStarSize(config.diameter!)* 1.5,
+      setStarSize(config.diameter!) * 1.25,
     ) as BABYLON.AbstractMesh;
-    
-  
+
     //const textureUrl = "textures/stars/classes/g/texture1.jpg";
     const textureUrl = config.textureUrl!;
 
     this.texture = createStarTexture(
-      scene, 
-      this.name, 
-      textureUrl!, 
+      scene,
+      this.name,
+      textureUrl!,
     ) as BABYLON.Texture;
 
     const shaderMaterial = createStarSurfaceShader(
       scene,
-      `${name}_starShader`,
-      config.emissiveColor as BABYLON.Color3,
-      config.emissiveIntensity
+      `${this.name}_starShader`,
+      config
     );
 
     this.material = createStarMaterial(
       scene,
       this.name,
       this.mesh,
-      config.emissiveColor!,
-      config.emissiveIntensity!,
+      config,
       shaderMaterial
     ) as BABYLON.Material;
 
     setEmissiveTexture(
-      this.mesh!, 
-      this.material!, 
+      this.mesh!,
+      this.material!,
       this.texture!
     );
 

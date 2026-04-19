@@ -2,6 +2,8 @@
 import * as BABYLON from "babylonjs";
 import { ShadersController } from "@/lib/Assets/modules/Shaders/ShadersController";
 import { STAR_VERTEX_SHADER, STAR_FRAGMENT_SHADER } from "../../shaders/StarShaders";
+import { Star } from "../../Star";
+import { StarConfig } from "../../types/StarConfig";
 
 /**
  * Creates a ShaderMaterial for a star-like animated surface.
@@ -13,8 +15,7 @@ import { STAR_VERTEX_SHADER, STAR_FRAGMENT_SHADER } from "../../shaders/StarShad
 export function createStarSurfaceShader(
   scene: BABYLON.Scene,
   name: string,
-  color: BABYLON.Color3,
-  intensity: number = 1.0
+  config: StarConfig
 ): BABYLON.ShaderMaterial {
   const shaderMaterial = ShadersController.instance.getShaderMaterial(
     scene,
@@ -24,8 +25,8 @@ export function createStarSurfaceShader(
     ["worldViewProjection", "time", "starColor", "intensity", "turbulenceScale", "turbulenceDetail"],
     ["position", "normal", "uv"]
   );
-  shaderMaterial.setColor3("starColor", color);
-  shaderMaterial.setFloat("intensity", intensity);
+  shaderMaterial.setColor3("starColor", config.emissiveColor as BABYLON.Color3);
+  shaderMaterial.setFloat("intensity", config.emissiveIntensity as number);
   // Set turbulenceScale and turbulenceDetail manually or from StarConfig in the future
   shaderMaterial.setFloat("turbulenceScale", 3.0);
   shaderMaterial.setFloat("turbulenceDetail", 8.0);

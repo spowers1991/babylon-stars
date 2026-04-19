@@ -1,6 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { MaterialsController } from "@/lib/Assets/modules/Materials/MaterialsController";
 import { AssetsController } from "@/lib/Assets/AssetsController";
+import { StarConfig } from "../../types/StarConfig";
 
 /**
  * Creates and configures a PBR material for a star.
@@ -9,8 +10,7 @@ export function createStarMaterial(
   scene: BABYLON.Scene,
   name: string,
   mesh: BABYLON.AbstractMesh,
-  emissiveColor: BABYLON.Color3,
-  emissiveIntensity: number,
+  config: StarConfig,
   shaderMaterial: BABYLON.ShaderMaterial
 ): any {
   
