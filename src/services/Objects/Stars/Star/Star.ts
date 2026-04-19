@@ -5,6 +5,7 @@ import { createStarMesh } from "./actions/create/createStarMesh";
 import { setStarSize } from "./actions/set/setStarSize";
 import { createStarMaterial } from "./actions/create/createStarMaterial";
 import { createStarTexture } from "./actions/create/createStarTexture";
+import { createStarSurfaceShader } from "./actions/create/createSurfaceShader";
 
 import { setEmissiveTexture } from "./actions/set/setEmissiveTexture";
 import { setEmissiveColor } from "./actions/set/setEmissiveColor";
@@ -38,12 +39,20 @@ export class Star {
       textureUrl!, 
     ) as BABYLON.Texture;
 
+    const shaderMaterial = createStarSurfaceShader(
+      scene,
+      `${name}_starShader`,
+      config.emissiveColor as BABYLON.Color3,
+      config.emissiveIntensity
+    );
+
     this.material = createStarMaterial(
       scene,
       this.name,
       this.mesh,
       config.emissiveColor!,
       config.emissiveIntensity!,
+      shaderMaterial
     ) as BABYLON.Material;
 
     setEmissiveTexture(

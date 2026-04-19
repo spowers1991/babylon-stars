@@ -11,14 +11,15 @@ export function createStarMaterial(
   mesh: BABYLON.AbstractMesh,
   emissiveColor: BABYLON.Color3,
   emissiveIntensity: number,
-): BABYLON.StandardMaterial {
+  shaderMaterial: BABYLON.ShaderMaterial
+): any {
   
-  const assetsController = AssetsController.instance;
-  const materials = assetsController.materials;
-  const material = materials.createStandard(scene, `${name}`);
-  materials.setEmissiveColor({ material, color: emissiveColor });
-  materials.setEmissiveIntensity({ material, value: emissiveIntensity });
-  mesh.material = material;
+  //const assetsController = AssetsController.instance;
+  //const materials = assetsController.materials;
+  //const material = materials.createStandard(scene, `${name}`);
+  //materials.setEmissiveColor({ material, color: emissiveColor });
+  //materials.setEmissiveIntensity({ material, value: emissiveIntensity });
+  //mesh.material = material;
 
-  return material;
+  mesh.material = shaderMaterial
 }

@@ -1,6 +1,6 @@
 import * as BABYLON from "babylonjs";
 
-export function moveToParticle(
+export function setMeshPosition(
   mesh: BABYLON.AbstractMesh,
   position?: BABYLON.Vector3
 ) {

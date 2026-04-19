@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { getParticlePCS } from "@/lib/Particles/PCS/actions/get/getParticlePCS";
 import { getParticleSPS } from "@/lib/Particles/SPS/actions/get/getParticleSPS";
-import { moveToParticle } from "@/lib/Assets/modules/Meshes/Mesh/actions/moveToPosition";
+import { setMeshPosition } from "@/lib/Assets/modules/Meshes/Mesh/actions/set/setMeshPosition";
 import { Star } from "../../Star";
 
 export function setMeshPosToParticlePos(scene: BABYLON.Scene, star: Star) {
@@ -20,7 +20,7 @@ export function setMeshPosToParticlePos(scene: BABYLON.Scene, star: Star) {
   
       const particle = particleSPS ? particleSPS : particlePCS
   
-      moveToParticle(
+      setMeshPosition(
         star.mesh, 
         particle?.position
       ); 

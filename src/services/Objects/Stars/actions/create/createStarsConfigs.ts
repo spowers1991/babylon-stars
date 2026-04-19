@@ -5,7 +5,7 @@ import { StarData } from "@/services/Objects/Stars/Star/types/StarData";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 
-export function createStarConfigs(data: StarData[], starsController: StarsController): StarConfig[] {
+export function createStarsConfigs(data: StarData[], starsController: StarsController): StarConfig[] {
 
     const addedConfigs: StarConfig[] = [];
     
