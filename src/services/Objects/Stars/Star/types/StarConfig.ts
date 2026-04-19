@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 
 export interface StarConfig {
-  id: number;          
+  id: number;
   name?: string;
   diameter?: number;
   textureUrl?: string;
@@ -9,4 +9,5 @@ export interface StarConfig {
   emissiveIntensity?: number;
   position?: BABYLON.Vector3;
   pointCount?: number;
+  spectralClass?: string;
 }

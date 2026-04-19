@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
 import type { StarConfig } from "./Star/types/StarConfig";
-import { createStarConfigs } from "./actions/create/createStarConfigs";
+import { createStarsConfigs } from "./actions/create/createStarsConfigs";
 import type { StarData } from "./Star/types/StarData";
 import { createStars } from "./actions/create/createStars";
 
@@ -37,7 +37,7 @@ export class StarsController extends ObjectsController {
   }
 
   createConfigs(starsData : StarData[]){
-    return createStarConfigs(starsData, this);
+    return createStarsConfigs(starsData, this);
   }
 
   updateStars(
