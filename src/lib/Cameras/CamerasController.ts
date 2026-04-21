@@ -53,12 +53,12 @@ export class CamerasController {
     return this.activeCamera;
   }
 
-  public getZoomLevel(camera?: BABYLON.Camera): number | null {
-    return getCameraZoom(camera || this.activeCamera!);
+  public getZoomLevel(camera?: BABYLON.Camera, options?: { inverted?: boolean, minZoom?: number, maxZoom?: number }): number | null {
+    return getCameraZoom(camera || this.activeCamera!, options);
   }
 
-  public getZoomLevelClamped(camera?: BABYLON.Camera): number | null {
-    return getCameraZoomClamped(camera || this.activeCamera!);
+  public getZoomLevelClamped(camera?: BABYLON.Camera, options?: { inverted?: boolean }): number | null {
+    return getCameraZoomClamped(camera || this.activeCamera!, options);
   }
 
   /**

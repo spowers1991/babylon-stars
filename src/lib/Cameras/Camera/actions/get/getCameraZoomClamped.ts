@@ -1,6 +1,6 @@
 import * as BABYLON from "babylonjs";
 
-export function getCameraZoomClamped(camera: BABYLON.Camera): number | null {
+export function getCameraZoomClamped(camera: BABYLON.Camera, options?: { inverted?: boolean }): number | null {
  
     if (camera && camera instanceof BABYLON.ArcRotateCamera) {
     // Clamp transparency between 0 (fully transparent) and 1 (fully opaque) as a factor of zoom
@@ -13,7 +13,7 @@ export function getCameraZoomClamped(camera: BABYLON.Camera): number | null {
       // If camera is closer than minZoom, treat as fully zoomed in (0)
       if (clampedZoom <= minZoom) return 0;
       // If camera is at or beyond maxZoom, treat as fully zoomed out (1)
-      if (clampedZoom >= maxZoom) return 1;
+      if (clampedZoom >= maxZoom) return zoomFactor;
       return zoomFactor;
     }
 

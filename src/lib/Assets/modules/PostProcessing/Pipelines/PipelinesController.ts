@@ -12,8 +12,8 @@ export class PipelinesController {
     return pipeline;
   }
 
-  public getPipelineByName(name: string) {
-    return this.pipelines.find(p => p.name === name);
+  public getPipelineByName(scene: any, name: string) {
+    return this.pipelines.find(p => p.name === name && p.scene === scene);
   }
 
   public setPipeline(pipeline: any) {
