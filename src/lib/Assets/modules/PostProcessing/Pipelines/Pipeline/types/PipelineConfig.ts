@@ -5,4 +5,5 @@ export interface PipelineConfig {
   bloomWeight?: number;
   bloomKernel?: number;
   bloomScale?: number;
+  fxaaEnabled?: boolean;
 }

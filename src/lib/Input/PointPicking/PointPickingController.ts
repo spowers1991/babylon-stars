@@ -46,7 +46,7 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPickingEvents(element: any, options: { pickRadius: number }, matchedConfigsFromPick: unknown[], setActiveConfigs: (configs: unknown[]) => void) {
+  public createPickingEvents(element: any, options: { pickRadius: number }, matchedConfigsFromPick: unknown[], setActiveConfigs: (configs: unknown[]) => void) {
     this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, element, options, matchedConfigsFromPick, setActiveConfigs, pointerInfo));
   }
 

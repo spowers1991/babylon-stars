@@ -16,6 +16,6 @@ export function createDefaultPipeline(scene: BABYLON.Scene, config?: PipelineCon
   pipeline.bloomWeight = config?.bloomWeight ?? 0.86;
   pipeline.bloomKernel = config?.bloomKernel ?? 164;
   pipeline.bloomScale = config?.bloomScale ?? 0.1;
-  pipeline.fxaaEnabled = true;
+  pipeline.fxaaEnabled = config?.fxaaEnabled ?? false;
   return pipeline;
 }

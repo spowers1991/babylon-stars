@@ -2,7 +2,7 @@ import * as BABYLON from "babylonjs";
 import { ScenesController } from '@/lib/Scenes/ScenesController';
 import Scenes from '../../Scenes';
 
-export function setScenes(engine: BABYLON.Engine) {
+export function createScenes(engine: BABYLON.Engine) {
 
     const scenesController = new ScenesController();
 

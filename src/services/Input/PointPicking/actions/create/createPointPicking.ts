@@ -4,13 +4,13 @@ import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 
-export function setPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
+export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const pickingController = PointPickingController.instance(scene);
   const starsController = StarsController.instance(scene);
 
   pickingController.setCamera(scene.activeCamera!);
 
-  pickingController.setupPickingEvents(
+  pickingController.createPickingEvents(
     /* element: */ galaxy,
     /* options: */ { pickRadius: 25 },
     /* matchedConfigsFromPick: */ galaxy.starsConfigs,
