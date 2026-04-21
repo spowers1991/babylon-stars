@@ -3,6 +3,7 @@ import * as BABYLON from "babylonjs";
 import { PipelinesController } from "@/lib/Assets/modules/PostProcessing/Pipelines/PipelinesController";
 import { PipelineConfig } from "@/lib/Assets/modules/PostProcessing/Pipelines/Pipeline/types/PipelineConfig";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
+import { getBloomWeight } from "../get/getBloomWeight";
 
 export function setPostProcessing(scene: BABYLON.Scene, config?: PipelineConfig) {
     const camera = scene.activeCamera;
@@ -16,7 +17,7 @@ export function setPostProcessing(scene: BABYLON.Scene, config?: PipelineConfig)
     if (normalZoom !== null) {
         pipeline.bloomEnabled = normalZoom < 300;
         pipeline.fxaaEnabled = normalZoom < 100;
-
+        pipeline.bloomWeight = getBloomWeight(normalZoom);
         return;
     }
 

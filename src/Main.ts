@@ -39,14 +39,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   
   scene1.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
-  createPostProcessing(scene1, {
-    bloomEnabled: true,
-    bloomThreshold: 0.25,
-    bloomWeight: 0.5,
-    bloomKernel: 164,
-    bloomScale: 1.5,
-    fxaaEnabled: true,
-  });
+  createPostProcessing(scene1);
 
   createPointPicking(scene1, milkyWay);
 

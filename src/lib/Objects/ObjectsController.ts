@@ -45,6 +45,9 @@ export class ObjectsController {
       if (!obj || !obj.mesh) continue;
       currentMeshes.add(obj.mesh);
       obj.mesh.setEnabled(true);
+      if (obj.particleSystem) {
+        obj.particleSystem.start();
+      }
     }
 
     // Disable + dispose objects no longer rendered
@@ -53,6 +56,9 @@ export class ObjectsController {
 
       if (!currentMeshes.has(obj.mesh)) {
         obj.mesh.setEnabled(false);
+      if (obj.particleSystem) {
+          obj.particleSystem.stop();
+        }
         obj.mesh.dispose();
       }
     }

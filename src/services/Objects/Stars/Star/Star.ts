@@ -67,6 +67,10 @@ export class Star {
         config.emissiveColor!.b * config.emissiveIntensity!)
     );
 
+    // Emission particles
+    //this.particleSystem = createStarEmissionParticles(scene, this.mesh!, config);
+    //this.particleSystem.stop(); // off until mesh is activated
+
     setMeshPosToParticlePos(scene, this);
 
     // Turn mesh off until activated by default.

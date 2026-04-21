@@ -12,7 +12,7 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.createPickingEvents(
     /* element: */ galaxy,
-    /* options: */ { pickRadius: 25 },
+    /* options: */ { pickRadius: 50 },
     /* matchedConfigsFromPick: */ galaxy.starsConfigs,
     /* setActiveConfigs: */ (matchedConfigsFromPick) => {
       starsController.activeStarsConfigs = matchedConfigsFromPick as StarConfig[];
