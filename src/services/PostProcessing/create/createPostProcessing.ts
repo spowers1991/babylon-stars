@@ -14,7 +14,7 @@ export function createPostProcessing(scene: BABYLON.Scene) {
     fxaaEnabled: true,
   } as PipelineConfig;
   
-  const pipeline = PipelinesController.instance.createDefault(scene, config);
+  const pipeline = PipelinesController.instance.createDefault(scene, config, "defaultPipeline");
 
   return pipeline;
 }
