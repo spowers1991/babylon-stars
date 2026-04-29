@@ -11,7 +11,6 @@ export function renderStars(scene: BABYLON.Scene) {
     interval: 500,
     step: () => {
       starsController.updateStars(starsController.activeStarsConfigs);
-      //console.log(starsController.getObjectsToRender());
     },
   });
 }

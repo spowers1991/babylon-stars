@@ -6,7 +6,9 @@ export class PointPickingController {
 
   private scene!: BABYLON.Scene;
   private camera?: BABYLON.Camera;
-
+  public closestPickPCS?: BABYLON.CloudPoint | undefined;
+  public closestPickSPS?: BABYLON.SolidParticle | undefined;
+  
   public closestPicksPCS: BABYLON.CloudPoint[] = [];
   public closestPicksSPS: BABYLON.SolidParticle[] = [];
 
@@ -44,8 +46,8 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public setupPickingEvents(element: any, nearbyPickRadius: number, configsToMatchWithPicks: any[], setConfigs: (configs: any[]) => void) {
-    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, element, nearbyPickRadius, configsToMatchWithPicks, setConfigs, pointerInfo));
+  public createPickingEvents(element: any, options: { pickRadius: number }, matchedConfigsFromPick: unknown[], setActiveConfigs: (configs: unknown[]) => void) {
+    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, element, options, matchedConfigsFromPick, setActiveConfigs, pointerInfo));
   }
 
   // ─────────────────────────────────────────────

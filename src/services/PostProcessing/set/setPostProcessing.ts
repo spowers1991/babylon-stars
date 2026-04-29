@@ -2,15 +2,25 @@
 import * as BABYLON from "babylonjs";
 import { PipelinesController } from "@/lib/Assets/modules/PostProcessing/Pipelines/PipelinesController";
 import { PipelineConfig } from "@/lib/Assets/modules/PostProcessing/Pipelines/Pipeline/types/PipelineConfig";
+import { CamerasController } from "@/lib/Cameras/CamerasController";
+import { getBloomWeight } from "../get/getBloomWeight";
 
 export function setPostProcessing(scene: BABYLON.Scene, config?: PipelineConfig) {
-  const pipeline = PipelinesController.instance.createDefault(scene, config);
+    const camera = scene.activeCamera;
+    if(!camera) return;
 
-  // Attach zoom-reactive post-processing if camera is ArcRotateCamera
-  const camera = scene.activeCamera;
-  if (camera && camera instanceof BABYLON.ArcRotateCamera && config) {
-    //PipelinesController.instance.onZoom(camera, config);
-  }
+    const pipeline = PipelinesController.instance.getPipelineByName(scene, "defaultPipeline");
+    const normalZoom = CamerasController.instance(scene).getZoomLevel(camera, { inverted: false });
 
-  return pipeline;
+    if(!pipeline) return;
+
+    if (normalZoom !== null) {
+        pipeline.bloomEnabled = normalZoom < 300;
+        pipeline.fxaaEnabled = normalZoom < 100;
+        pipeline.bloomWeight = getBloomWeight(normalZoom);
+        return;
+    }
+
+    pipeline.bloomEnabled = false;
+    pipeline.fxaaEnabled = false;
 }

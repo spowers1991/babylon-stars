@@ -1,10 +1,10 @@
 import { startEngine } from "@/engine/actions/startEngine";
-import { setScenes } from "@/services/Scenes/actions/set/setScenes";
-import { setCameras } from "@/services/Cameras/actions/set/setCameras";
+import { createScenes } from "@/services/Scenes/actions/create/createScenes";
+import { createCameras } from "@/services/Cameras/actions/create/createCameras";
 import { createGalaxies } from "@/services/Objects/Galaxies/actions/create/createGalaxies";
-import { setPointPicking } from "@/services/Input/PointPicking/actions/set/setPointPicking";
+import { createPointPicking } from "@/services/Input/PointPicking/actions/create/createPointPicking";
 import { runRenders } from "@/services/Renderers/actions/run/runRenders";
-import { setPostProcessing } from "@/services/PostProcessing/set/setPostProcessing";
+import { createPostProcessing } from "@/services/PostProcessing/create/createPostProcessing";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 
@@ -13,11 +13,11 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const { canvas, engine } = startEngine("renderCanvas");
 
-  const { scenes } = setScenes(engine);
+  const { scenes } = createScenes(engine);
 
   const scene1 = scenes[0];
 
-  setCameras(scene1, canvas, MainCamera);
+  createCameras(scene1, canvas, MainCamera);
 
   const galaxiesConfigs = [
     {
@@ -26,8 +26,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       starsData: starsJson,
     },
   ];
-
-  //setStarsData(scene1);
   
   const galaxies = await createGalaxies(scene1, galaxiesConfigs);
 
@@ -37,17 +35,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   const glow = new BABYLON.GlowLayer("glow", scene1 as any);
   glow.intensity = 0.1;
   
- scene1.clearColor = new BABYLON.Color4(0, 0, 0, 1);
+  scene1.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
-  setPostProcessing(scene1, {
-    bloomEnabled: true,
-    bloomThreshold: 0.25,
-    bloomWeight: 2,
-    bloomKernel: 164,
-    bloomScale: 1.5,
-  });
+  createPostProcessing(scene1);
 
-  setPointPicking(scene1, milkyWay);
+  createPointPicking(scene1, milkyWay);
 
   runRenders(engine, scene1);
   

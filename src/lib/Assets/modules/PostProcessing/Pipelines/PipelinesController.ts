@@ -6,14 +6,14 @@ export class PipelinesController {
   static instance: PipelinesController = new PipelinesController();
   pipelines: any[] = [];
 
-  public createDefault(scene: any, config?: PipelineConfig) {
-    const pipeline = createDefaultPipeline(scene, config);
+  public createDefault(scene: any, config?: PipelineConfig, name: string = "defaultPipeline") {
+    const pipeline = createDefaultPipeline(scene, config, name);
     this.pipelines.push(pipeline);
     return pipeline;
   }
 
-  public getPipelineByName(name: string) {
-    return this.pipelines.find(p => p.name === name);
+  public getPipelineByName(scene: any, name: string) {
+    return this.pipelines.find(p => p.name === name && p.scene === scene);
   }
 
   public setPipeline(pipeline: any) {

@@ -1,5 +1,6 @@
 export class ObjectsController {
   public objects: Object[] = [];
+  public activeObject: Object | null = null;
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
 
@@ -44,6 +45,9 @@ export class ObjectsController {
       if (!obj || !obj.mesh) continue;
       currentMeshes.add(obj.mesh);
       obj.mesh.setEnabled(true);
+      if (obj.particleSystem) {
+        obj.particleSystem.start();
+      }
     }
 
     // Disable + dispose objects no longer rendered
@@ -52,10 +56,13 @@ export class ObjectsController {
 
       if (!currentMeshes.has(obj.mesh)) {
         obj.mesh.setEnabled(false);
+      if (obj.particleSystem) {
+          obj.particleSystem.stop();
+        }
         obj.mesh.dispose();
       }
     }
-
+    this.activeObject = this.objectsToRender[0] || null;
     // Update unrender set correctly
     this.objectsToUnrender = new Set(this.objectsToRender);
   }

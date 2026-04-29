@@ -10,8 +10,8 @@ import { handleMeshPicking } from "../../_Mesh/actions/helpers/handleMeshPicking
 export function handlePointerEventPCS(
   controller: any,
   element: any,
-  configs: any[],
-  setConfigs: (configs: any[]) => void,
+  matchedConfigsPicks: any[],
+  setActiveConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return;
@@ -26,7 +26,7 @@ export function handlePointerEventPCS(
   if (pcsPick) {
     setPickingActions([
       () => setClosestPicksPCS(controller.scene, pcsPick, controller),
-      () => setNearbyDataPCS(controller.scene, configs, setConfigs),
+      () => setNearbyDataPCS(controller.scene, matchedConfigsPicks, setActiveConfigs),
     ]);
   }
 }

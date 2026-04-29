@@ -22,7 +22,7 @@ export function updateSPS(
     const p = sps.particles[i];
 
     if (!p.color) {
-      p.color = new BABYLON.Color4(1, 1, 1, 0);
+      p.color = new BABYLON.Color4(1, 1, 1, options.transparency !== undefined ? options.transparency : 1);
     }
     //console.log(data[i].p / 5000)
     const colorData = colorById.get(i);
@@ -31,15 +31,13 @@ export function updateSPS(
 
     if (colorData) {
       p.color.set(
-        colorData.r,
-        colorData.g,
-        colorData.b,
-        luminosityData ? luminosityData.N : 1
+        options.color ? options.color.r : colorData.r,
+        options.color ? options.color.g : colorData.g,
+        options.color ? options.color.b : colorData.b,
+        options.transparency !== undefined ? options.transparency : luminosityData ? luminosityData.N : 1
       );
-      //p.scaling.setAll(data[i]?.p / 5000 || visibleScale);
     } else {
       p.color.a = 0;
-      //p.scaling.setAll(hiddenScale);
     }
   }
 
