@@ -26,8 +26,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       starsData: starsJson,
     },
   ];
-
-  //setStarsData(scene1);
   
   const galaxies = await createGalaxies(scene1, galaxiesConfigs);
 

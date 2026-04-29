@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { MeshType, MeshOptions } from "../types/Mesh";
+import { MeshType, MeshOptions } from "../../types/Mesh";
 
 export function createMeshByType(
   scene: BABYLON.Scene,

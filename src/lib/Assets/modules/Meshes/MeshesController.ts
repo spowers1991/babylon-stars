@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { MeshType, MeshOptions } from "./Mesh/types/Mesh";
-import { createMeshByType } from "./Mesh/factories/createMeshByType";
-import { setMeshToMeshes as setMeshToMeshesAction } from "./Mesh/actions/set/setMeshToMeshes";
+import { createMesh as ACTIONS_createMesh } from "./Mesh/actions/create/createMesh";
+import { setMeshToMeshes as ACTIONS_setMeshToMeshes } from "./Mesh/actions/set/setMeshToMeshes";
 
 export class MeshesController {
   public meshes: BABYLON.Mesh[] = [];
@@ -12,14 +12,17 @@ export class MeshesController {
     name: string,
     options: MeshOptions
   ): BABYLON.Mesh {
-    const mesh = createMeshByType(scene, meshType, name, options);
+
+    const mesh = ACTIONS_createMesh(scene, meshType, name, options);
+    ACTIONS_setMeshToMeshes(this.meshes, mesh);
+
     return mesh;
   }
 
   public setMeshToMeshes(
     mesh: BABYLON.Mesh
   ): BABYLON.Mesh {
-    setMeshToMeshesAction(this.meshes, mesh)
+    ACTIONS_setMeshToMeshes(this.meshes, mesh)
     return mesh;
   }
 
