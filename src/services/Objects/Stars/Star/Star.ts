@@ -25,9 +25,8 @@ export class Star {
 
     this.mesh = createStarMesh(
       scene,
-      this.name,
-      setStarSize(config.diameter!) * 1.25,
-    ) as BABYLON.AbstractMesh;
+      config as StarConfig
+    ) as BABYLON.Mesh;
 
     //const textureUrl = "textures/stars/classes/g/texture1.jpg";
     const textureUrl = config.textureUrl!;

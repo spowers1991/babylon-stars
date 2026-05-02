@@ -8,7 +8,6 @@ import { createPostProcessing } from "@/services/PostProcessing/create/createPos
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 
-
 window.addEventListener("DOMContentLoaded", async () => {
 
   const { canvas, engine } = startEngine("renderCanvas");
@@ -31,7 +30,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   const milkyWay = galaxies.find(galaxy => galaxy.name === "Milky Way")!;
 
-
   const glow = new BABYLON.GlowLayer("glow", scene1 as any);
   glow.intensity = 0.1;
   
@@ -42,5 +40,5 @@ window.addEventListener("DOMContentLoaded", async () => {
   createPointPicking(scene1, milkyWay);
 
   runRenders(engine, scene1);
-  
+
 });

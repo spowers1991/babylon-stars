@@ -1,3 +1,4 @@
+import { MeshConfig } from "@/lib/Assets/modules/Meshes/Mesh/types/MeshConfig";
 import * as BABYLON from "babylonjs";
 
 export interface StarConfig {
@@ -10,4 +11,5 @@ export interface StarConfig {
   position?: BABYLON.Vector3;
   pointCount?: number;
   spectralClass?: string;
+  meshType?: MeshConfig['type'];
 }

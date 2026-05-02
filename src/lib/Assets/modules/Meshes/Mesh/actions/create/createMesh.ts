@@ -1,16 +1,19 @@
 import * as BABYLON from "babylonjs";
 import { createMeshByType } from "./createMeshByType";
-import { MeshOptions } from "../../types/Mesh";
-import { MeshType } from "../../types/Mesh";
+import { MeshConfig } from "../../types/MeshConfig";
 
 export function createMesh(
   scene: BABYLON.Scene,
-  meshType: MeshType,
-  name: string,
-  options: MeshOptions,
+  config: MeshConfig,
+  meshPool: [MeshConfig['type'], BABYLON.Mesh[]][]
 ): BABYLON.Mesh {
 
-  const mesh = createMeshByType(scene, meshType, name, options);
+  //const mesh = createMeshByType(scene, config, meshPool);
+  const mesh = createMeshByType(scene, config, meshPool);
+
+  if (!mesh) {
+    throw new Error(`Failed to create mesh of type: ${config.type}`);
+  }
 
   return mesh;
 }

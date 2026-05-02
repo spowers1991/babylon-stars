@@ -44,7 +44,7 @@ export class ObjectsController {
     for (const obj of this.objectsToRender as any[]) {
       if (!obj || !obj.mesh) continue;
       currentMeshes.add(obj.mesh);
-      obj.mesh.setEnabled(true);
+      obj.mesh.setEnabled(true);  
       if (obj.particleSystem) {
         obj.particleSystem.start();
       }

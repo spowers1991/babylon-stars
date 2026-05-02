@@ -21,6 +21,7 @@ export function createStarsConfigs(data: StarData[], starsController: StarsContr
             emissiveIntensity: setStarSize(i.N!) * 5 || 1,
             position: new BABYLON.Vector3(i!.x!, i!.y!, i!.z!),
             spectralClass,
+            meshType: "SphereMesh" as StarConfig['meshType'],
         };
         starsController.addConfig(starConfig);
         addedConfigs.push(starConfig);

@@ -1,6 +1,6 @@
 import * as BABYLON from "babylonjs";
 
-export function setMeshToMeshes(meshes: BABYLON.Mesh[], mesh: BABYLON.Mesh): void {
+export function setMeshToMeshes(scene: BABYLON.Scene, meshes: BABYLON.Mesh[], mesh: BABYLON.Mesh): void {
     
     const newMeshes = [...meshes, mesh];
 	// Remove duplicates by mesh name (keep last occurrence)
@@ -14,5 +14,5 @@ export function setMeshToMeshes(meshes: BABYLON.Mesh[], mesh: BABYLON.Mesh): voi
 		}
 	}
 	meshes.length = 0;
-	meshes.push(...unique);
+	meshes.push(...unique as BABYLON.Mesh[]);
 }
