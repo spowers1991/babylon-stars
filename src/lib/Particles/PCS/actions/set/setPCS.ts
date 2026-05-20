@@ -5,7 +5,7 @@ export interface PCSUpdateOptions {
   inactiveAlpha?: number;
 }
 
-export function updatePCS(
+export function setPCS(
   pcs: BABYLON.PointsCloudSystem,
   data: any[],
   options: PCSUpdateOptions = {}

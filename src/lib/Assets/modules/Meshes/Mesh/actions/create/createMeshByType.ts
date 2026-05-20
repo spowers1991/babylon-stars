@@ -4,8 +4,8 @@ import { MeshConfig } from "../../types/MeshConfig";
 export function createMeshByType(
   scene: BABYLON.Scene,
   config: MeshConfig,
-  meshPool?: [MeshConfig['type'], BABYLON.Mesh[]][]
-): BABYLON.Mesh {
+  meshPool?: [MeshConfig['type'], BABYLON.AbstractMesh[]][]
+): BABYLON.AbstractMesh {
 
   switch (config.type) {
     case "SphereMesh":

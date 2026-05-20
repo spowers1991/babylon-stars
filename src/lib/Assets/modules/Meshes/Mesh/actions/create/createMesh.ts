@@ -5,10 +5,11 @@ import { MeshConfig } from "../../types/MeshConfig";
 export function createMesh(
   scene: BABYLON.Scene,
   config: MeshConfig,
-  meshPool: [MeshConfig['type'], BABYLON.Mesh[]][]
-): BABYLON.Mesh {
+  meshPool: [MeshConfig['type'], BABYLON.AbstractMesh[]][]
+): BABYLON.AbstractMesh {
 
-  //const mesh = createMeshByType(scene, config, meshPool);
+  //createOrInstanceMeshByType(scene, config, meshPool);
+
   const mesh = createMeshByType(scene, config, meshPool);
 
   if (!mesh) {

@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { AssetsController } from "@/lib/Assets/AssetsController";
-import { MeshConfig } from "@/lib/Assets/modules/Meshes/Mesh/types/MeshConfig";
-import { StarConfig } from "../../types/StarConfig";
+import type { MeshConfig } from "@/lib/Assets/modules/Meshes/Mesh/types/MeshConfig";
+import type { StarConfig } from "../../types/StarConfig";
 
 /**
  * Creates a Babylon.js sphere mesh for the star.
@@ -9,7 +9,7 @@ import { StarConfig } from "../../types/StarConfig";
 export function createStarMesh(
   scene: BABYLON.Scene,
   config: StarConfig
-): BABYLON.Mesh {
+): BABYLON.AbstractMesh {
   const assetsController = AssetsController.instance;
 
   const meshConfig = {
@@ -20,5 +20,5 @@ export function createStarMesh(
     },
   } as MeshConfig;
   
-  return assetsController.meshes.create(scene, meshConfig as MeshConfig);
+  return assetsController.meshes.create(scene, meshConfig);
 }

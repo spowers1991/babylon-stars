@@ -19,7 +19,7 @@ export function renderSPS(scene: BABYLON.Scene) {
     step: () => {
       const zoom = camerasController.getZoomLevelClamped(scene.activeCamera!);
   
-      particlesController.updateSPS(
+      particlesController.setSPS(
         galaxy.sps as BABYLON.SolidParticleSystem,
         galaxy.starsData as StarData[],
         { transparency: zoom } as SPSConfig

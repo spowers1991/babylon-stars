@@ -1,6 +1,6 @@
 import * as BABYLON from "babylonjs";
 import type { PointData } from "../../../PCS/types/PointData";
-import { setPointData } from "../../../PCS/actions/set/setPointData";
+import { setPointData } from "../set/setPointData";
 import type { SPSConfig } from "../../types/SPSConfig";
 import { setStarSize } from "@/services/Objects/Stars/Star/actions/set/setStarSize";
 
