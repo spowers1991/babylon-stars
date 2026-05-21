@@ -8,8 +8,6 @@ import { createPostProcessing } from "@/services/PostProcessing/create/createPos
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";
 import starsJson from "@/data/stars.json";
 
-import { createStarMeshPool } from "./services/Assets/Meshes/actions/create/createStarMeshPool";
-
 window.addEventListener("DOMContentLoaded", async () => {
 
   const { canvas, engine } = startEngine("renderCanvas");
@@ -38,8 +36,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   scene1.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
   createPostProcessing(scene1);
-
-  createStarMeshPool(scene1);
 
   createPointPicking(scene1, milkyWay);
 

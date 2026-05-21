@@ -5,24 +5,20 @@ import { createMeshes as ACTIONS_createMeshes } from "./actions/create/createMes
 import { setMeshes as ACTIONS_setMeshes } from "./actions/set/setMeshes";
 
 export class MeshesController {
-  public meshes:  [type: MeshConfig['type'], meshesOfType: BABYLON.AbstractMesh[]][] = [];
+  public meshes:  [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] = [];
 
   public create(
     scene: BABYLON.Scene,
     config: MeshConfig
   ): BABYLON.AbstractMesh {
-
+    
     const mesh = ACTIONS_createMesh(scene, config, this.meshes);
-    //ACTIONS_setMeshToMeshes(scene, this.meshes, mesh);
-    // this.meshes = scene.meshes.slice(1, scene.meshes.length) as BABYLON.AbstractMesh[];
-    //this.setMeshes(scene, this.meshPool);
-    //console.log(this.meshes, scene.meshes)
+
     return mesh;
   }
 
   createMeshes(
     scene: BABYLON.Scene,
-    meshes: BABYLON.AbstractMesh[]
   ): void {
     this.meshes = ACTIONS_createMeshes(scene);
   }

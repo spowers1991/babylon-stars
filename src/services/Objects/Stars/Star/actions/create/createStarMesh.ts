@@ -13,7 +13,8 @@ export function createStarMesh(
   const assetsController = AssetsController.instance;
 
   const meshConfig = {
-    type: config.meshType || "sphere",
+    id: String(config.id),
+    type: config.meshType || "SphereMesh",
     name: `${config.name || "star"}_mesh`,
     options: {
       diameter: config.diameter || 1,

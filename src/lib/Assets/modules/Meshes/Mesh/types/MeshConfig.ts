@@ -1,6 +1,7 @@
 import { Vector3 } from "babylonjs";
 
 export interface MeshConfig {
+  id?: string;
   type: "SphereMesh" | "BoxMesh" | "CylinderMesh" | "PlaneMesh";
   name: string;
   options: {

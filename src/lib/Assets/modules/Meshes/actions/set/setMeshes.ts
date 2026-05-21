@@ -4,10 +4,10 @@ import * as BABYLON from 'babylonjs';
 /**
  * Groups meshes by their MeshConfig.type into nested arrays.
  * @param configs Array of unknown configs to group
- * @returns Array of [type, meshesOfType[]]
+ * @returns Array of [type, meshConfigs[]]
  */
-export function setMeshes(configs: any[]): [type: MeshConfig['type'], meshesOfType: BABYLON.AbstractMesh[]][] {
-    const meshPoolMap: Record<MeshConfig['type'], BABYLON.AbstractMesh[]> = {
+export function setMeshes(configs: any[]): [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] {
+    const meshPoolMap: Record<MeshConfig['type'], MeshConfig[]> = {
         BoxMesh: [],
         SphereMesh: [],
         CylinderMesh: [],
@@ -25,8 +25,8 @@ export function setMeshes(configs: any[]): [type: MeshConfig['type'], meshesOfTy
             },
         } as MeshConfig;
 
-         meshPoolMap[type].push(meshConfig as unknown as BABYLON.AbstractMesh);
+        meshPoolMap[type].push(meshConfig);
     }
 
-    return Object.entries(meshPoolMap) as [type: MeshConfig['type'], meshesOfType: BABYLON.AbstractMesh[]][];
+    return Object.entries(meshPoolMap) as [type: MeshConfig['type'], meshConfigs: MeshConfig[]][];
 }

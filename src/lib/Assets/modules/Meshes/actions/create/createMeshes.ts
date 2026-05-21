@@ -8,7 +8,7 @@ import { setMeshes } from '../set/setMeshes';
  * @param scene The Babylon scene
  * @returns Array of [type, meshesOfType[]]
  */
-export function createMeshes(scene: BABYLON.Scene): [type: MeshConfig['type'], meshesOfType: BABYLON.AbstractMesh[]][] {
+export function createMeshes(scene: BABYLON.Scene): [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] {
   const meshesController = AssetsController.instance.meshes;
   // Define main Babylon mesh types and minimal configs
   const meshConfigs: MeshConfig[] = [
