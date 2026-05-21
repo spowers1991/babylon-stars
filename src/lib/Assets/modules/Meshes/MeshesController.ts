@@ -12,7 +12,7 @@ export class MeshesController {
     config: MeshConfig
   ): BABYLON.AbstractMesh {
     
-    const mesh = ACTIONS_createMesh(scene, config, this.meshes);
+    const mesh = ACTIONS_createMesh(scene, config);
 
     return mesh;
   }
