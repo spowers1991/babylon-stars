@@ -1,12 +1,14 @@
 import * as BABYLON from "babylonjs";
 import type { MeshConfig } from "./Mesh/types/MeshConfig";
 import { createMesh as ACTIONS_createMesh } from "./Mesh/actions/create/createMesh";
-import { createMeshes as ACTIONS_createMeshes } from "./actions/create/createMeshes";
-import { setMeshes as ACTIONS_setMeshes } from "./actions/set/setMeshes";
+import { createMeshesConfigs as ACTIONS_createMeshesConfigs } from "./actions/create/createMeshesConfigs";
+import { setMeshConfigs as ACTIONS_setMeshesConfigs } from "./actions/set/setMeshConfigs";
+import { setMeshPool as ACTIONS_setMeshPool } from "./actions/set/setMeshPool";
+import { getMesh as ACTIONS_getMesh } from "./Mesh/actions/get/getMesh";
 
 export class MeshesController {
-  public meshes:  [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] = [];
-  public meshPool = new Set<any>();
+  public meshConfigs:  [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] = [];
+  public meshPool: BABYLON.AbstractMesh[] = [];
 
   public create(
     scene: BABYLON.Scene,
@@ -14,31 +16,30 @@ export class MeshesController {
   ): BABYLON.AbstractMesh {
     
     const mesh = ACTIONS_createMesh(scene, config);
- console.log(this.meshPool);
+
     return mesh;
   }
 
-  createMeshes(
+  public createMeshesConfigs(
     scene: BABYLON.Scene,
   ): void {
-    this.meshes = ACTIONS_createMeshes(scene);
+    this.meshConfigs = ACTIONS_createMeshesConfigs(scene);
   }
 
-  setMeshes(configs: any): void {
-    this.meshes = ACTIONS_setMeshes(configs);
+  public setMeshesConfigs(configs: any): void {
+    this.meshConfigs = ACTIONS_setMeshesConfigs(configs);
   }
 
-  public setToMeshPool(mesh: any) {
-    if (mesh) {
-      this.meshPool.add(mesh);
-    }
-    console.log(this.meshPool);
+  public setMeshPool(
+    scene: BABYLON.Scene,
+    meshConfigs: [type: MeshConfig['type'], meshConfigs: MeshConfig[]][],
+  ): void {
+    this.meshPool = ACTIONS_setMeshPool(scene, meshConfigs);
   }
 
-  public removeFromMeshPool(mesh: any) {
-    if (mesh ) {
-      this.meshPool.delete(mesh);
-    }
+  public getMesh(scene: BABYLON.Scene, config: MeshConfig): BABYLON.AbstractMesh {
+    const mesh = ACTIONS_getMesh(scene, config)
+    return mesh as BABYLON.AbstractMesh;
   }
-
+  
 }

@@ -1,13 +1,15 @@
 import * as BABYLON from "babylonjs";
-import { createMeshByType } from "./createMeshByType";
 import type { MeshConfig } from "../../types/MeshConfig";
+import { AssetsController } from "@/lib/Assets/AssetsController";
 
 export function createMesh(
   scene: BABYLON.Scene,
   config: MeshConfig,
 ): BABYLON.AbstractMesh {
-
-  const mesh = createMeshByType(scene, config);
   
+  const assetsController = AssetsController.instance;
+
+  const mesh = assetsController.meshes.getMesh(scene, config);
+
   return mesh;
 }

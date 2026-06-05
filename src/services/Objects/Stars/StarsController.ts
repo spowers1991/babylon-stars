@@ -62,7 +62,7 @@ export class StarsController extends ObjectsController {
 
     // Update objects to render (which will trigger rendering in the next render loop)
     if (starsToRender.length > 0) {
-      this.setObjectsToRender(starsToRender);
+      this.setObjectsToRender(this.scene, starsToRender);
     }
   }
 

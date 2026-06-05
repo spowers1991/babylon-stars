@@ -1,4 +1,7 @@
+import * as BABYLON from "babylonjs";
+
 export function setObjectsToRender(
+  scene: BABYLON.Scene,
   controller: {
     objectsToRender: Object[];
     objectsToUnrender: Set<any>;

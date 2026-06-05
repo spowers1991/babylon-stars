@@ -1,14 +1,14 @@
 import type { MeshConfig } from '../../Mesh/types/MeshConfig';
 import * as BABYLON from 'babylonjs';
 import { AssetsController } from '@/lib/Assets/AssetsController';
-import { setMeshes } from '../set/setMeshes';
+import { setMeshConfigs } from '../set/setMeshConfigs';
 
 /**
  * Creates one instance of each main Babylon mesh type and groups them by type.
  * @param scene The Babylon scene
  * @returns Array of [type, meshesOfType[]]
  */
-export function createMeshes(scene: BABYLON.Scene): [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] {
+export function createMeshesConfigs(scene: BABYLON.Scene): [type: MeshConfig['type'], meshesConfigs: MeshConfig[]][] {
   const meshesController = AssetsController.instance.meshes;
   // Define main Babylon mesh types and minimal configs
   const meshConfigs: MeshConfig[] = [
@@ -19,11 +19,11 @@ export function createMeshes(scene: BABYLON.Scene): [type: MeshConfig['type'], m
     // Only allowed types per MeshConfig
   ];
   
-  const currentMeshes: BABYLON.AbstractMesh[] = [];
+  const currentMeshesConfigs: BABYLON.AbstractMesh[] = [];
   for (const config of meshConfigs) {
     const mesh = meshesController.create(scene, config);
-    currentMeshes.push(mesh);
+    currentMeshesConfigs.push(mesh);
   }
 
-  return setMeshes(currentMeshes);
+  return setMeshConfigs(currentMeshesConfigs);
 }

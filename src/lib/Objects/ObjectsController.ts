@@ -1,3 +1,4 @@
+import * as BABYLON from "babylonjs";
 import  { setObjectsToRender as ACTIONS_setObjectsToRender } from "./actions/set/setObjectsToRender";
 
 export class ObjectsController {
@@ -28,8 +29,8 @@ export class ObjectsController {
     return this.objects;
   }
 
-  public setObjectsToRender(newList: Object[]) {
-    ACTIONS_setObjectsToRender(this, newList);
+  public setObjectsToRender(scene: BABYLON.Scene, newList: Object[]) {
+    ACTIONS_setObjectsToRender(scene, this, newList);
   }
 
 }

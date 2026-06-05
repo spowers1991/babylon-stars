@@ -6,7 +6,7 @@ import * as BABYLON from 'babylonjs';
  * @param configs Array of unknown configs to group
  * @returns Array of [type, meshConfigs[]]
  */
-export function setMeshes(configs: any[]): [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] {
+export function setMeshConfigs(configs: any[]): [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] {
     const meshPoolMap: Record<MeshConfig['type'], MeshConfig[]> = {
         BoxMesh: [],
         SphereMesh: [],
