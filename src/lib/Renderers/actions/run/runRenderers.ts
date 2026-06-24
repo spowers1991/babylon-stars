@@ -5,7 +5,7 @@ import * as BABYLON from "babylonjs";
  * @param engine The Babylon.js engine
  * @param fns Array of functions to run each frame
  */
-export function runRenders(engine: BABYLON.Engine, scene : BABYLON.Scene, fns: Array<() => void>) {
+export function runRenderers(engine: BABYLON.Engine, scene : BABYLON.Scene, fns: Array<() => void>) {
   engine.runRenderLoop(() => {
     for (const fn of fns) {
       fn();

@@ -3,7 +3,7 @@ import type { GalaxyConfig } from "./types/GalaxyConfig";
 import type { StarData } from "../../Stars/Star/types/StarData";
 import type { StarConfig } from "../../Stars/Star/types/StarConfig";
 import { createGalaxyPCS } from "./actions/createGalaxyPCS";
-import { createGalaxySPS } from "./actions/createGalaxySPS";
+import { createGalaxySPS as ACTIONS_createGalaxySPS } from "./actions/createGalaxySPS";
 import { StarsController } from "../../Stars/StarsController";
 
 export class Galaxy {
@@ -36,7 +36,7 @@ export class Galaxy {
     //this.pcs = pcs;
 
     const SPSName = this.name + " SPS";
-    const sps = await createGalaxySPS(this.scene, this.starsData, SPSName);
+    const sps = await ACTIONS_createGalaxySPS(this.scene, this.starsData, SPSName);
     this.sps = sps;
   
   }

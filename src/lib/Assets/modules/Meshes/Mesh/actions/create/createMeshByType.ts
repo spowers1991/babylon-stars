@@ -1,22 +1,22 @@
 import * as BABYLON from "babylonjs";
-import { MeshType, MeshOptions } from "../../types/Mesh";
+import { MeshConfig } from "../../types/MeshConfig";
 
 export function createMeshByType(
   scene: BABYLON.Scene,
-  meshType: MeshType,
-  name: string,
-  options: MeshOptions
-): BABYLON.Mesh {
-  switch (meshType) {
-    case "sphere":
-      return BABYLON.MeshBuilder.CreateSphere(name, options as any, scene);
-    case "box":
-      return BABYLON.MeshBuilder.CreateBox(name, options as any, scene);
-    case "cylinder":
-      return BABYLON.MeshBuilder.CreateCylinder(name, options as any, scene);
-    case "plane":
-      return BABYLON.MeshBuilder.CreatePlane(name, options as any, scene);
+  config: MeshConfig,
+): BABYLON.AbstractMesh {
+
+  switch (config.type) {
+    case "SphereMesh":
+      return BABYLON.MeshBuilder.CreateSphere(config.name, config.options as MeshConfig["options"], scene);
+    case "BoxMesh":
+      return BABYLON.MeshBuilder.CreateBox(config.name, config.options as MeshConfig["options"], scene);
+    case "CylinderMesh":
+      return BABYLON.MeshBuilder.CreateCylinder(config.name, config.options as MeshConfig["options"], scene);
+    case "PlaneMesh":
+      return BABYLON.MeshBuilder.CreatePlane(config.name, config.options as MeshConfig["options"], scene);
     default:
-      throw new Error(`Unsupported mesh type: ${meshType}`);
+      throw new Error(`Unsupported mesh type: ${config.type}`);
   }
+  
 }

@@ -1,4 +1,4 @@
-import type { PointData } from "../../types/PointData";
+import type { PointData } from "../../../PCS/types/PointData";
 
 function isValidData(s: any): s is any & { x: number; y: number; z: number } {
   return s.x != null && s.y != null && s.z != null;

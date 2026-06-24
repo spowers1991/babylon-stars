@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { setPointData } from "../set/setPointData";
+import { setPointData } from "../../../SPS/actions/set/setPointData";
 import type { PointData } from "../../types/PointData";
 
 export async function createPCS(

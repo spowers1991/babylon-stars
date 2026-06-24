@@ -29,7 +29,7 @@ export class AssetsController {
   }
 
   public disposeAll(): void {
-    this.meshes.disposeAll();
+    //this.meshes.disposeAll();
     this.textures.disposeAll();
     this.materials.disposeAll();
     this.pipelines.disposeAll();

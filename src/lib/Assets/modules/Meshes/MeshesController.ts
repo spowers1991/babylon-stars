@@ -1,51 +1,44 @@
 import * as BABYLON from "babylonjs";
-import { MeshType, MeshOptions } from "./Mesh/types/Mesh";
+import type { MeshConfig } from "./Mesh/types/MeshConfig";
 import { createMesh as ACTIONS_createMesh } from "./Mesh/actions/create/createMesh";
-import { setMeshToMeshes as ACTIONS_setMeshToMeshes } from "./Mesh/actions/set/setMeshToMeshes";
+import { createMeshesConfigs as ACTIONS_createMeshesConfigs } from "./actions/create/createMeshesConfigs";
+import { setMeshConfigs as ACTIONS_setMeshesConfigs } from "./actions/set/setMeshConfigs";
+import { setMeshPool as ACTIONS_setMeshPool } from "./actions/set/setMeshPool";
+import { getMesh as ACTIONS_getMesh } from "./Mesh/actions/get/getMesh";
 
 export class MeshesController {
-  public meshes: BABYLON.Mesh[] = [];
+  public meshConfigs:  [type: MeshConfig['type'], meshConfigs: MeshConfig[]][] = [];
+  public meshPool: BABYLON.AbstractMesh[] = [];
 
   public create(
     scene: BABYLON.Scene,
-    meshType: MeshType,
-    name: string,
-    options: MeshOptions
-  ): BABYLON.Mesh {
-
-    const mesh = ACTIONS_createMesh(scene, meshType, name, options);
-    ACTIONS_setMeshToMeshes(this.meshes, mesh);
+    config: MeshConfig
+  ): BABYLON.AbstractMesh {
+    
+    const mesh = ACTIONS_createMesh(scene, config);
 
     return mesh;
   }
 
-  public setMeshToMeshes(
-    mesh: BABYLON.Mesh
-  ): BABYLON.Mesh {
-    ACTIONS_setMeshToMeshes(this.meshes, mesh)
-    return mesh;
+  public createMeshesConfigs(
+    scene: BABYLON.Scene,
+  ): void {
+    this.meshConfigs = ACTIONS_createMeshesConfigs(scene);
   }
 
-  public getAll(): BABYLON.Mesh[] {
-    return this.meshes;
+  public setMeshesConfigs(configs: any): void {
+    this.meshConfigs = ACTIONS_setMeshesConfigs(configs);
   }
 
-
-  public loadByIndex(index: number): BABYLON.Mesh {
-    const mesh = this.meshes[index];
-    return mesh;
+  public setMeshPool(
+    scene: BABYLON.Scene,
+  ): void {
+    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool);
   }
 
-  public disposeByIndex(index: number): void {
-    const mesh = this.meshes[index];
-    if (mesh) {
-      mesh.dispose()
-      this.meshes.splice(index, 1);
-    }
+  public getMesh(scene: BABYLON.Scene, config: MeshConfig): BABYLON.AbstractMesh {
+    const mesh = ACTIONS_getMesh(scene, config)
+    return mesh as BABYLON.AbstractMesh;
   }
-
-  public disposeAll(): void {
-    this.meshes.forEach(mesh => mesh.dispose());
-    this.meshes = [];
-  }
+  
 }

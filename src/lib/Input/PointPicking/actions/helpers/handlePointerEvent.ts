@@ -12,7 +12,7 @@ export function handlePointerEvent(
   pointPickingController: PointPickingController,
   element: any,
   options: { pickRadius: number },
-  matchedConfigsFromPick: any[],
+  configs: any[],
   setActiveConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
@@ -41,10 +41,10 @@ export function handlePointerEvent(
       // Add mesh-specific logic here if needed
       break;
     case "PCSParticle":
-      handlePointerEventPCS(pointPickingController, element, matchedConfigsFromPick, setActiveConfigs, pointerInfo);
+      handlePointerEventPCS(pointPickingController, element, configs, setActiveConfigs, pointerInfo);
       break;
     case "SPSParticle":
-      handlePointerEventSPS(pointPickingController, element, options, matchedConfigsFromPick, setActiveConfigs, pointerInfo);
+      handlePointerEventSPS(pointPickingController, element, options, configs, setActiveConfigs, pointerInfo);
       break;
     default:
       break;

@@ -5,8 +5,8 @@ import { createObjectsArrayFromPCS as createObjectsArrayFromPCSAction } from "./
 import { createConfigsArrayFromSPS as createConfigsArrayFromSPSAction } from "./SPS/actions/create/createConfigsArrayFromSPS";
 import { createPCS as createPCSAction } from "./PCS/actions/create/createPCS";
 import { createSPS as createSPSAction } from "./SPS/actions/create/createSPS"; 
-import { updatePCS as updatePCSAction } from "./PCS/actions/set/updatePCS";
-import { updateSPS as updateSPSAction } from "./SPS/actions/set/updateSPS";
+import { setPCS as ACTIONS_setPCS } from "./PCS/actions/set/setPCS";
+import { setSPS as ACTIONS_setSPS } from "./SPS/actions/set/setSPS";
 import type { SPSConfig } from "./SPS/types/SPSConfig";
 
 type ParticleSystemType = BABYLON.PointsCloudSystem | BABYLON.SolidParticleSystem;
@@ -62,8 +62,8 @@ export class ParticlesController {
     createPCSAction(scene, data, name)
   }
 
-  updatePCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}){ 
-    updatePCSAction(pcs, data, options); 
+  setPCS( pcs: BABYLON.PointsCloudSystem, data: any, options: any = {}){ 
+    ACTIONS_setPCS(pcs, data, options); 
   }
 
   getPCSByName(name: string): any | undefined {
@@ -90,8 +90,8 @@ export class ParticlesController {
     return sps;
   }
 
-  updateSPS(sps: BABYLON.SolidParticleSystem, data: any, options: SPSConfig = {}) {
-    updateSPSAction(sps, data, options);
+  setSPS(sps: BABYLON.SolidParticleSystem, data: any, options: SPSConfig = {}) {
+    ACTIONS_setSPS(sps, data, options);
   }
 
   getSPSByName(name: string): any | undefined {

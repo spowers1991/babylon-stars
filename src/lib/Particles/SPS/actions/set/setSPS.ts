@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
 import { SPSConfig } from "../../types/SPSConfig";
 
-export function updateSPS(
+export function setSPS(
   sps: BABYLON.SolidParticleSystem,
   data: any[],
   options: SPSConfig = {}

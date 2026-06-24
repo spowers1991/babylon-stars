@@ -25,55 +25,58 @@ export class Star {
 
     this.mesh = createStarMesh(
       scene,
-      this.name,
-      setStarSize(config.diameter!) * 1.25,
-    ) as BABYLON.AbstractMesh;
+      config as StarConfig
+    ) as BABYLON.Mesh;
 
-    //const textureUrl = "textures/stars/classes/g/texture1.jpg";
-    const textureUrl = config.textureUrl!;
+    if( this.mesh ) {
+      //const textureUrl = "textures/stars/classes/g/texture1.jpg";
+      const textureUrl = config.textureUrl!;
 
-    this.texture = createStarTexture(
-      scene,
-      this.name,
-      textureUrl!,
-    ) as BABYLON.Texture;
+      this.texture = createStarTexture(
+        scene,
+        this.name,
+        textureUrl!,
+      ) as BABYLON.Texture;
 
-    const shaderMaterial = createStarSurfaceShader(
-      scene,
-      `${this.name}_starShader`,
-      config
-    );
+      const shaderMaterial = createStarSurfaceShader(
+        scene,
+        `${this.name}_starShader`,
+        config
+      );
 
-    this.material = createStarMaterial(
-      scene,
-      this.name,
-      this.mesh,
-      config,
-      shaderMaterial
-    ) as BABYLON.Material;
+      this.material = createStarMaterial(
+        scene,
+        this.name,
+        this.mesh,
+        config,
+        shaderMaterial
+      ) as BABYLON.Material;
 
-    setEmissiveTexture(
-      this.mesh!,
-      this.material!,
-      this.texture!
-    );
+      setEmissiveTexture(
+        this.mesh!,
+        this.material!,
+        this.texture!
+      );
 
-    setEmissiveColor(
-      this.mesh!,
-      this.material!,
-      new BABYLON.Color3(
-        config.emissiveColor!.r * config.emissiveIntensity!, 
-        config.emissiveColor!.g * config.emissiveIntensity!, 
-        config.emissiveColor!.b * config.emissiveIntensity!)
-    );
+      setEmissiveColor(
+        this.mesh!,
+        this.material!,
+        new BABYLON.Color3(
+          config.emissiveColor!.r * config.emissiveIntensity!, 
+          config.emissiveColor!.g * config.emissiveIntensity!, 
+          config.emissiveColor!.b * config.emissiveIntensity!)
+      );
 
-    // Emission particles
-    //this.particleSystem = createStarEmissionParticles(scene, this.mesh!, config);
-    //this.particleSystem.stop(); // off until mesh is activated
+      // Emission particles
+      //this.particleSystem = createStarEmissionParticles(scene, this.mesh!, config);
+      //this.particleSystem.stop(); // off until mesh is activated
+    
+      setMeshPosToParticlePos(scene, this);
+    
+      // Turn mesh off until activated by default.
+      this.mesh.setEnabled(false);
 
-    setMeshPosToParticlePos(scene, this);
+    }
 
-    // Turn mesh off until activated by default.
-    this.mesh.setEnabled(false);
   }
 }

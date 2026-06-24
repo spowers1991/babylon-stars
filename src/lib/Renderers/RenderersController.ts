@@ -1,4 +1,4 @@
-import { runRenders as _runRenders } from "./actions/run/runRenders";
+import { runRenderers as _runRenderers } from "./actions/run/runRenderers";
 import { addRenderer as addRendererAction } from "./actions/set/addRenderer";
 import { getRenderers as getRenderersAction } from "./actions/get/getRenderers";
 import { stepUpdate as stepUpdateAction } from "./actions/create/stepUpdate";
@@ -7,7 +7,7 @@ import { logRenderers as logRenderersAction } from "./actions/logRenderers";
 import type { RendererConfig } from "./types/RendererConfig";
 
 export class RenderersController {
-	static runRenders = _runRenders;
+	static runRenderers = _runRenderers;
 	static renderers: RendererConfig[] = [];
 	static lastUpdates: Record<string, number> = {};
 

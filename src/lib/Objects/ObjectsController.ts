@@ -1,3 +1,6 @@
+import * as BABYLON from "babylonjs";
+import  { setObjectsToRender as ACTIONS_setObjectsToRender } from "./actions/set/setObjectsToRender";
+
 export class ObjectsController {
   public objects: Object[] = [];
   public activeObject: Object | null = null;
@@ -26,45 +29,8 @@ export class ObjectsController {
     return this.objects;
   }
 
-  /**
-   * Replace or append items to the render list in a safe way.
-   * Applies max size limits and removes oldest items.
-   */
-
-  public updateObjectsToRender(newList: Object[]) {
-    const MAX_RENDER_OBJECTS = 20;
-
-    // Keep only the first N objects
-    this.objectsToRender = newList.slice(0, MAX_RENDER_OBJECTS);
-
-    // Track meshes currently rendered
-    const currentMeshes = new Set<any>();
-
-    // Enable current render objects
-    for (const obj of this.objectsToRender as any[]) {
-      if (!obj || !obj.mesh) continue;
-      currentMeshes.add(obj.mesh);
-      obj.mesh.setEnabled(true);
-      if (obj.particleSystem) {
-        obj.particleSystem.start();
-      }
-    }
-
-    // Disable + dispose objects no longer rendered
-    for (const obj of this.objectsToUnrender) {
-      if (!obj || !obj.mesh) continue;
-
-      if (!currentMeshes.has(obj.mesh)) {
-        obj.mesh.setEnabled(false);
-      if (obj.particleSystem) {
-          obj.particleSystem.stop();
-        }
-        obj.mesh.dispose();
-      }
-    }
-    this.activeObject = this.objectsToRender[0] || null;
-    // Update unrender set correctly
-    this.objectsToUnrender = new Set(this.objectsToRender);
+  public setObjectsToRender(scene: BABYLON.Scene, newList: Object[]) {
+    ACTIONS_setObjectsToRender(scene, this, newList);
   }
 
 }

@@ -1,10 +1,10 @@
 import * as BABYLON from "babylonjs";
 import { ObjectsController } from "@/lib/Objects/ObjectsController";
 import type { StarConfig } from "./Star/types/StarConfig";
-import { createStarsConfigs } from "./actions/create/createStarsConfigs";
 import type { StarData } from "./Star/types/StarData";
-import { createStars } from "./actions/create/createStars";
 import { Star } from "./Star/Star";
+import { createStarsConfigs as ACTIONS_createStarsConfigs } from "./actions/create/createStarsConfigs";
+import { createStars as ACTIONS_createStars } from "./actions/create/createStars";
 
 export class StarsController extends ObjectsController {
   private static _instance: StarsController | null = null;
@@ -46,7 +46,7 @@ export class StarsController extends ObjectsController {
   }
 
   createConfigs(starsData : StarData[]){
-    return createStarsConfigs(starsData, this);
+    return ACTIONS_createStarsConfigs(starsData, this);
   }
 
   updateStars(
@@ -54,7 +54,7 @@ export class StarsController extends ObjectsController {
   ) {
     
     // Create meshes for active stars configs
-    const starsToRender = createStars(this.scene, activeStarsConfigs);
+    const starsToRender = ACTIONS_createStars(this.scene, activeStarsConfigs);
 
     // Closest star to camera becomes active star
     this.activeStar = starsToRender[0];
@@ -62,7 +62,7 @@ export class StarsController extends ObjectsController {
 
     // Update objects to render (which will trigger rendering in the next render loop)
     if (starsToRender.length > 0) {
-      this.updateObjectsToRender(starsToRender);
+      this.setObjectsToRender(this.scene, starsToRender);
     }
   }
 

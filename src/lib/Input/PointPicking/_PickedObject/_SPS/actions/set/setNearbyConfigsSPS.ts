@@ -4,7 +4,7 @@ import { PointPickingController } from "../../../../PointPickingController";
 
 export function setNearbyConfigsSPS(
   scene: BABYLON.Scene,
-  setActiveConfigsFromPick: any[],
+  configs: any[],
   setActiveConfigs: (configs: any[]) => void
 ) {
 
@@ -13,7 +13,7 @@ export function setNearbyConfigsSPS(
 
   const nearbyConfigs = particlesController.createConfigsArrayFromSPS(
     pickingController.closestPicksSPS,
-    setActiveConfigsFromPick,
+    configs,
   );
   
   setActiveConfigs(nearbyConfigs);

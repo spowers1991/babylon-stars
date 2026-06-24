@@ -11,7 +11,7 @@ export function handlePointerEventSPS(
   controller: any,
   element: any,
   options: { pickRadius: number },
-  matchedConfigsFromPick: any[],
+  configs: any[],
   setActiveConfigs: (configs: any[]) => void,
   pointerInfo: BABYLON.PointerInfo
 ) {
@@ -27,7 +27,7 @@ export function handlePointerEventSPS(
   if (spsPick) {
     setPickingActions([
       () => setClosestPicksSPS(controller.scene, spsPick, options, controller),
-      () => setNearbyConfigsSPS(controller.scene, matchedConfigsFromPick, setActiveConfigs),
+      () => setNearbyConfigsSPS(controller.scene, configs, setActiveConfigs),
     ]);
   }
 }
