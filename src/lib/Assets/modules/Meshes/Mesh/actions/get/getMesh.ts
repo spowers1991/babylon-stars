@@ -3,7 +3,7 @@ import type { MeshConfig } from "../../types/MeshConfig";
 import { createMeshByType } from "../create/createMeshByType";
 import { AssetsController } from "@/lib/Assets/AssetsController";
 
-export function getMesh(scene: any, config: MeshConfig) {
+export function getMesh(scene: BABYLON.Scene, config: MeshConfig) {
     const assetsController = AssetsController.instance;
 
     if(assetsController.meshes.meshPool.length > 0) {

@@ -20,9 +20,9 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
     /* setActiveConfigs: */ (matchedConfigsFromPick) => {
       starsController.activeStarsConfigs = matchedConfigsFromPick as StarConfig[];
       starsController.activeObject = starsController.activeStarsConfigs[0] || null;
-
+      
       meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
-      meshesController.setMeshPool(scene, meshesController.meshConfigs);
+      meshesController.setMeshPool(scene);
     }
   );
 }

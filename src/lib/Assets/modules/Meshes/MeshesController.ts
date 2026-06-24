@@ -32,9 +32,8 @@ export class MeshesController {
 
   public setMeshPool(
     scene: BABYLON.Scene,
-    meshConfigs: [type: MeshConfig['type'], meshConfigs: MeshConfig[]][],
   ): void {
-    this.meshPool = ACTIONS_setMeshPool(scene, meshConfigs);
+    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool);
   }
 
   public getMesh(scene: BABYLON.Scene, config: MeshConfig): BABYLON.AbstractMesh {
