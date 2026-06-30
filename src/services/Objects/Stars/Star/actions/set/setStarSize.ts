@@ -1,10 +1,11 @@
-// Centralized star/particle size logic
-export function setStarSize(p: number): number {
-  // Example: scale for visibility, adjust as needed
+import type { StarConfig } from "../../types/StarConfig";
 
-  const minSize = 1; // minimum size for very small stars
-  const maxSize = 100;    // maximum size for very large stars
-    if (p <= 0) return minSize;
-  const size = p / 1000;
+export function setStarSize(diameter: number | null | undefined, boost = 1): number {
+  // Keep the existing linear feel, with optional small boost for mesh visibility.
+
+  const minSize = 0.01; // allow smaller stars so sizes do not collapse to one value
+  const maxSize = 1; // cap very large stars to avoid oversized meshes
+  if (diameter == null || diameter <= 0) return minSize;
+  const size = (diameter);
   return Math.min(Math.max(size, minSize), maxSize);
 }

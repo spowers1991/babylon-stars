@@ -15,10 +15,10 @@ export function createStarsConfigs(data: StarData[], starsController: StarsContr
         const starConfig: StarConfig = {
             id: i.i!,
             name: i.n!,
-            diameter: setStarSize(i.p!),
+            diameter: setStarSize(i.N!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),
-            emissiveIntensity: setStarSize(i.N!) * 5 || 1,
+            emissiveIntensity: setStarSize(i.N!) * 2 || 1,
             position: new BABYLON.Vector3(i!.x!, i!.y!, i!.z!),
             spectralClass,
             meshType: "SphereMesh" as StarConfig['meshType'],

@@ -15,13 +15,14 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.setPointerObservable({
     element: galaxy as Galaxy,
-    options: { pickRadius: 50 },
+    options: { pickRadius: 15 },
     data: { configs: galaxy.starsConfigs },
     setActiveData: (matchedConfigsFromPick: any[]) => {
       starsController.activeStarsConfigs = matchedConfigsFromPick as StarConfig[];
       starsController.activeObject = starsController.activeStarsConfigs[0] || null;
 
       console.log(matchedConfigsFromPick, "matchedConfigsFromPick");
+      console.log(pickingController.closestPicksSPS, "pickingController");
       
       meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
       meshesController.setMeshPool(scene);

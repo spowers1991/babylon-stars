@@ -1,5 +1,9 @@
 import * as BABYLON from "babylonjs";
 
+type SPSParticleWithSourceId = BABYLON.SolidParticle & {
+  sourceStarId?: number;
+};
+
 export function createConfigsArrayFromSPS(
   particles: BABYLON.SolidParticle[],
   configs: any[]
@@ -7,8 +11,8 @@ export function createConfigsArrayFromSPS(
 
   const matchedConfigs: any[] = [];
   particles?.forEach(particle => {
-
-    const id = particle.idx
+    const particleWithSourceId = particle as SPSParticleWithSourceId;
+    const id = particleWithSourceId.sourceStarId ?? particle.idx;
 
     if(!configs) return;
     const matchedConfig = configs.find((config: any) => config.id === id);
