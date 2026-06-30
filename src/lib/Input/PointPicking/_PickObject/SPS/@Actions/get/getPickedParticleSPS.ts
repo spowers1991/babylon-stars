@@ -4,8 +4,8 @@ export function getPickParticleSPS(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   sps: BABYLON.SolidParticleSystem,
-  pickRadius = 0.5,           // world units
-  pickThreshold = 0,     // extra world-unit margin
+  pickRadius = 0.75,           // world units
+  pickThreshold = 0.25,     // extra world-unit margin
 ): BABYLON.SolidParticle | null {
 
   const ray = scene.createPickingRay(

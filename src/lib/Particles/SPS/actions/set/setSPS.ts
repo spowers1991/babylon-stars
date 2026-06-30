@@ -41,7 +41,7 @@ export function setSPS(
     } else {
       p.color.a = 0;
     }
-    p.scaling.setAll(setStarSize(data[i]?.N) / 2);
+    p.scaling.setAll(setStarSize(data[i]?.N));
   }
 
   sps.setParticles();

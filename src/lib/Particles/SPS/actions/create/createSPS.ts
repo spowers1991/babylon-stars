@@ -17,7 +17,7 @@ export async function createSPS(
 
   const { diameter = options.diameter ? options.diameter : 1, onInitParticle } = options; // smaller size to start
   const pointData: PointData[] = setPointData(data);
-  const count = Math.min(10000000000, pointData.length);
+  const count = Math.min(100000, pointData.length);
 
   // Template mesh
   const template = BABYLON.MeshBuilder.CreateSphere(`${name}_template`, { diameter, segments: 1 }, scene);

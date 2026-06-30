@@ -18,7 +18,7 @@ export function createStarsConfigs(data: StarData[], starsController: StarsContr
             diameter: setStarSize(i.N!),
             textureUrl: '',
             emissiveColor: new BABYLON.Color3(i!.K?.r, i!.K?.g, i!.K?.b),
-            emissiveIntensity: setStarSize(i.N!) * 2 || 1,
+            emissiveIntensity: setStarSize(i.N!) * 10 || 1,
             position: new BABYLON.Vector3(i!.x!, i!.y!, i!.z!),
             spectralClass,
             meshType: "SphereMesh" as StarConfig['meshType'],
