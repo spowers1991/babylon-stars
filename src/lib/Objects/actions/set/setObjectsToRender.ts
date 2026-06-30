@@ -9,7 +9,7 @@ export function setObjectsToRender(
   },
   newList: Object[]
 ) {
-    const MAX_RENDER_OBJECTS = 20;
+    const MAX_RENDER_OBJECTS = 50;
 
     // Keep only the first N objects
     controller.objectsToRender = newList.slice(0, MAX_RENDER_OBJECTS);

@@ -1,8 +1,12 @@
 import * as BABYLON from "babylonjs";
 import { CameraConfig } from "./Camera/types/CameraConfig";
-import { createCameraByType } from "./Camera/factories/createCameraByType";
-import { getCameraZoom } from "./Camera/actions/get/getCameraZoom";
-import { getCameraZoomClamped } from "./Camera/actions/get/getCameraZoomClamped";
+import { createCameraByType as ACTIONS_createCameraByType } from "./Camera/factories/createCameraByType";
+import { getCameraZoom as ACTIONS_getCameraZoom } from "./Camera/actions/get/getCameraZoom";
+import { getCameraZoomClamped as ACTIONS_getCameraZoomClamped } from "./Camera/actions/get/getCameraZoomClamped";
+import {
+  getCameraDistanceToMeshClamped as ACTIONS_getCameraDistanceToMeshClamped,
+  GetCameraDistanceToMeshClampedOptions,
+} from "./Camera/actions/get/getCameraDistanceToMeshClamped";
 
 export class CamerasController {
 
@@ -29,7 +33,7 @@ export class CamerasController {
     canvas: HTMLCanvasElement,
     cameraConfig: CameraConfig
   ): BABYLON.Camera {
-    const cam = createCameraByType(cameraConfig, this.scene, canvas);
+    const cam = ACTIONS_createCameraByType(cameraConfig, this.scene, canvas);
     this.cameras.push(cam);
 
     if (!this.activeCamera) {
@@ -54,11 +58,23 @@ export class CamerasController {
   }
 
   public getZoomLevel(camera?: BABYLON.Camera, options?: { inverted?: boolean, minZoom?: number, maxZoom?: number }): number | null {
-    return getCameraZoom(camera || this.activeCamera!, options);
+    return ACTIONS_getCameraZoom(camera || this.activeCamera!, options);
   }
 
   public getZoomLevelClamped(camera?: BABYLON.Camera, options?: { inverted?: boolean }): number | null {
-    return getCameraZoomClamped(camera || this.activeCamera!, options);
+    return ACTIONS_getCameraZoomClamped(camera || this.activeCamera!, options);
+  }
+
+  public getDistanceToMeshClamped(
+    targetMesh: BABYLON.AbstractMesh,
+    camera?: BABYLON.Camera,
+    options?: GetCameraDistanceToMeshClampedOptions
+  ): number | null {
+    return ACTIONS_getCameraDistanceToMeshClamped(
+      camera || this.activeCamera!,
+      targetMesh,
+      options
+    );
   }
 
   /**

@@ -2,7 +2,7 @@ import { startEngine } from "@/engine/actions/startEngine";
 import { createScenes } from "@/services/Scenes/actions/create/createScenes";
 import { createCameras } from "@/services/Cameras/actions/create/createCameras";
 import { createGalaxies } from "@/services/Objects/Galaxies/actions/create/createGalaxies";
-import { createPointPicking } from "@/services/Input/PointPicking/actions/create/createPointPicking";
+import { createPointPicking } from "@/services/Input/PointPicking/@Actions/create/createPointPicking";
 import { runRenders } from "@/services/Renderers/actions/run/runRenders";
 import { createPostProcessing } from "@/services/PostProcessing/create/createPostProcessing";
 import MainCamera from "@/services/Cameras/MainCamera/MainCamera";

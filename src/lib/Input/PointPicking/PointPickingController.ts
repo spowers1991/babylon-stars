@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { handlePointerEvent } from "./actions/helpers/handlePointerEvent";
+import { getPointerEvents as ACTIONS_getPointerEvents } from "./_PickObject/@Actions/get/getPointerEvents";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
@@ -46,8 +46,15 @@ export class PointPickingController {
   // ─────────────────────────────────────────────
   // Setup simple click handler for PCS
   // ─────────────────────────────────────────────
-  public createPickingEvents(element: any, options: { pickRadius: number }, configs: unknown[], setActiveConfigs: (configs: unknown[]) => void) {
-    this.scene.onPointerObservable.add((pointerInfo) => handlePointerEvent(this, element, options, configs, setActiveConfigs, pointerInfo));
+  public setPointerObservable({element, options, data, setActiveData}: {
+    element: HTMLElement | any,
+    options: { pickRadius: number },
+    data: { configs: any[] },
+    setActiveData: (configs: unknown[]) => void}) {
+    this.scene.onPointerObservable.add((pointerInfo) => 
+        ACTIONS_getPointerEvents(this.scene, element, options, data, setActiveData, pointerInfo)
+    );
+    console.log(this.closestPicksSPS)
   }
 
   // ─────────────────────────────────────────────

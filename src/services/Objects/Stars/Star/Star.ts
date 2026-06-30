@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { StarConfig } from "./types/StarConfig";
+import type { StarConfig } from "./types/StarConfig";
 import { createSpectralClass } from "./actions/create/createSpectralClass";
 
 import { createStarMesh } from "./actions/create/createStarMesh";

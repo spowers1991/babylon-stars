@@ -4,6 +4,10 @@ import { setPointData } from "../set/setPointData";
 import type { SPSConfig } from "../../types/SPSConfig";
 import { setStarSize } from "@/services/Objects/Stars/Star/actions/set/setStarSize";
 
+type SPSParticleWithSourceId = BABYLON.SolidParticle & {
+  sourceStarId?: number;
+};
+
 export async function createSPS(
   scene: BABYLON.Scene,
   data: any[],
@@ -11,9 +15,9 @@ export async function createSPS(
   options: SPSConfig = {}
 ): Promise<BABYLON.SolidParticleSystem> {
 
-  const { diameter = 1, onInitParticle } = options; // smaller size to start
+  const { diameter = options.diameter ? options.diameter : 1, onInitParticle } = options; // smaller size to start
   const pointData: PointData[] = setPointData(data);
-  const count = Math.min(10000, pointData.length);
+  const count = Math.min(100000, pointData.length);
 
   // Template mesh
   const template = BABYLON.MeshBuilder.CreateSphere(`${name}_template`, { diameter, segments: 1 }, scene);
@@ -25,14 +29,15 @@ export async function createSPS(
 
   // Initialize particle positions and colors
   for (let i = 0; i < count; i++) {
-    const particle = sps.particles[i];
+    const particle = sps.particles[i] as SPSParticleWithSourceId;
     const p = pointData[i];
     if (!p) continue;
+    particle.sourceStarId = data[i]?.i;
     // Use the same size logic as Star
-    const d = setStarSize(data[i]?.p);
+    const d = setStarSize(data[i]?.N); // Use the same size logic as Star
     // If you want to use diameter as scale, setAll(d / diameter)
-    particle.scaling.setAll(d / diameter);
-    particle.position.set(p.x * 15, p.y * 15, p.z * 15);
+    particle.scaling.setAll(d);
+    particle.position.set(p.x, p.y, p.z);
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)
       : new BABYLON.Color4(1, 1, 1, 1);

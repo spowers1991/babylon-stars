@@ -1,8 +1,9 @@
 
 import * as BABYLON from "babylonjs";
-import { StarData } from "../../types/StarData";
-import { StarConfig } from "../../types/StarConfig";
+import type { StarData } from "../../types/StarData";
+import type { StarConfig } from "../../types/StarConfig";
 import { getSpectralClass } from "./getSpectralClass";
+import { setStarSize } from "../set/setStarSize";
 
 export function getStarConfig(star: StarData){
 
@@ -11,7 +12,7 @@ export function getStarConfig(star: StarData){
     const config: StarConfig = {
         id: star.i,
         name: star.n,
-        diameter: star.p!,
+        diameter: setStarSize(star.N!),
         textureUrl: "texture1.jpg",
         emissiveColor: new BABYLON.Color3(k.r, k.g, k.b),
         emissiveIntensity: 0.25,
