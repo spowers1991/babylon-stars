@@ -16,6 +16,7 @@ export function getPickObject(
 ): PickTypeResult | null {
 
   if (pointerInfo.type !== BABYLON.PointerEventTypes.POINTERDOWN) return null;
+  if (pointerInfo.event instanceof PointerEvent && pointerInfo.event.button !== 0) return null;
 
   let picked;
   let pickType: string;
