@@ -23,7 +23,7 @@ export function renderSPS(scene: BABYLON.Scene) {
       const zoom = camerasController.getZoomLevelClamped(scene.activeCamera!);
       const distanceFactor = starsController.activeStar?.mesh
         ? camerasController.getDistanceToMeshClamped(starsController.activeStar.mesh, scene.activeCamera!, {
-            minDistance: 1,
+            minDistance: 0.1,
             maxDistance: 100,
           })
         : null;

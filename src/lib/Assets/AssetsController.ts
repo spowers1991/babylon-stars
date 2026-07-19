@@ -11,7 +11,8 @@ export class AssetsController {
   public readonly textures: TexturesController;
   public readonly materials: MaterialsController;
   public readonly pipelines: PipelinesController;
-  public readonly shaders: any; // Placeholder for ShadersController  
+  public readonly shaders: ShadersController; // Placeholder for ShadersController  
+  public readonly postProcessing: PipelinesController;
 
   private constructor() {
     this.meshes = new MeshesController();
@@ -19,6 +20,7 @@ export class AssetsController {
     this.materials = new MaterialsController();
     this.pipelines = new PipelinesController();
     this.shaders = new ShadersController();
+    this.postProcessing = new PipelinesController();
   }
 
   public static get instance(): AssetsController {

@@ -5,6 +5,8 @@ export const starFragmentShader = `
   uniform float time;
   uniform vec3 starColor;
   uniform float intensity;
+  uniform float darkPatchStrength;
+  uniform float lineStrength;
 
   // 3D hash and noise
   float hash(vec3 p) {
@@ -38,10 +40,24 @@ export const starFragmentShader = `
     float n2 = fbm(nrm * 8.0 - t * 1.5);
     float surface = n * 0.7 + n2 * 0.3;
 
-    // Uniform color, only turbulence
+    // Ridged turbulence creates darker active patches.
+    float patchNoise = fbm(nrm * 5.5 + vec3(t * 0.6, -t * 0.35, t * 0.45));
+    float ridged = 1.0 - abs(2.0 * patchNoise - 1.0);
+    float darkPatches = smoothstep(0.45, 0.95, ridged) * darkPatchStrength;
+
+    // Warped trigonometric bands create crack-like dark flow lines.
+    float lineWarp = fbm(nrm * 10.0 + vec3(t * 1.2, -t * 0.8, t * 0.9));
+    float lines = abs(sin((nrm.y + lineWarp * 0.35 + t * 0.45) * 42.0));
+    float darkLines = smoothstep(0.65, 0.98, lines) * lineStrength;
+
+    float darkness = clamp(darkPatches + darkLines, 0.0, 0.92);
+    float emissiveMask = 1.0 - darkness;
+
     vec3 color = starColor;
-    color *= 0.8 + 0.5 * surface;
-    color *= intensity;
+    color *= (0.65 + 0.85 * surface) * intensity;
+    color *= emissiveMask;
+    color = max(color, starColor * 0.02);
+
     gl_FragColor = vec4(color, 1.0);
   }
 `;

@@ -4,7 +4,7 @@ import { createDefaultPipeline } from "./Pipeline/create/createDefaultPipeline";
 
 export class PipelinesController {
   static instance: PipelinesController = new PipelinesController();
-  pipelines: any[] = [];
+  public pipelines: any[] = [];
 
   public createDefault(scene: any, config?: PipelineConfig, name: string = "defaultPipeline") {
     const pipeline = createDefaultPipeline(scene, config, name);

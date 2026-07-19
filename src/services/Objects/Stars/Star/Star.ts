@@ -37,7 +37,7 @@ export class Star {
         this.name,
         textureUrl!,
       ) as BABYLON.Texture;
-
+      
       const shaderMaterial = createStarSurfaceShader(
         scene,
         `${this.name}_starShader`,
