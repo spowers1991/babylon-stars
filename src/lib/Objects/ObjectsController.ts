@@ -6,6 +6,7 @@ export class ObjectsController {
   public activeObject: Object | null = null;
   public objectsToRender: Object[] = [];
   public objectsToUnrender = new Set<any>();
+  public objectsPool = new Map<string, any>();
 
   add(object: Object | Object[]) {
     const addOne = (obj: Object) => {

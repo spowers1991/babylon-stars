@@ -54,7 +54,6 @@ export class PointPickingController {
     this.scene.onPointerObservable.add((pointerInfo) => 
         ACTIONS_getPointerEvents(this.scene, element, options, data, setActiveData, pointerInfo)
     );
-    console.log(this.closestPicksSPS)
   }
 
   // ─────────────────────────────────────────────

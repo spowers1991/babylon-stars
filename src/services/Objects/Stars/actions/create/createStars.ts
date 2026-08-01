@@ -26,9 +26,12 @@ export function createStars(scene : BABYLON.Scene, activeStarsConfigs: StarConfi
         const existingStar = existingStars.find(star => star.name === config.name);
         if(!existingStar) {
             const newStar = createStar(scene, config);
+            if (!starsController.stars.includes(newStar)) {
+                starsController.stars.push(newStar);
+            }
             newStars.push(newStar);
         }
     });
-    console.log("New Stars created: ", newStars, "scene:", scene);
+
     return newStars;
 }

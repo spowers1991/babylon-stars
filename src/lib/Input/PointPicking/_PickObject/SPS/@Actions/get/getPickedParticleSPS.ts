@@ -4,7 +4,7 @@ export function getPickParticleSPS(
   scene: BABYLON.Scene,
   camera: BABYLON.Camera,
   sps: BABYLON.SolidParticleSystem,
-  pickRadius = 0.75,           // world units
+  pickRadius = 0.75, // baseline world-space hit radius
 ): BABYLON.SolidParticle | null {
 
   const ray = scene.createPickingRay(
@@ -15,14 +15,17 @@ export function getPickParticleSPS(
   );
 
   let closest: BABYLON.SolidParticle | null = null;
-  let minDistSq = pickRadius * pickRadius;
+  let closestDistSq = Number.POSITIVE_INFINITY;
+  const worldMatrix = sps.mesh?.computeWorldMatrix(true);
 
   for (const p of sps.particles) {
-    const particleRadius = Math.max(p.scaling.x, p.scaling.y, p.scaling.z) * 0.5;
-    const effectiveRadius = Math.min(pickRadius, particleRadius);
-    const particleMinDistSq = effectiveRadius * effectiveRadius;
+    const worldPos = worldMatrix
+      ? BABYLON.Vector3.TransformCoordinates(p.position, worldMatrix)
+      : p.position;
 
-    const toParticle = p.position.subtract(ray.origin);
+    const particleRadius = Math.max(p.scaling.x, p.scaling.y, p.scaling.z) * 0.5;
+
+    const toParticle = worldPos.subtract(ray.origin);
 
     // ---- Optimization: ignore particles behind camera ----
     const proj = BABYLON.Vector3.Dot(toParticle, ray.direction);
@@ -32,11 +35,22 @@ export function getPickParticleSPS(
       ray.origin.add(ray.direction.scale(proj));
 
     const distSq =
-      BABYLON.Vector3.DistanceSquared(closestPointOnRay, p.position);
+      BABYLON.Vector3.DistanceSquared(closestPointOnRay, worldPos);
 
-    if (distSq < particleMinDistSq && distSq < minDistSq) {
+    // Keep picking stable at different zoom levels and star sizes.
+    const distanceFromCamera = Math.sqrt(toParticle.lengthSquared());
+    const distanceScaledRadius = distanceFromCamera * 0.003;
+    const effectiveRadius = Math.max(
+      pickRadius,
+      1.5,
+      particleRadius * 1.5,
+      distanceScaledRadius,
+    );
+    const thresholdSq = effectiveRadius * effectiveRadius;
+
+    if (distSq <= thresholdSq && distSq < closestDistSq) {
       closest = p;
-      minDistSq = particleMinDistSq;
+      closestDistSq = distSq;
     }
   }
 
