@@ -15,7 +15,7 @@ export function setPostProcessing(scene: BABYLON.Scene, config?: PipelineConfig)
     if(!pipeline) return;
 
     if (normalZoom !== null) {
-        pipeline.bloomEnabled = normalZoom < 300;
+        pipeline.bloomEnabled = normalZoom < 2000;
         pipeline.fxaaEnabled = normalZoom < 100;
         pipeline.bloomWeight = getBloomWeight(normalZoom);
         return;

@@ -20,6 +20,6 @@ export function createStarMaterial(
   //materials.setEmissiveColor({ material, color: emissiveColor });
   //materials.setEmissiveIntensity({ material, value: emissiveIntensity });
   //mesh.material = material;
-
+  
   mesh.material = shaderMaterial
 }

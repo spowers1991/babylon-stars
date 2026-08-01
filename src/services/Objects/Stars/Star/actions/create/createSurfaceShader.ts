@@ -17,12 +17,12 @@ export function createStarSurfaceShader(
   name: string,
   config: StarConfig
 ): BABYLON.ShaderMaterial {
-  const shaderMaterial = ShadersController.instance.getShaderMaterial(
+  const shaderMaterial = ShadersController.instance.create(
     scene,
     "star",
     STAR_VERTEX_SHADER,
     STAR_FRAGMENT_SHADER,
-    ["worldViewProjection", "time", "starColor", "intensity", "turbulenceScale", "turbulenceDetail"],
+    ["worldViewProjection", "time", "starColor", "intensity", "turbulenceScale", "turbulenceDetail", "darkPatchStrength", "lineStrength"],
     ["position", "normal", "uv"]
   );
   shaderMaterial.setColor3("starColor", config.emissiveColor as BABYLON.Color3);
@@ -30,9 +30,11 @@ export function createStarSurfaceShader(
   // Set turbulenceScale and turbulenceDetail manually or from StarConfig in the future
   shaderMaterial.setFloat("turbulenceScale", 3.0);
   shaderMaterial.setFloat("turbulenceDetail", 8.0);
+  shaderMaterial.setFloat("darkPatchStrength", 0.25);
+  shaderMaterial.setFloat("lineStrength", 0.6);
   shaderMaterial.backFaceCulling = false;
   scene.registerBeforeRender(() => {
-    const t = performance.now() * 0.001;
+    const t = performance.now() * 0.0001;
     shaderMaterial.setFloat("time", t);
   });
   return shaderMaterial;

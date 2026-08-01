@@ -12,7 +12,7 @@ export async function createGalaxySPS(
 ) {
 
   // Just call createPointMap directly
-  const sps = await createSPS(scene, starsData, name);
+  const sps = await createSPS(scene, starsData, name, { spaceBetween: 50 });
 
   // Add to particle controller
   ParticlesController.instance(scene).add(sps, name);

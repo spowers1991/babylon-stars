@@ -37,7 +37,10 @@ export async function createSPS(
     const d = setStarSize(data[i]?.N); // Use the same size logic as Star
     // If you want to use diameter as scale, setAll(d / diameter)
     particle.scaling.setAll(d);
-    particle.position.set(p.x, p.y, p.z);
+
+    options.spaceBetween &&
+    particle.position.set(p.x * options.spaceBetween, p.y * options.spaceBetween, p.z * options.spaceBetween);
+    
     particle.color = p.color
       ? new BABYLON.Color4(p.color.r, p.color.g, p.color.b, 1)
       : new BABYLON.Color4(1, 1, 1, 1);

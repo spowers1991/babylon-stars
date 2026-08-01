@@ -11,6 +11,8 @@ export class StarsController extends ObjectsController {
 
   private scene!: BABYLON.Scene;
 
+  public stars: Star[] = [];
+
   // The currently active star (e.g. closest to camera, or matched from point picking)
   public activeStar: Star | null = null;
   public activeStarConfig: StarConfig | null = null;

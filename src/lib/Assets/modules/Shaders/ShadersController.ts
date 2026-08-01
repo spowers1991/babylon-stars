@@ -1,39 +1,38 @@
 import * as BABYLON from "babylonjs";
-import { createShaderMaterial } from "./Shader/create/createShaderMaterial";
-import { getShaderByName as getShaderByNameAction } from "./Shader/get/getShaderByName";
-import { setShader as setShaderAction } from "./Shader/set/setShader";
+import { createShaderMaterial as ACTIONS_createShaderMaterial} from "./Shader/create/createShaderMaterial";
+import { getShaderByName as  ACTIONS_getShaderByNameAction } from "./Shader/get/getShaderByName";
+import { setShader as ACTIONS_setShaderAction } from "./Shader/set/setShader";
 
 export class ShadersController {
   static instance: ShadersController = new ShadersController();
   shaders: any[] = [];
 
-    /**
-     * Returns a ShaderMaterial for the given shader code and config.
-     */
-    public getShaderMaterial(
-    scene: BABYLON.Scene,
-    name: string,
-    vertexShader: string,
-    fragmentShader: string,
-    uniforms: string[],
-    attributes: string[],
-    options?: Partial<BABYLON.IShaderMaterialOptions>
+    public create(
+        scene: BABYLON.Scene,
+        name: string,
+        vertexShader: string,
+        fragmentShader: string, 
+        uniforms: string[],
+        attributes: string[],
+        options?: Partial<BABYLON.IShaderMaterialOptions>
     ): BABYLON.ShaderMaterial {
-    return createShaderMaterial(scene, name, vertexShader, fragmentShader, uniforms, attributes, options);
+        const shader = ACTIONS_createShaderMaterial(scene, name, vertexShader, fragmentShader, uniforms, attributes, options);
+        this.setShader(shader);
+        return shader;
     }
 
     /**
      * Add a shader to the controller's array.
      */
     public setShader(shader: any) {
-    setShaderAction(this, shader);
+        ACTIONS_setShaderAction(this, shader);
     }
 
     /**
      * Get a shader by name from the controller's array.
      */
     public getShaderByName(name: string) {
-    return getShaderByNameAction(this, name);
+        return ACTIONS_getShaderByNameAction(this, name);
     }
 
     public getAll(): unknown[] {
@@ -49,8 +48,8 @@ export class ShadersController {
     public disposeByIndex(index: number): void {
         const shader = this.shaders[index];
         if (shader) {
-        shader.dispose();
-        this.shaders.splice(index, 1);
+            shader.dispose();
+            this.shaders.splice(index, 1);
         }
     }
 

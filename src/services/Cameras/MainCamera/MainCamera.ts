@@ -6,7 +6,7 @@ const MainCamera: Camera = {
   name: "Main Camera",
   position: new BABYLON.Vector3(0, 0, 0),
   lowerRadiusLimit: 3,
-  upperRadiusLimit: 700,
+  upperRadiusLimit: 7000,
   zoomSpeed: 1, // Babylon default wheelPrecision is 50 (lower = faster)
   panSpeed: 20, // Babylon default panningSensibility is 1000 (lower = faster)
   minZ: 0.01,
