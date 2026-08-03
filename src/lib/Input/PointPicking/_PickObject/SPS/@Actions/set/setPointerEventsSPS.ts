@@ -7,7 +7,7 @@ import { setPickToFocus } from "@/lib/Input/PointPicking/@Actions/set/setPickToF
 import { setMeshPick } from "../../../Mesh/@Actions/set/setMeshPick";
 import { setSPSPick } from "./setSPSPick";
 
-export function setPointerEventSPS(
+export function setPointerEventsSPS(
   scene: any,
   element: any,
   options: { pickRadius: number },
@@ -21,8 +21,6 @@ export function setPointerEventSPS(
   const spsPick = setSPSPick(scene, element);
   const pickToFocus = setPickToFocus(meshPick, null, spsPick);
   if (!pickToFocus) return;
-  
-  setPickFocus(scene.activeCamera, pickToFocus);
 
   if (spsPick) {
     setPickingActions([
