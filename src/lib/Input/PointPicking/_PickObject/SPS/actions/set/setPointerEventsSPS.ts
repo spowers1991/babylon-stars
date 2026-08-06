@@ -1,10 +1,10 @@
 import * as BABYLON from "babylonjs";
 import { setNearbyConfigsSPS } from "./setNearbyConfigsSPS";
-import { setPickingActions } from "../../../../@Actions/set/setPickActions";
+import { setPickingActions } from "../../../../actions/set/setPickActions";
 import { setClosestPicksSPS } from "./setClosetPicksSPS";
-import { setPickFocus } from "@/lib/Input/PointPicking/@Actions/set/setPickFocus";
-import { setPickToFocus } from "@/lib/Input/PointPicking/@Actions/set/setPickToFocus";
-import { setMeshPick } from "../../../Mesh/@Actions/set/setMeshPick";
+import { setPickFocus } from "@/lib/Input/PointPicking/actions/set/setPickFocus";
+import { setPickToFocus } from "@/lib/Input/PointPicking/actions/set/setPickToFocus";
+import { setMeshPick } from "../../../Mesh/actions/set/setMeshPick";
 import { setSPSPick } from "./setSPSPick";
 
 export function setPointerEventsSPS(

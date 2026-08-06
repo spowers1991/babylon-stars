@@ -1,7 +1,7 @@
 import * as BABYLON from "babylonjs";
-import { setMeshPick } from "../../Mesh/@Actions/set/setMeshPick";
-import { setPCSPick } from "../../PCS/@Actions/set/setPCSPick";
-import { setSPSPick } from "../../SPS/@Actions/set/setSPSPick";
+import { setMeshPick } from "../../Mesh/actions/set/setMeshPick";
+import { setPCSPick } from "../../PCS/actions/set/setPCSPick";
+import { setSPSPick } from "../../SPS/actions/set/setSPSPick";
 import { getPickObjectType } from "./getPickObjectType";
 
 export type PickTypeResult = {

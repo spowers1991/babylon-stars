@@ -1,8 +1,8 @@
 import * as BABYLON from "babylonjs";
-import { setPointerEventsSPS } from "../../SPS/@Actions/set/setPointerEventsSPS";
-import { getPickObject } from "./getPickObject";
+import { setPointerEventsSPS } from "../../_PickObject/SPS/actions/set/setPointerEventsSPS";
+import { getPickObject } from "../../_PickObject/actions/get/getPickObject";
 
-export function getSPSPointerEvents(
+export function getPointerEvents(
   scene: BABYLON.Scene,
   element: HTMLElement | any,
   options: { pickRadius: number },

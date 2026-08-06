@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { getSPSPointerEvents as ACTIONS_getPointerEvents } from "./_PickObject/@Actions/get/setPointerEventsSPS";
+import { getPointerEvents as ACTIONS_getPointerEvents } from "./actions/get/getPointerEvents";
 
 export class PointPickingController {
   private static _instance: PointPickingController | null = null;
