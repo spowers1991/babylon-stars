@@ -19,13 +19,13 @@ export class RenderersController {
 		return getRenderersAction(RenderersController.renderers);
 	}
 
-	static stepUpdate(config: RendererConfig) {
-        addRendererAction(RenderersController.renderers, config);
-		stepUpdateAction(config, RenderersController.lastUpdates);
+	static stepUpdate(config: RendererConfig, deltaMs: number) {
+		addRendererAction(RenderersController.renderers, config);
+		stepUpdateAction(config, deltaMs, RenderersController.lastUpdates);
 	}
 
-	static stepUpdateAll() {
-		stepUpdateAllAction(RenderersController.renderers, RenderersController.lastUpdates);
+	static stepUpdateAll(deltaMs: number) {
+		stepUpdateAllAction(RenderersController.renderers, deltaMs, RenderersController.lastUpdates);
 	}
 
 	static logRenderers() {

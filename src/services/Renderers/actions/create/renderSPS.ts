@@ -16,7 +16,7 @@ export function renderSPS(scene: BABYLON.Scene) {
   const starsController = StarsController.instance(scene);
 
 
-  return () => RenderersController.stepUpdate({
+  return (deltaMs: number) => RenderersController.stepUpdate({
     id: "spsUpdate",
     name: "SPS Update",
     interval: 50,
@@ -55,5 +55,5 @@ export function renderSPS(scene: BABYLON.Scene) {
     
 
     },
-  });
+  }, deltaMs);
 }
