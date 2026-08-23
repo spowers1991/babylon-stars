@@ -1,5 +1,4 @@
 import { startEngine } from "@/engine/actions/startEngine";
-import { logEngineMetrics } from "@/engine/actions/logEngineMetrics";
 import { createScenes } from "@/services/Scenes/actions/create/createScenes";
 import { createCameras } from "@/services/Cameras/actions/create/createCameras";
 import { createGalaxies } from "@/services/Objects/Galaxies/actions/create/createGalaxies";
@@ -41,7 +40,5 @@ window.addEventListener("DOMContentLoaded", async () => {
   createPointPicking(scene1, milkyWay);
 
   runRenders(engine, scene1);
-
-  scene1.registerAfterRender(() => logEngineMetrics(engine, scene1));
 
 });
