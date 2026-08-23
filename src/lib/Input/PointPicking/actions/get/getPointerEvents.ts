@@ -1,8 +1,6 @@
 import * as BABYLON from "babylonjs";
-import { setPickFocus } from "../../../@Actions/set/setPickFocus";
-import { setPointerEventPCS } from "../../PCS/@Actions/set/setPointerEventPCS";
-import { setPointerEventSPS } from "../../SPS/@Actions/set/setPointerEventSPS";
-import { getPickObject } from "./getPickObject";
+import { setPointerEventsSPS } from "../../_PickObject/SPS/actions/set/setPointerEventsSPS";
+import { getPickObject } from "../../_PickObject/actions/get/getPickObject";
 
 export function getPointerEvents(
   scene: BABYLON.Scene,
@@ -19,17 +17,15 @@ export function getPointerEvents(
   // Deconstruct pickType and picked from the pick object
   const { pickType, picked } = pick;
 
-  setPickFocus(scene.activeCamera, picked);
-
   switch (pickType) {
     case "Mesh":
       // Add mesh-specific logic here if needed
       break;
     case "PCSParticle":
-      setPointerEventPCS(scene, element, data.configs, setActiveData, pointerInfo);
+      // setPointerEventPCS(scene, element, data.configs, setActiveData, pointerInfo);
       break;
     case "SPSParticle":
-      setPointerEventSPS(scene, element, options, data.configs, setActiveData, pointerInfo);
+      setPointerEventsSPS(scene, element, options, data.configs, setActiveData, pointerInfo);
       break;
     default:
       break;

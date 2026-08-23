@@ -5,7 +5,7 @@ const MainCamera: Camera = {
   type: "arcRotate",
   name: "Main Camera",
   position: new BABYLON.Vector3(0, 0, 0),
-  lowerRadiusLimit: 3,
+  lowerRadiusLimit: 15,
   upperRadiusLimit: 7000,
   zoomSpeed: 1, // Babylon default wheelPrecision is 50 (lower = faster)
   panSpeed: 20, // Babylon default panningSensibility is 1000 (lower = faster)

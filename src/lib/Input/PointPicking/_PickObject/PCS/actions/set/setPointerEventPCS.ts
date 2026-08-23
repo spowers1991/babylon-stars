@@ -1,11 +1,11 @@
 import * as BABYLON from "babylonjs";
 import { setNearbyDataPCS } from "./setNearbyDataPCS";
-import { setPickingActions } from "../../../../@Actions/set/setPickActions";
+import { setPickingActions } from "../../../../actions/set/setPickActions";
 import { setClosestPicksPCS } from "./setClosestPicksPCS";
-import { setPickFocus } from "../../../../@Actions/set/setPickFocus";
-import { setPickToFocus } from "../../../../@Actions/set/setPickToFocus";
+import { setPickFocus } from "../../../../actions/set/setPickFocus";
+import { setPickToFocus } from "../../../../actions/set/setPickToFocus";
 import { setPCSPick } from "./setPCSPick";
-import { setMeshPick } from "../../../Mesh/@Actions/set/setMeshPick";
+import { setMeshPick } from "../../../Mesh/actions/set/setMeshPick";
 
 export function setPointerEventPCS(
   controller: any,
