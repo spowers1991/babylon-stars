@@ -30,6 +30,7 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
       const pickedStar = pickingController.closestPickSPS;
       if (pickedStar) {
         setPickFocus(scene.activeCamera!, pickedStar);
+        console.log("Picked Star:", pickedStar);
       }
 
     }

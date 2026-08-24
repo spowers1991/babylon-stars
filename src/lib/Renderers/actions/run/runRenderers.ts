@@ -5,10 +5,12 @@ import * as BABYLON from "babylonjs";
  * @param engine The Babylon.js engine
  * @param fns Array of functions to run each frame
  */
-export function runRenderers(engine: BABYLON.Engine, scene : BABYLON.Scene, fns: Array<() => void>) {
+export function runRenderers(engine: BABYLON.Engine, scene : BABYLON.Scene, fns: Array<(deltaMs: number) => void>) {
   engine.runRenderLoop(() => {
+    const deltaMs = engine.getDeltaTime();
+
     for (const fn of fns) {
-      fn();
+      fn(deltaMs);
     }
     scene.render();
   });
