@@ -43,6 +43,15 @@ export function createCameraByType(
       if (cameraConfig.panSpeed !== undefined) {
         arcCamera.panningSensibility = cameraConfig.panSpeed;
       }
+      if (cameraConfig.preventZoomOutOnFocus !== undefined) {
+        arcCamera.metadata = {
+          ...(arcCamera.metadata ?? {}),
+          focus: {
+            ...(arcCamera.metadata?.focus ?? {}),
+            preventZoomOut: cameraConfig.preventZoomOutOnFocus,
+          },
+        };
+      }
       arcCamera.attachControl(canvas, true);
       return arcCamera;
     }

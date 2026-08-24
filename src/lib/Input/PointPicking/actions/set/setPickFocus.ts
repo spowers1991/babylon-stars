@@ -1,5 +1,12 @@
 import * as BABYLON from "babylonjs";
-import { setFocusCamera } from "@/lib/Cameras/Camera/actions/set/setFocusCamera";
+import { FocusCameraOptions, setFocusCamera } from "@/lib/Cameras/Camera/actions/set/setFocusCamera";
+
+interface PickFocusTarget {
+  pickedMesh?: {
+    position: BABYLON.Vector3;
+  };
+  position?: BABYLON.Vector3;
+}
 
 // Helper to check if camera is panning (ArcRotateCamera only)
 function isCameraPanning(camera: BABYLON.Camera | unknown): boolean {
@@ -13,7 +20,7 @@ function isCameraPanning(camera: BABYLON.Camera | unknown): boolean {
   return false;
 }
 
-export function setPickFocus(camera: BABYLON.Camera | unknown, pick: any) {
+export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined, options?: FocusCameraOptions) {
   if (isCameraPanning(camera)) return; // Prevent focus if panning
 
   let position: BABYLON.Vector3 | undefined;
@@ -25,6 +32,6 @@ export function setPickFocus(camera: BABYLON.Camera | unknown, pick: any) {
   }
 
   if (position) {
-    setFocusCamera(camera as BABYLON.Camera, position);
+    setFocusCamera(camera as BABYLON.Camera, position, undefined, options);
   }
 }
