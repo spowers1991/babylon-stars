@@ -15,7 +15,7 @@ function isCameraPanning(camera: BABYLON.Camera | unknown): boolean {
   return false;
 }
 
-export function ACTIONS_setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined) {
+export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined) {
   if (!(camera instanceof BABYLON.ArcRotateCamera)) return;
   if (isCameraPanning(camera)) return;
 
