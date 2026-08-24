@@ -21,6 +21,9 @@
     "react-dom": "^18.3.1",
     "react-draggable": "^4.4.6"
   },
+  "allowScripts": {
+    "babylonjs": true
+  },
   "devDependencies": {
     "@babel/core": "^7.24.7",
     "@babel/preset-env": "^7.24.7",
