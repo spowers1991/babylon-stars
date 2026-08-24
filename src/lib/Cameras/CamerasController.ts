@@ -7,6 +7,11 @@ import {
   getCameraDistanceToMeshClamped as ACTIONS_getCameraDistanceToMeshClamped,
   GetCameraDistanceToMeshClampedOptions,
 } from "./Camera/actions/get/getCameraDistanceToMeshClamped";
+import { ACTIONS_setFocusCamera } from "./Camera/actions/set/setFocusCamera";
+import {
+  ACTIONS_onBeforeRenderFocusTransition,
+  FocusTransitionState,
+} from "./Camera/actions/run/onBeforeRenderFocusTransition";
 
 export class CamerasController {
 
@@ -16,8 +21,12 @@ export class CamerasController {
   private cameras: BABYLON.Camera[] = [];
   private activeCamera?: BABYLON.Camera;
 
+  private focusCamera: BABYLON.ArcRotateCamera | null = null;
+  private focusState: FocusTransitionState | null = null;
+
   private constructor(scene: BABYLON.Scene) {
       this.scene = scene;
+      this.scene.onBeforeRenderObservable.add(this._onBeforeRender);
   }
 
   public static instance(scene: BABYLON.Scene): CamerasController {
@@ -83,6 +92,31 @@ export class CamerasController {
   public getCameras(): BABYLON.Camera[] {
     return this.cameras;
   }
+
+  public pickFocus(camera: BABYLON.ArcRotateCamera, target: BABYLON.Vector3): void {
+    const state = ACTIONS_setFocusCamera(camera, target);
+    if (!state) return;
+    this.focusCamera = camera;
+    this.focusState = state;
+  }
+
+  private _onBeforeRender = (): void => {
+    if (!this.focusCamera || !this.focusState) return;
+
+    const dtSeconds = this.scene.getEngine().getDeltaTime() / 1000;
+    const { done, nextState } = ACTIONS_onBeforeRenderFocusTransition(
+      this.focusCamera,
+      dtSeconds,
+      this.focusState
+    );
+
+    if (done) {
+      this.focusCamera = null;
+      this.focusState = null;
+    } else {
+      this.focusState = nextState;
+    }
+  };
 
   /**
    * Removes and disposes of a camera at the specified index.

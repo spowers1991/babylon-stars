@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { setFocusCamera } from "@/lib/Cameras/Camera/actions/set/setFocusCamera";
+import { CamerasController } from "@/lib/Cameras/CamerasController";
 
 interface PickFocusTarget {
   pickedMesh?: {
@@ -8,20 +8,16 @@ interface PickFocusTarget {
   position?: BABYLON.Vector3;
 }
 
-// Helper to check if camera is panning (ArcRotateCamera only)
 function isCameraPanning(camera: BABYLON.Camera | unknown): boolean {
   if (camera instanceof BABYLON.ArcRotateCamera) {
-    // Babylon sets camera.panningAxis or camera._isPointerDown for panning, but not public API.
-    // We can check camera._isPointerDown && camera._panning (private), or expose a flag elsewhere if needed.
-    // For now, we conservatively return false (no panning) unless you want to patch ArcRotateCamera prototype.
-    // TODO: Implement a robust panning detection if needed.
     return false;
   }
   return false;
 }
 
-export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined) {
-  if (isCameraPanning(camera)) return; // Prevent focus if panning
+export function ACTIONS_setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined) {
+  if (!(camera instanceof BABYLON.ArcRotateCamera)) return;
+  if (isCameraPanning(camera)) return;
 
   let position: BABYLON.Vector3 | undefined;
 
@@ -32,6 +28,6 @@ export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTa
   }
 
   if (position) {
-    setFocusCamera(camera as BABYLON.Camera, position);
+    CamerasController.instance(camera.getScene()).pickFocus(camera, position);
   }
 }
