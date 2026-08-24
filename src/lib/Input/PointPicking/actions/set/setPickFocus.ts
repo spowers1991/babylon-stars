@@ -1,5 +1,5 @@
 import * as BABYLON from "babylonjs";
-import { FocusCameraOptions, setFocusCamera } from "@/lib/Cameras/Camera/actions/set/setFocusCamera";
+import { setFocusCamera } from "@/lib/Cameras/Camera/actions/set/setFocusCamera";
 
 interface PickFocusTarget {
   pickedMesh?: {
@@ -20,7 +20,7 @@ function isCameraPanning(camera: BABYLON.Camera | unknown): boolean {
   return false;
 }
 
-export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined, options?: FocusCameraOptions) {
+export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTarget | null | undefined) {
   if (isCameraPanning(camera)) return; // Prevent focus if panning
 
   let position: BABYLON.Vector3 | undefined;
@@ -32,6 +32,6 @@ export function setPickFocus(camera: BABYLON.Camera | unknown, pick: PickFocusTa
   }
 
   if (position) {
-    setFocusCamera(camera as BABYLON.Camera, position, undefined, options);
+    setFocusCamera(camera as BABYLON.Camera, position);
   }
 }

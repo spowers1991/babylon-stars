@@ -15,5 +15,4 @@ export interface CameraConfig {
   maxZ?: number;
   zoomSpeed?: number; // Matches Babylon's wheelPrecision (lower = faster)
   panSpeed?: number; // Matches Babylon's panningSensibility (lower = faster)
-  preventZoomOutOnFocus?: boolean;
 }

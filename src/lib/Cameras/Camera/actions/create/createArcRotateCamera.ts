@@ -20,15 +20,6 @@ export function createArcRotateCamera(
   if (options.panSpeed !== undefined) {
     cam.panningSensibility = options.panSpeed;
   }
-  if (options.preventZoomOutOnFocus !== undefined) {
-    cam.metadata = {
-      ...(cam.metadata ?? {}),
-      focus: {
-        ...(cam.metadata?.focus ?? {}),
-        preventZoomOut: options.preventZoomOutOnFocus,
-      },
-    };
-  }
   cam.attachControl(canvas, true);
   return cam;
 }

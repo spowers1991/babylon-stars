@@ -10,5 +10,4 @@ export interface ArcRotateCamera extends Camera {
   target?: BABYLON.Vector3;
   zoomSpeed?: number; // Matches Babylon's wheelPrecision
   panSpeed?: number; // Matches Babylon's panningSensibility
-  preventZoomOutOnFocus?: boolean;
 }

@@ -15,41 +15,30 @@ function createScene() {
   );
 
   scene.activeCamera = camera;
-  engine.getDeltaTime = () => 500;
 
   return { scene, camera };
 }
 
 {
   const { scene, camera } = createScene();
-  camera.metadata = { focus: { preventZoomOut: true } };
+  const startingRadius = camera.radius;
 
   setFocusCamera(camera, new BABYLON.Vector3(10, 0, 0));
-  scene.render();
 
-  assert.equal(camera.radius, 10, "focus should keep the same radius when the new target is not closer than the current focus");
-  assert.notEqual(camera.target.x, 0, "focus should still move the camera target");
+  assert.equal(camera.radius, startingRadius, "focus should preserve the current radius");
+  assert.deepEqual(camera.target.asArray(), [10, 0, 0], "focus should retarget the camera immediately");
+  assert.equal(scene.activeCamera, camera);
 }
 
 {
-  const { scene, camera } = createScene();
-  camera.metadata = { focus: { preventZoomOut: true } };
+  const { camera } = createScene();
   const closerTarget = BABYLON.Vector3.Lerp(camera.globalPosition, camera.target, 0.5);
+  const startingRadius = camera.radius;
 
   setFocusCamera(camera, closerTarget);
-  scene.render();
 
-  assert.ok(camera.radius < 10, "focus should move closer when the clicked target is already closer to the camera");
-}
-
-{
-  const { scene, camera } = createScene();
-  const closerTarget = BABYLON.Vector3.Lerp(camera.globalPosition, camera.target, 0.5);
-
-  setFocusCamera(camera, closerTarget);
-  scene.render();
-
-  assert.equal(camera.radius, 10, "focus should preserve the current behavior when preventZoomOut is not enabled");
+  assert.equal(camera.radius, startingRadius, "focus should not zoom out or in when retargeting");
+  assert.deepEqual(camera.target.asArray(), closerTarget.asArray());
 }
 
 console.log("focus camera test passed");

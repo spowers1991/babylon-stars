@@ -9,7 +9,6 @@ const MainCamera: Camera = {
   upperRadiusLimit: 7000,
   zoomSpeed: 1, // Babylon default wheelPrecision is 50 (lower = faster)
   panSpeed: 20, // Babylon default panningSensibility is 1000 (lower = faster)
-  preventZoomOutOnFocus: true,
   minZ: 0.01,
   maxZ: 1_000_000,
 };
