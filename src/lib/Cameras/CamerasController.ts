@@ -26,6 +26,10 @@ export class CamerasController {
 
   private constructor(scene: BABYLON.Scene) {
       this.scene = scene;
+      this._attachSceneObservers();
+  }
+
+  private _attachSceneObservers(): void {
       this.scene.onBeforeRenderObservable.add(this._onBeforeRender);
   }
 
@@ -96,6 +100,10 @@ export class CamerasController {
   public pickFocus(camera: BABYLON.ArcRotateCamera, target: BABYLON.Vector3): void {
     const state = ACTIONS_setFocusCamera(camera, target);
     if (!state) return;
+    this._attachCameraFocus(camera, state);
+  }
+
+  private _attachCameraFocus(camera: BABYLON.ArcRotateCamera, state: FocusTransitionState): void {
     this.focusCamera = camera;
     this.focusState = state;
   }
