@@ -1,10 +1,10 @@
 import * as BABYLON from "babylonjs";
-import { FreeCamera } from "../../types/FreeCamera";
+import { FreeCameraConfig } from "../../types/FreeCameraConfig";
 
 export function createFreeCamera(
   scene: BABYLON.Scene,
   canvas: HTMLCanvasElement,
-  options: FreeCamera
+  options: FreeCameraConfig
 ): BABYLON.FreeCamera {
   const cam = new BABYLON.FreeCamera(
     options.name,
