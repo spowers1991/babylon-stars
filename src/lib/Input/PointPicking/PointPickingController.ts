@@ -1,4 +1,5 @@
 import * as BABYLON from "babylonjs";
+import { runPointerObservable as ACTIONS_runPointerObservable } from "./actions/run/runPointerObservable";
 import { getPointerEvents as ACTIONS_getPointerEvents } from "./actions/get/getPointerEvents";
 
 export class PointPickingController {
@@ -51,8 +52,8 @@ export class PointPickingController {
     options: { pickRadius: number },
     data: { configs: any[] },
     setActiveData: (configs: unknown[]) => void}) {
-    this.scene.onPointerObservable.add((pointerInfo) => 
-        ACTIONS_getPointerEvents(this.scene, element, options, data, setActiveData, pointerInfo)
+    ACTIONS_runPointerObservable(this.scene, (pointerInfo) =>
+      ACTIONS_getPointerEvents(this.scene, element, options, data, setActiveData, pointerInfo)
     );
   }
 
