@@ -13,11 +13,10 @@ function getLerpAlpha(scene: BABYLON.Scene, speed: number): number {
 }
 
 export function setPostProcessing(scene: BABYLON.Scene, config?: PipelineConfig) {
-    const camera = scene.activeCamera;
-    if(!camera) return;
+    if(!scene.activeCamera) return;
 
     const pipeline = PipelinesController.instance.getPipelineByName(scene, "defaultPipeline");
-    const normalZoom = CamerasController.instance(scene).getZoomLevel(camera, { inverted: false });
+    const normalZoom = CamerasController.instance(scene).getActiveCamera()?.getZoomLevel({ inverted: false }) ?? null;
 
     if(!pipeline) return;
 

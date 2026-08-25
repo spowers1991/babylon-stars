@@ -6,7 +6,6 @@ import { ParticlesController } from "@/lib/Particles/ParticlesController";
 import { GalaxiesController } from "@/services/Objects/Galaxies/GalaxiesController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
-import { AssetsController } from "@/lib/Assets/AssetsController";
 
 export function renderSPS(scene: BABYLON.Scene) {
 
@@ -22,10 +21,10 @@ export function renderSPS(scene: BABYLON.Scene) {
     interval: 50,
     step: () => {
       const distanceFactor = starsController.activeStar?.mesh
-        ? camerasController.getDistanceToMeshClamped(starsController.activeStar.mesh, scene.activeCamera!, {
+        ? camerasController.getActiveCamera()?.getDistanceToMeshClamped(starsController.activeStar.mesh, {
             minDistance: 0.1,
             maxDistance: 100,
-          })
+          }) ?? null
         : null;
 
       particlesController.setSPS(
@@ -33,26 +32,6 @@ export function renderSPS(scene: BABYLON.Scene) {
         galaxy.starsData as StarData[],
         { transparency: distanceFactor ? distanceFactor : 1 } as SPSConfig
       );
-      /*
-      const nearbyParticles = particlesController.getParticlesInRadiusSPS(
-        scene.activeCamera!.position,
-        150
-      );
-      
-      const nearbyConfigs = particlesController.createConfigsArrayFromSPS(
-        nearbyParticles,
-        galaxy.starsConfigs,
-      );
-
-      starsController.activeStarsConfigs = nearbyConfigs;
-      
-      starsController.activeObject = starsController.activeStarsConfigs[0] || null;
-      
-      const meshesController = AssetsController.instance.meshes;
-      meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
-      meshesController.setMeshPool(scene);
-*/
-    
 
     },
   }, deltaMs);
