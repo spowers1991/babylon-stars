@@ -34,7 +34,6 @@ export class MeshesController {
     scene: BABYLON.Scene,
   ): void {
     this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool);
-    console.log(this.meshPool, scene.meshes);
   }
 
   public getMesh(scene: BABYLON.Scene, config: MeshConfig): BABYLON.AbstractMesh {
