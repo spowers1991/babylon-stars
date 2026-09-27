@@ -33,6 +33,13 @@ export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" 
             });
         }
     }
+
+    scene.meshes.forEach((mesh) => {
+        if (!currentMeshes.has(mesh)) {
+            if (mesh.name === "Milky Way SPS") return;
+            mesh.dispose();
+        }
+    });
     
     return Array.from(currentMeshes);
 }

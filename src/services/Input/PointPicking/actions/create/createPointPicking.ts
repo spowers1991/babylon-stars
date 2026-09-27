@@ -4,15 +4,18 @@ import { Galaxy } from "@/services/Objects/Galaxies/Galaxy/Galaxy";
 import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { AssetsController } from "@/lib/Assets/AssetsController";
-import { setPickFocus } from "@/lib/Input/PointPicking/actions/set/setPickFocus";
+import { CamerasController } from "@/lib/Cameras/CamerasController";
 
 export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
+  const camerasController = CamerasController.instance(scene);
   const pickingController = PointPickingController.instance(scene);
   const starsController = StarsController.instance(scene);
 
   const meshesController = AssetsController.instance.meshes;
 
-  pickingController.setCamera(scene.activeCamera!);
+  const activeCamera = camerasController.getActiveCamera();
+  
+  pickingController.setCamera(activeCamera?.camera!);
 
   pickingController.setPointerObservable({
     element: galaxy as Galaxy,
@@ -29,9 +32,8 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
       const pickedStar = pickingController.closestPickSPS;
       if (pickedStar) {
-        setPickFocus(scene.activeCamera!, pickedStar);
+        activeCamera?.focusOn(pickedStar.position, 2);
       }
-
     }
   });
 }

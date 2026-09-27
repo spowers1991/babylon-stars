@@ -6,6 +6,6 @@ export function createCameras(scene: BABYLON.Scene, canvas: HTMLCanvasElement , 
 
 const camerasController = CamerasController.instance(scene);
     
-camerasController.addCamera(canvas, mainCamera);
+camerasController.createCamera(canvas, mainCamera);
 
 }

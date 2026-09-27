@@ -21,5 +21,5 @@ export function createStarMaterial(
   //materials.setEmissiveIntensity({ material, value: emissiveIntensity });
   //mesh.material = material;
   
-  mesh.material = shaderMaterial
+  return mesh.material = shaderMaterial
 }
