@@ -29,7 +29,7 @@ export class CamerasController {
     return controller;
   }
 
-  public addCamera(
+  public createCamera(
     canvas: HTMLCanvasElement,
     cameraConfig: CameraConfig
   ): CameraController {

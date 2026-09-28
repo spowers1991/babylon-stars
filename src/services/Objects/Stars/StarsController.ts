@@ -55,7 +55,7 @@ export class StarsController extends ObjectsController {
     activeStarsConfigs: StarConfig[],
   ) {
     
-    // Create meshes for active stars configs
+    // Create stars for active stars configs
     const starsToRender = ACTIONS_createStars(this.scene, activeStarsConfigs);
 
     // Closest star to camera becomes active star

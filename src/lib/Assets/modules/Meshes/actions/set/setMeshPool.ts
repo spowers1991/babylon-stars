@@ -33,6 +33,13 @@ export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" 
             });
         }
     }
+
+    scene.meshes.forEach((mesh) => {
+        if (!currentMeshes.has(mesh)) {
+            if (mesh.metadata?.type === null || mesh.metadata?.type === undefined) return;
+            mesh.dispose();
+        }
+    });
     
     return Array.from(currentMeshes);
 }
