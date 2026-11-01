@@ -5,28 +5,22 @@ import type { StarConfig } from "../../Star/types/StarConfig";
 import { StarsController } from "../../StarsController";
 
 export function createStars(scene : BABYLON.Scene, activeStarsConfigs: StarConfig[]){
-
     const newStars: Star[] = [];
-
     const starsController = StarsController.instance(scene);
 
-    const existingStars = starsController.stars.filter(star => {
-        return activeStarsConfigs.some(config => config.name === star.name);
-    });
-
-    if(existingStars.length > 0) {
-        existingStars.forEach(star => {
-            if(!newStars.includes(star)) {
-                newStars.push(star);
-            }
-        });
-    }
-
     activeStarsConfigs.forEach(config => {
-        const existingStar = existingStars.find(star => star.name === config.name);
-        if(!existingStar) {
+        const existingStarIndex = starsController.stars.findIndex(
+            star => star.name === config.name
+        );
+        const existingStar = starsController.stars[existingStarIndex];
+
+        if (existingStar?.mesh && !existingStar.mesh.isDisposed()) {
+            newStars.push(existingStar);
+        } else {
             const newStar = createStar(scene, config);
-            if (!starsController.stars.includes(newStar)) {
+            if (existingStarIndex !== -1) {
+                starsController.stars[existingStarIndex] = newStar;
+            } else {
                 starsController.stars.push(newStar);
             }
             newStars.push(newStar);
