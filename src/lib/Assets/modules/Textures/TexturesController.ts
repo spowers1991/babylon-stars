@@ -3,10 +3,16 @@ import { addToTextures } from "./texture/actions/addToTextures";
 import { disposeTexture } from "./texture/actions/disposeTexture";
 import { disposeTextureByIndex } from "./texture/actions/disposeTextureByIndex";
 import { applyTexture } from "./texture/actions/applyTexture";
+import { runCleanTextures as ACTIONS_runCleanTextures } from "./actions/run/runCleanTextures";
 
 export class TexturesController {
-  /** Ordered list (kept for backward compatibility) */
-  public textures: BABYLON.Texture[] = [];
+  public readonly texturesPool: BABYLON.Texture[] = [];
+  public readonly ownedTextures = new WeakSet<BABYLON.BaseTexture>();
+
+  /** @deprecated Use texturesPool. */
+  public get textures(): BABYLON.Texture[] {
+    return this.texturesPool;
+  }
 
   /** Name → Texture lookup */
   private textureMap = new Map<string, BABYLON.Texture>();
@@ -26,10 +32,10 @@ export class TexturesController {
       return existing;
     }
 
-    addToTextures(scene, this.textures, url);
-
-    const texture = this.textures[this.textures.length - 1];
+    const texture = addToTextures(scene, this.texturesPool, url);
+    this.ownedTextures.add(texture);
     this.textureMap.set(name, texture);
+    this.cleanUp(scene);
 
     return texture;
   }
@@ -51,14 +57,14 @@ export class TexturesController {
   }
 
   public getAll(): BABYLON.Texture[] {
-    return this.textures;
+    return this.texturesPool;
   }
 
   /**
    * Dispose by index (keeps existing API working)
    */
   public disposeByIndex(index: number): void {
-    const texture = this.textures[index];
+    const texture = this.texturesPool[index];
     if (!texture) return;
 
     // Remove from map
@@ -69,7 +75,7 @@ export class TexturesController {
       }
     }
 
-    disposeTextureByIndex(this.textures, index);
+    disposeTextureByIndex(this.texturesPool, index);
   }
 
   /**
@@ -81,13 +87,20 @@ export class TexturesController {
 
     disposeTexture(texture);
 
-    this.textures = this.textures.filter(t => t !== texture);
+    const textureIndex = this.texturesPool.indexOf(texture);
+    if (textureIndex !== -1) {
+      this.texturesPool.splice(textureIndex, 1);
+    }
     this.textureMap.delete(name);
   }
 
   public disposeAll(): void {
-    this.textures.forEach(tex => disposeTexture(tex));
-    this.textures = [];
+    this.texturesPool.forEach(tex => disposeTexture(tex));
+    this.texturesPool.length = 0;
     this.textureMap.clear();
+  }
+
+  public cleanUp(scene: BABYLON.Scene): void {
+    ACTIONS_runCleanTextures(scene, this.texturesPool, this.ownedTextures);
   }
 }

@@ -1,8 +1,7 @@
 
 import * as BABYLON from "babylonjs";
-import { ShadersController } from "@/lib/Assets/modules/Shaders/ShadersController";
+import { AssetsController } from "@/lib/Assets/AssetsController";
 import { STAR_VERTEX_SHADER, STAR_FRAGMENT_SHADER } from "../../shaders/StarShaders";
-import { Star } from "../../Star";
 import { StarConfig } from "../../types/StarConfig";
 
 /**
@@ -17,9 +16,9 @@ export function createStarSurfaceShader(
   name: string,
   config: StarConfig
 ): BABYLON.ShaderMaterial {
-  const shaderMaterial = ShadersController.instance.create(
+  const shaderMaterial = AssetsController.instance.shaders.create(
     scene,
-    "star",
+    name,
     STAR_VERTEX_SHADER,
     STAR_FRAGMENT_SHADER,
     ["worldViewProjection", "time", "starColor", "intensity", "turbulenceScale", "turbulenceDetail", "darkPatchStrength", "lineStrength"],

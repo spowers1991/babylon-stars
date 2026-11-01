@@ -3,6 +3,6 @@ import { loadTexture } from "./loadTexture";
 
 export function addToTextures(scene: BABYLON.Scene, textures : BABYLON.Texture[], url: string){
     const texture = loadTexture(scene, url);
-    textures.push(loadTexture(scene, url));
+    textures.push(texture);
     return texture;
 }

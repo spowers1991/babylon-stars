@@ -29,11 +29,13 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
       
       meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
       meshesController.setMeshPool(scene);
+      AssetsController.instance.cleanUp(scene);
 
       const pickedStar = pickingController.closestPickSPS;
       if (pickedStar) {
         activeCamera?.focusOn(pickedStar.position, 2);
       }
+
     }
   });
 }
