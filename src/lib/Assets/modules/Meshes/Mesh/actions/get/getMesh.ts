@@ -5,22 +5,20 @@ import { AssetsController } from "@/lib/Assets/AssetsController";
 
 export function getMesh(scene: BABYLON.Scene, config: MeshConfig) {
     const assetsController = AssetsController.instance;
+    const meshFromPool = assetsController.meshes.meshPool.find((mesh) =>
+        !mesh.isDisposed() &&
+        mesh.getScene() === scene &&
+        mesh.metadata?.type === config.type &&
+        mesh.name === config.name
+    );
+    if (meshFromPool) return meshFromPool;
 
-    if(assetsController.meshes.meshPool.length > 0) {
-        const meshFromPool = assetsController.meshes.meshPool.find(mesh => {
-            return mesh.metadata?.type === config.type && mesh.name === config.name;
-        });
-        if(meshFromPool) {
-            return meshFromPool;
-        }
-        else {
-            const newMesh = createMeshByType(scene, config);
-            newMesh.metadata = {
-                ...(newMesh.metadata ?? {}),
-                type: config.type,
-            };
-            assetsController.meshes.meshPool.push(newMesh);
-            return newMesh;
-        }
-    }
-}   
+    const newMesh = createMeshByType(scene, config);
+    newMesh.metadata = {
+        ...(newMesh.metadata ?? {}),
+        type: config.type,
+        assetPoolType: config.type,
+    };
+    assetsController.meshes.meshPool.push(newMesh);
+    return newMesh;
+}
