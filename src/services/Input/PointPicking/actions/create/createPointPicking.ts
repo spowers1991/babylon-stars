@@ -24,12 +24,10 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
     setActiveData: (matchedConfigs: any[]) => {
       starsController.activeStarsConfigs = matchedConfigs as StarConfig[];
 
-      starsController.activeStarConfig = starsController.activeStarsConfigs[0] || null;
-      starsController.activeObject = starsController.activeStarsConfigs[0] || null;
-      
       meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
-      meshesController.setMeshPool(scene);
+      meshesController.setMeshPool(scene, false);
       AssetsController.instance.cleanUp(scene);
+      starsController.updateStars(starsController.activeStarsConfigs);
 
       const pickedStar = pickingController.closestPickSPS;
       if (pickedStar) {

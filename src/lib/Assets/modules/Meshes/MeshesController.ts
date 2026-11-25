@@ -33,8 +33,9 @@ export class MeshesController {
 
   public setMeshPool(
     scene: BABYLON.Scene,
+    createMissing = true,
   ): void {
-    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool);
+    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool, createMissing);
   }
 
   public cleanUp(scene: BABYLON.Scene): void {

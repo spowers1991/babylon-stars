@@ -3,7 +3,7 @@ import { MeshConfig } from "../../Mesh/types/MeshConfig";
 import { createMeshByType } from "@/lib/Assets/modules/Meshes/Mesh/actions/create/createMeshByType";
 import { runCleanMeshes } from "../run/runCleanMeshes";
 
-export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" | "CylinderMesh" | "PlaneMesh" | "SphereMesh", meshConfigs: MeshConfig[]][], meshPool: BABYLON.AbstractMesh[]): BABYLON.AbstractMesh[] {
+export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" | "CylinderMesh" | "PlaneMesh" | "SphereMesh", meshConfigs: MeshConfig[]][], meshPool: BABYLON.AbstractMesh[], createMissing = true): BABYLON.AbstractMesh[] {
     const currentMeshes: Set<BABYLON.AbstractMesh> = new Set();
     const existingMeshesByKey: Map<string, BABYLON.AbstractMesh> = new Map();
 
@@ -25,7 +25,7 @@ export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" 
                 const meshKey = `${type}::${config.name}`;
                 let mesh = existingMeshesByKey.get(meshKey);
 
-                if (!mesh) {
+                if (!mesh && createMissing) {
                     mesh = createMeshByType(scene, config);
                     mesh.metadata = {
                         ...(mesh.metadata ?? {}),
@@ -35,7 +35,9 @@ export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" 
                     existingMeshesByKey.set(meshKey, mesh);
                 }
 
-                currentMeshes.add(mesh);
+                if (mesh) {
+                    currentMeshes.add(mesh);
+                }
             });
         }
     }

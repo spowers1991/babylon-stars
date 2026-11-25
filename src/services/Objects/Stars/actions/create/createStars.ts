@@ -10,7 +10,7 @@ export function createStars(scene : BABYLON.Scene, activeStarsConfigs: StarConfi
 
     activeStarsConfigs.forEach(config => {
         const existingStarIndex = starsController.stars.findIndex(
-            star => star.name === config.name
+            star => star.id === config.id
         );
         const existingStar = starsController.stars[existingStarIndex];
 

@@ -1,5 +1,7 @@
 import * as BABYLON from "babylonjs";
 
+export const MAX_RENDER_OBJECTS = 50;
+
 export function setObjectsToRender(
   scene: BABYLON.Scene,
   controller: {
@@ -10,8 +12,6 @@ export function setObjectsToRender(
   },
   newList: Object[]
 ) {
-  const MAX_RENDER_OBJECTS = 50;
-
   const previousObjects = new Set(controller.objectsToRender as any[]);
   const nextObjects: any[] = [];
   const currentObjects = new Set<any>();

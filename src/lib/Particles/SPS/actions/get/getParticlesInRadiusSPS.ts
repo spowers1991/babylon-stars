@@ -3,7 +3,7 @@ import { ParticlesController } from "../../../ParticlesController";
 
 /** Get all particles in all SPS within a radius */
 export function getParticlesInRadiusSPS(controller: ParticlesController, center: BABYLON.Vector3, radius: number): BABYLON.SolidParticle[] {
-  const result: BABYLON.SolidParticle[] = [];
+  const result: { particle: BABYLON.SolidParticle; distanceSquared: number }[] = [];
   const r2 = radius * radius;
 
   for (const instance of controller.getAllSPS()) {
@@ -17,11 +17,13 @@ export function getParticlesInRadiusSPS(controller: ParticlesController, center:
         particlePosition = BABYLON.Vector3.TransformCoordinates(p.position, worldMatrix);
       }
 
-      if (BABYLON.Vector3.DistanceSquared(center, particlePosition) <= r2) {
-        result.push(p);
+      const distanceSquared = BABYLON.Vector3.DistanceSquared(center, particlePosition);
+      if (distanceSquared <= r2) {
+        result.push({ particle: p, distanceSquared });
       }
     }
   }
 
-  return result;
+  result.sort((a, b) => a.distanceSquared - b.distanceSquared);
+  return result.map(({ particle }) => particle);
 }

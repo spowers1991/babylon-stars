@@ -4,13 +4,12 @@ import type { StarConfig } from "./Star/types/StarConfig";
 import type { StarData } from "./Star/types/StarData";
 import { Star } from "./Star/Star";
 import { createStarsConfigs as ACTIONS_createStarsConfigs } from "./actions/create/createStarsConfigs";
-import { createStars as ACTIONS_createStars } from "./actions/create/createStars";
+import { updateStars as ACTIONS_updateStars } from "./actions/run/updateStars";
 
 export class StarsController extends ObjectsController {
   private static _instance: StarsController | null = null;
 
   private scene!: BABYLON.Scene;
-
   public stars: Star[] = [];
 
   // The currently active star (e.g. closest to camera, or matched from point picking)
@@ -54,18 +53,7 @@ export class StarsController extends ObjectsController {
   updateStars(
     activeStarsConfigs: StarConfig[],
   ) {
-    
-    // Create stars for active stars configs
-    const starsToRender = ACTIONS_createStars(this.scene, activeStarsConfigs);
-
-    // Closest star to camera becomes active star
-    this.activeStar = starsToRender[0];
-    this.activeStarConfig = activeStarsConfigs[0];
-
-    // Update objects to render (which will trigger rendering in the next render loop)
-    if (starsToRender.length > 0) {
-      this.setObjectsToRender(this.scene, starsToRender);
-    }
+    ACTIONS_updateStars(this.scene, this, activeStarsConfigs);
   }
 
   getAllStars() {
