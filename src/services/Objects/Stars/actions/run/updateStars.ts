@@ -5,9 +5,9 @@ import type { StarConfig } from "../../Star/types/StarConfig";
 import type { StarsController } from "../../StarsController";
 import { createStars } from "../create/createStars";
 
-const INITIAL_STAR_LOAD_INTERVAL_MS = 10;
+const INITIAL_STAR_LOAD_INTERVAL_MS = 50;
 const MAX_STAR_LOAD_INTERVAL_MS = 100;
-const FAST_STAR_COUNT = 5;
+const FAST_STAR_COUNT = 50;
 
 type LoadState = {
   timer: ReturnType<typeof setTimeout> | null;

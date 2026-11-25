@@ -5,6 +5,7 @@ import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { AssetsController } from "@/lib/Assets/AssetsController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
+import { MAX_RENDER_OBJECTS } from "@/lib/Objects/actions/set/setObjectsToRender";
 
 export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const camerasController = CamerasController.instance(scene);
@@ -24,7 +25,7 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
     setActiveData: (matchedConfigs: any[]) => {
       starsController.activeStarsConfigs = matchedConfigs as StarConfig[];
 
-      meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
+      meshesController.setMeshesConfigs(starsController.activeStarsConfigs.slice(0, MAX_RENDER_OBJECTS));
       meshesController.setMeshPool(scene, false);
       AssetsController.instance.cleanUp(scene);
       starsController.updateStars(starsController.activeStarsConfigs);

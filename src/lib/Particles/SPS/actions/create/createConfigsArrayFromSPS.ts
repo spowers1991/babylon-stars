@@ -1,21 +1,22 @@
 import * as BABYLON from "babylonjs";
+import { getParticleKeySPS } from "../get/getParticleKeySPS";
 
-type SPSParticleWithSourceId = BABYLON.SolidParticle & {
-  sourceStarId?: number;
-};
-
-export function createConfigsArrayFromSPS(
+export function createConfigsArrayFromSPS<T extends { id?: number }>(
   particles: BABYLON.SolidParticle[],
-  configs: any[]
-): any[] {
+  configs: T[]
+): T[] {
 
-  const matchedConfigs: any[] = [];
+  const matchedConfigs: T[] = [];
+  const configsById = new Map<number | undefined, T>();
+  for (const config of configs) {
+    if (!configsById.has(config.id)) {
+      configsById.set(config.id, config);
+    }
+  }
+
   particles?.forEach(particle => {
-    const particleWithSourceId = particle as SPSParticleWithSourceId;
-    const id = particleWithSourceId.sourceStarId ?? particle.idx;
-
-    if(!configs) return;
-    const matchedConfig = configs.find((config: any) => config.id === id);
+    const id = getParticleKeySPS(particle);
+    const matchedConfig = configsById.get(id);
 
     if (!matchedConfig) return;
     matchedConfigs.push(matchedConfig);
