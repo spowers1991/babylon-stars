@@ -5,6 +5,7 @@ import { StarsController } from "@/services/Objects/Stars/StarsController";
 import { StarConfig } from "@/services/Objects/Stars/Star/types/StarConfig";
 import { AssetsController } from "@/lib/Assets/AssetsController";
 import { CamerasController } from "@/lib/Cameras/CamerasController";
+import { MAX_RENDER_OBJECTS } from "@/lib/Objects/actions/set/setObjectsToRender";
 
 export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
   const camerasController = CamerasController.instance(scene);
@@ -19,21 +20,21 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.setPointerObservable({
     element: galaxy as Galaxy,
-    options: { pickRadius: 150 },
+    options: { pickRadius: 1000 },
     data: { configs: galaxy.starsConfigs },
     setActiveData: (matchedConfigs: any[]) => {
       starsController.activeStarsConfigs = matchedConfigs as StarConfig[];
 
-      starsController.activeStarConfig = starsController.activeStarsConfigs[0] || null;
-      starsController.activeObject = starsController.activeStarsConfigs[0] || null;
-      
-      meshesController.setMeshesConfigs(starsController.activeStarsConfigs);
-      meshesController.setMeshPool(scene);
+      meshesController.setMeshesConfigs(starsController.activeStarsConfigs.slice(0, MAX_RENDER_OBJECTS));
+      meshesController.setMeshPool(scene, false);
+      AssetsController.instance.cleanUp(scene);
+      starsController.updateStars(starsController.activeStarsConfigs);
 
       const pickedStar = pickingController.closestPickSPS;
       if (pickedStar) {
         activeCamera?.focusOn(pickedStar.position, 2);
       }
+
     }
   });
 }

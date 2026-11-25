@@ -1,5 +1,7 @@
 import * as BABYLON from "babylonjs";
 
+export const MAX_RENDER_OBJECTS = 50;
+
 export function setObjectsToRender(
   scene: BABYLON.Scene,
   controller: {
@@ -10,8 +12,6 @@ export function setObjectsToRender(
   },
   newList: Object[]
 ) {
-  const MAX_RENDER_OBJECTS = 50;
-
   const previousObjects = new Set(controller.objectsToRender as any[]);
   const nextObjects: any[] = [];
   const currentObjects = new Set<any>();
@@ -56,9 +56,10 @@ export function setObjectsToRender(
 
     const key = getObjectKey(candidate, index);
     const pooled = controller.objectsPool.get(key);
-    const renderObject = pooled ?? candidate;
+    const pooledMeshIsDisposed = pooled?.mesh?.isDisposed?.() ?? false;
+    const renderObject = pooled && !pooledMeshIsDisposed ? pooled : candidate;
 
-    if (!pooled) {
+    if (!pooled || pooledMeshIsDisposed) {
       controller.objectsPool.set(key, candidate);
     } else if (pooled !== candidate) {
       // The pool already owns this logical object, so release the duplicate candidate.
@@ -82,7 +83,7 @@ export function setObjectsToRender(
       continue;
     }
 
-    if (obj.mesh) {
+    if (obj.mesh && !obj.mesh.isDisposed()) {
       obj.mesh.setEnabled(false);
     }
 

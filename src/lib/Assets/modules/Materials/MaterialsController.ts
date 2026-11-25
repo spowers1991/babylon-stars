@@ -1,49 +1,57 @@
 import * as BABYLON from "babylonjs";
+import { createMaterial as ACTIONS_createMaterial } from "./Material/actions/create/createMaterial";
+import { getMaterial as ACTIONS_getMaterial } from "./Material/actions/get/getMaterial";
+import type {
+  MaterialConfig,
+  PBRMaterialConfig,
+  StandardMaterialConfig,
+} from "./Material/types/MaterialConfig";
+import { runCleanMaterials as ACTIONS_runCleanMaterials } from "./actions/run/runCleanMaterials";
 
 export class MaterialsController {
-  private materials: BABYLON.Material[] = [];
+  public materialsPool: BABYLON.Material[] = [];
+  public readonly ownedMaterials = new WeakSet<BABYLON.Material>();
   private meshMaterialMap = new Map<BABYLON.AbstractMesh, BABYLON.Material>();
 
-  // ✅ StandardMaterial
+  public create(scene: BABYLON.Scene, config: StandardMaterialConfig): BABYLON.StandardMaterial;
+  public create(scene: BABYLON.Scene, config: PBRMaterialConfig): BABYLON.PBRMaterial;
+  public create(scene: BABYLON.Scene, config: MaterialConfig): BABYLON.Material {
+    return ACTIONS_createMaterial(scene, config);
+  }
+
+  public getMaterial(scene: BABYLON.Scene, config: MaterialConfig): BABYLON.Material {
+    return ACTIONS_getMaterial(scene, config);
+  }
+
   public createStandard(scene: BABYLON.Scene, name: string): BABYLON.StandardMaterial {
-    const material = new BABYLON.StandardMaterial(name, scene);
-    this.materials.push(material);
-    return material;
+    return this.create(scene, { type: "StandardMaterial", name });
   }
 
-  // ✅ PBRMaterial
   public createPBR(scene: BABYLON.Scene, name: string): BABYLON.PBRMaterial {
-    const material = new BABYLON.PBRMaterial(name, scene);
-    this.materials.push(material);
-    return material;
+    return this.create(scene, { type: "PBRMaterial", name });
   }
 
-  // ✅ Assign material to a mesh and track it
   public assign({ mesh, material }: { mesh: BABYLON.AbstractMesh | null; material: BABYLON.Material | null }): void {
     if (!mesh || !material) return;
 
     mesh.material = material;
-    this.meshMaterialMap.set(mesh, material); // track the relationship
+    this.meshMaterialMap.set(mesh, material);
   }
 
-  // ✅ Get the material for a specific mesh
   public getMaterialForMesh({ mesh }: { mesh: BABYLON.AbstractMesh }): BABYLON.Material | undefined {
     return this.meshMaterialMap.get(mesh);
   }
 
-  // ✅ Get all materials
   public getAll(): BABYLON.Material[] {
-    return this.materials;
+    return this.materialsPool;
   }
 
-  // ✅ Dispose material by index
   public disposeByIndex({ index }: { index: number }): void {
-    const material = this.materials[index];
+    const material = this.materialsPool[index];
     if (material) {
       material.dispose();
-      this.materials.splice(index, 1);
+      this.materialsPool.splice(index, 1);
 
-      // Remove from mesh map
       for (const [mesh, mat] of this.meshMaterialMap.entries()) {
         if (mat === material) {
           this.meshMaterialMap.delete(mesh);
@@ -52,16 +60,24 @@ export class MaterialsController {
     }
   }
 
-  // ✅ Dispose all materials
   public disposeAll(): void {
-    this.materials.forEach(mat => mat.dispose());
-    this.materials = [];
+    this.materialsPool.forEach((material) => material.dispose());
+    this.materialsPool.length = 0;
     this.meshMaterialMap.clear();
   }
 
-  // ---------------------------------------------------------
-  // 🔹 PBR Material Helpers (object-style params)
-  // ---------------------------------------------------------
+  public cleanUp(scene: BABYLON.Scene): void {
+    const removedMaterials = ACTIONS_runCleanMaterials(
+      scene,
+      this.materialsPool,
+      this.ownedMaterials
+    );
+    for (const [mesh, material] of this.meshMaterialMap.entries()) {
+      if (removedMaterials.includes(material)) {
+        this.meshMaterialMap.delete(mesh);
+      }
+    }
+  }
 
   public setAlbedoTexture({ material, texture }: { material: BABYLON.Material; texture: BABYLON.Texture }): void {
     if (material instanceof BABYLON.PBRMaterial) {
@@ -98,8 +114,10 @@ export class MaterialsController {
   }
 
   public setBumpTexture({ material, texture }: { material: BABYLON.Material; texture: BABYLON.Texture }): void {
-    if (material instanceof BABYLON.PBRMaterial || material instanceof BABYLON.StandardMaterial) {
-      (material as any).bumpTexture = texture;
+    if (material instanceof BABYLON.PBRMaterial) {
+      material.bumpTexture = texture;
+    } else if (material instanceof BABYLON.StandardMaterial) {
+      material.bumpTexture = texture;
     }
   }
 }

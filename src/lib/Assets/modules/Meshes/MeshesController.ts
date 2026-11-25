@@ -4,6 +4,7 @@ import { createMesh as ACTIONS_createMesh } from "./Mesh/actions/create/createMe
 import { createMeshesConfigs as ACTIONS_createMeshesConfigs } from "./actions/create/createMeshesConfigs";
 import { setMeshConfigs as ACTIONS_setMeshesConfigs } from "./actions/set/setMeshConfigs";
 import { setMeshPool as ACTIONS_setMeshPool } from "./actions/set/setMeshPool";
+import { runCleanMeshes as ACTIONS_runCleanMeshes } from "./actions/run/runCleanMeshes";
 import { getMesh as ACTIONS_getMesh } from "./Mesh/actions/get/getMesh";
 
 export class MeshesController {
@@ -32,8 +33,13 @@ export class MeshesController {
 
   public setMeshPool(
     scene: BABYLON.Scene,
+    createMissing = true,
   ): void {
-    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool);
+    this.meshPool = ACTIONS_setMeshPool(scene, this.meshConfigs, this.meshPool, createMissing);
+  }
+
+  public cleanUp(scene: BABYLON.Scene): void {
+    ACTIONS_runCleanMeshes(scene, this.meshPool);
   }
 
   public getMesh(scene: BABYLON.Scene, config: MeshConfig): BABYLON.AbstractMesh {

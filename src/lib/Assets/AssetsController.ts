@@ -3,6 +3,7 @@ import { TexturesController } from "./modules/Textures/TexturesController";
 import { MaterialsController } from "./modules/Materials/MaterialsController";
 import { PipelinesController } from "./modules/PostProcessing/Pipelines/PipelinesController";
 import { ShadersController } from "./modules/Shaders/ShadersController";
+import * as BABYLON from "babylonjs";
 
 export class AssetsController {
   private static _instance: AssetsController;
@@ -37,5 +38,15 @@ export class AssetsController {
     this.pipelines.disposeAll();
     this.shaders.disposeAll();
 }
+
+  public cleanUp(scene: BABYLON.Scene): void {
+    this.meshes.cleanUp(scene);
+    this.shaders.cleanUp(scene);
+    this.materials.cleanUp(scene);
+    this.textures.cleanUp(scene);
+    this.pipelines.cleanUp(scene);
+    this.postProcessing.cleanUp(scene);
+    PipelinesController.instance.cleanUp(scene);
+  }
 
 }

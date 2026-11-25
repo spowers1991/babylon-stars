@@ -94,7 +94,7 @@ export class ParticlesController {
     ACTIONS_setSPS(sps, data, options);
   }
 
-  getSPSByName(name: string): any | undefined {
+  getSPSByName(name: string): BABYLON.SolidParticleSystem | undefined {
     const system = this.namedSystems[name];
     return system instanceof BABYLON.SolidParticleSystem ? system : undefined;
   }
@@ -121,7 +121,7 @@ export class ParticlesController {
     return createObjectsArrayFromPCSAction(particles, configs)
   }
 
-  createConfigsArrayFromSPS(particles : BABYLON.SolidParticle[], configs: any[]){
+  createConfigsArrayFromSPS<T extends { id?: number }>(particles: BABYLON.SolidParticle[], configs: T[]){
     return createConfigsArrayFromSPSAction(particles, configs)
   }
 }

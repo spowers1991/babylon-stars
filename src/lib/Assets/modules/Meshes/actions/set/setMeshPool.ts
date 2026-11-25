@@ -1,14 +1,19 @@
 import * as BABYLON from "babylonjs";
 import { MeshConfig } from "../../Mesh/types/MeshConfig";
 import { createMeshByType } from "@/lib/Assets/modules/Meshes/Mesh/actions/create/createMeshByType";
+import { runCleanMeshes } from "../run/runCleanMeshes";
 
-export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" | "CylinderMesh" | "PlaneMesh" | "SphereMesh", meshConfigs: MeshConfig[]][], meshPool: BABYLON.AbstractMesh[]): BABYLON.AbstractMesh[] {
+export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" | "CylinderMesh" | "PlaneMesh" | "SphereMesh", meshConfigs: MeshConfig[]][], meshPool: BABYLON.AbstractMesh[], createMissing = true): BABYLON.AbstractMesh[] {
     const currentMeshes: Set<BABYLON.AbstractMesh> = new Set();
     const existingMeshesByKey: Map<string, BABYLON.AbstractMesh> = new Map();
 
     meshPool.forEach((mesh) => {
         const meshType = mesh.metadata?.type;
-        if (typeof meshType === "string") {
+        if (
+            typeof meshType === "string" &&
+            !mesh.isDisposed() &&
+            mesh.getScene() === scene
+        ) {
             existingMeshesByKey.set(`${meshType}::${mesh.name}`, mesh);
         }
     });
@@ -20,26 +25,25 @@ export function setMeshPool(scene: BABYLON.Scene, meshConfigs: [type: "BoxMesh" 
                 const meshKey = `${type}::${config.name}`;
                 let mesh = existingMeshesByKey.get(meshKey);
 
-                if (!mesh) {
+                if (!mesh && createMissing) {
                     mesh = createMeshByType(scene, config);
                     mesh.metadata = {
                         ...(mesh.metadata ?? {}),
                         type,
+                        assetPoolType: type,
                     };
                     existingMeshesByKey.set(meshKey, mesh);
                 }
 
-                currentMeshes.add(mesh);
+                if (mesh) {
+                    currentMeshes.add(mesh);
+                }
             });
         }
     }
 
-    scene.meshes.forEach((mesh) => {
-        if (!currentMeshes.has(mesh)) {
-            if (mesh.metadata?.type === null || mesh.metadata?.type === undefined) return;
-            mesh.dispose();
-        }
-    });
+    const updatedMeshPool = Array.from(currentMeshes);
+    runCleanMeshes(scene, updatedMeshPool);
     
-    return Array.from(currentMeshes);
+    return updatedMeshPool;
 }
