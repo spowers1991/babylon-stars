@@ -19,7 +19,7 @@ export function createPointPicking(scene : BABYLON.Scene, galaxy: Galaxy) {
 
   pickingController.setPointerObservable({
     element: galaxy as Galaxy,
-    options: { pickRadius: 150 },
+    options: { pickRadius: 1000 },
     data: { configs: galaxy.starsConfigs },
     setActiveData: (matchedConfigs: any[]) => {
       starsController.activeStarsConfigs = matchedConfigs as StarConfig[];
